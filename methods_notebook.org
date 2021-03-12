@@ -1,0 +1,126 @@
+* [2021-1-20 Wed] - possible topics for impedance methods paper 
+** comparison of linear chirp, logarithmic chirp, white noise
+*** also maybe neuron tool and/or method from pyramidal paper 
+*** slew rate 
+** srdjan's suggestion regarding poor access 
+** analysis of asymmetric chirp response 
+*** for instance, Rich2020-yl fig7 1.5 mV difference 
+ 
+* [2021-1-28 Thu] - asym chirp response 
+** asymmetric chirp response 
+*** logspaced amplitude from 0.01 to 0.31 
+*** want to plot assymetry (mV) vs mean squared error 
+*** asymmetric.py: v0.01 - sensitivity analysis of asymmetric voltage responses in computing impedance
+
+* [2021-1-29 Fri] - more asym chirp response 
+** results from yesterday 
+*** rerunning the sim because screwed up asymmetry calculation 
+*** MSE increases exponentially w/ current amplitude anyway
+**** much larger errors in amplitude than phase 
+*** examples subfig 
+from getCells import M1Cell   
+s = M1Cell()  
+seg = s.net.cells[0].secs['soma']['hObj'](0.5)   
+from neuron import h, gui    
+import numpy as np  
+from chirpUtils import getChirp, applyChirpZin  
+from sklearn.metrics import mean_squared_error 
+ 
+amps = np.logspace(np.log10(0.015), np.log10(0.31), num=9, endpoint=True) 
+ 
+f0, f1, t0, Fs, delay = 0.5, 20, 20, 1000, 5 
+ 
+phaseErr = [] 
+ampErr = [] 
+asym = [] 
+ 
+soma_v = h.Vector().record(seg._ref_v)      
+time = h.Vector().record(h._ref_t)  
+ 
+amp = 0.01  
+print('Running ' + str(amp)) 
+I, t = getChirp(f0, f1, t0, amp, Fs, delay) 
+base = applyChirpZin(I, t, seg, t0, delay, Fs, f1)
+
+base_v_trim = [v for v, T in zip(soma_v, time) if 4900 < T < 25100]                  
+base_v_trim = np.subtract(base_v_trim, base_v_trim[0])
+t_trim = [T for T in time if 4900 < T < 25100] 
+
+amp = amps[-1]
+print('Running ' + str(amp)) 
+I, t = getChirp(f0, f1, t0, amp, Fs, delay) 
+out = applyChirpZin(I, t, seg, t0, delay, Fs, f1)   
+
+v_trim = [v for v, T in zip(soma_v, time) if 4900 < T < 25100]                               
+v_trim = np.subtract(v_trim, v_trim[0])
+
+from matplotlib import pyplot as plt
+plt.ion()
+plt.figure()
+plt.subplot(2,3,1)
+plt.plot([(T-5100)/1000 for T in t_trim], base_v_trim, label='0.01 mV', color='black')
+plt.title('0.01 mV Assymetry', fontsize=16)
+plt.xlabel('Time (s)', fontsize=14)
+plt.ylabel(r'$\Delta$ V$_{memb}$ (mV)', fontsize=14)
+plt.ylim(-0.6, 0.6)
+plt.xlim(-0.1,20.1)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+plt.subplot(2,3,4)
+plt.plot([(T-5100)/1000 for T in t_trim], v_trim, label='1.20 mV', color='gray')
+plt.title('1.20 mV Assymetry', fontsize=16)    
+plt.xlabel('Time (s)', fontsize=14)
+plt.ylabel(r'$\Delta$ V$_{memb}$ (mV)', fontsize=14)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+plt.ylim(-18,18)
+plt.xlim(-0.1, 20.1)
+plt.subplot(2,3,2)
+plt.plot(out['Freq'], out['ZinAmp'], label='1.20 mV', color='gray')
+plt.plot(base['Freq'], base['ZinAmp'], label='0.01 mV', color='black')
+plt.xlabel('Frequency (Hz)', fontsize=14)
+plt.ylabel(r'|Z$_{in}$| (M$\Omega$)', fontsize=14)
+plt.title('ZAP', fontsize=16)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+plt.xlim(0,20.5)
+plt.subplot(2,3,3)
+plt.plot(out['Freq'], out['ZinPhase'], label='1.20 mV', color='gray')
+plt.plot(base['Freq'], base['ZinPhase'], label='0.01 mV', color='black')
+plt.xlabel('Frequency (Hz)', fontsize=14)
+plt.ylabel(r'$\Phi_{in}$ (radians)', fontsize=14)
+plt.title('ZPP', fontsize=16)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+plt.xlim(0,20.5)
+
+* [2021-1-30 Sat] - asym vs mse amp and phase 
+** code for plot 
+from scipy.io import loadmat 
+data = loadmat('asym_sensitivity_v2.mat')
+from matplotlib import pyplot as plt 
+plt.ion()
+import numpy as np
+plt.figure()
+plt.subplot(2,3,5)
+# plt.plot(data['asym'][0], np.sqrt(data['ampErr'][0]), color='k', linestyle='-', linewidth=1.5)
+plt.semilogx(data['asym'][0], np.sqrt(data['ampErr'][0]), color='k', linestyle='-', linewidth=1.5)
+plt.scatter(data['asym'][0], np.sqrt(data['ampErr'][0]), color='k', linewidth=1.5)
+plt.xlabel('Response Assymetry (mV)', fontsize=14)
+plt.ylabel(r'Root Mean Squared Error (M$\Omega$)', fontsize=14)
+plt.title('ZAP Error', fontsize=16)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+plt.subplot(2,3,6)
+# plt.plot(data['asym'][0], np.sqrt(data['phaseErr'][0]), color='k', linestyle='-', linewidth=1.5)
+plt.semilogx(data['asym'][0], np.sqrt(data['phaseErr'][0]), color='k', linestyle='-', linewidth=1.5)
+plt.scatter(data['asym'][0], np.sqrt(data['phaseErr'][0]), color='k', linewidth=1.5)
+plt.xlabel('Response Assymetry (mV)', fontsize=14)
+plt.ylabel(r'Root Mean Squared Error (radians)', fontsize=14)
+plt.title('ZPP Error', fontsize=16)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+** [[responseAssymetry.svg][example traces, ZAPs, and ZPPs, and error graphs]]
+
+* [2021-3-12 Fri] - 
+** putting together a separate repo from the PT impedance paper 
