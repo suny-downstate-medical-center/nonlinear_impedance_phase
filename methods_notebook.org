@@ -124,3 +124,4 @@ plt.yticks(fontsize=12)
 
 * [2021-3-12 Fri] - 
 ** putting together a separate repo from the PT impedance paper 
+** rerunning validation code for M1 PT cell for soma 
