@@ -391,10 +391,10 @@ def applyChirpVarDt(I, t, seg, soma_seg, t0, delay, Fs, f1, out_file_name = None
 # setup gaussian white noise for STA
 def getNoise(avg, std, t0, amp, Fs, delay):
     time = np.linspace(0,t0+delay*2, (t0+delay*2)*Fs+1)
-    means = np.zeros(t0*Fs+1)
+    means = [avg for i in range(int(t0*Fs+1))]
     stds = np.repeat(std,t0*Fs+1)
     ch = np.random.normal(means, stds, (t0)*Fs+1)
-    ch = np.hstack((np.zeros(Fs*delay), ch, np.zeros(Fs*delay)))
+    ch = np.hstack((np.add(np.zeros(Fs*delay),avg), ch, np.add(np.zeros(Fs*delay),avg)))
     vch = h.Vector(); vch.from_python(ch); vch.mul(amp)
     vtt = h.Vector(); vtt.from_python(time); vtt.mul(Fs)
     return vch, vtt

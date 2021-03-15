@@ -122,6 +122,14 @@ plt.xticks(fontsize=12)
 plt.yticks(fontsize=12)
 ** [[responseAssymetry.svg][example traces, ZAPs, and ZPPs, and error graphs]]
 
-* [2021-3-12 Fri] - 
+* [2021-3-12 Fri] - refactoring code 
 ** putting together a separate repo from the PT impedance paper 
 ** rerunning validation code for M1 PT cell for soma 
+
+* [2021-3-15 Mon] - search for K+ mediated resonance 
+** looking for decent model exhibiting K+ mediated resonance 
+*** granule cell, Dover2016-ov, https://senselab.med.yale.edu/ModelDB/ShowModel?model=206267&file=/GrC_FHF_ModelDB/#tabs-1
+**** resonance frequencies around where it is in PTs 
+*** DRG, Amir2003-ww, https://senselab.med.yale.edu/ModelDB/ShowModel?model=51022#tabs-1
+**** low pass 
+*** Izhikevich 2003... not sure I'm using it correctly 
