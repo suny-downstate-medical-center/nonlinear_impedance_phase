@@ -155,6 +155,9 @@ def HayCellSWC(morphology_file = '../suter_shepherd/BS0284.CNG.swc'):
 	return cell
 
 def M1Cell():
+	import sys
+	# sys.path.insert(0, '../../my_netpyne/')
+	sys.path.insert(0, '~/netpyne/')
 	owd = os.getcwd()
 	os.chdir('models/DuraBernal')
 	print(os.getcwd())
