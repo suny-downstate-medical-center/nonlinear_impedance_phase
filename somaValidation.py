@@ -6,7 +6,7 @@ from neuron import h
 stim = h.IClamp(seg)
 from pylab import fft, convolve
 import numpy as np 
-import argparse
+# import argparse
 import os
 import multiprocessing
 import json 
@@ -50,33 +50,36 @@ def runInputValidation(input_data):
     temp_dict = {'zAmp' : zamp[ind], 'zPhase' : phase[ind]}
     return_dict[f] = temp_dict
 
-try:
-    parser = argparse.ArgumentParser(description = '''Run impedance validation''')
-    parser.add_argument('--freq_file', nargs='?', type=str, default='data/noise_freqs.json',
-                        help='''json file containinf frequencies to test''')
-    parser.add_argument('outfile', metavar='outfile', type=str,
-                        help='a file to save output data')
-    parser.add_argument('--amp', nargs='?', type=float, default=0.01)
-    parser.add_argument('--t0', nargs='?', type=int, default=5)
-    parser.add_argument('--sampr', nargs='?', type=float, default=40e3)
-    parser.add_argument('--delay', nargs='?', type=int, default=5)
-    parser.add_argument('--poolSize', nargs='?', type=int, default=1)
-    args = parser.parse_args()
-except:
-    os._exit(1)
+# try:
+#     parser = argparse.ArgumentParser(description = '''Run impedance validation''')
+#     parser.add_argument('--freq_file', nargs='?', type=str, default='data/noise_freqs.json',
+#                         help='''json file containinf frequencies to test''')
+#     parser.add_argument('outfile', metavar='outfile', type=str,
+#                         help='a file to save output data')
+#     parser.add_argument('--amp', nargs='?', type=float, default=0.01)
+#     parser.add_argument('--t0', nargs='?', type=int, default=5)
+#     parser.add_argument('--sampr', nargs='?', type=float, default=40e3)
+#     parser.add_argument('--delay', nargs='?', type=int, default=5)
+#     parser.add_argument('--poolSize', nargs='?', type=int, default=1)
+#     args = parser.parse_args()
+# except:
+#     os._exit(1)
 
 # create output dictionary 
 manager = multiprocessing.Manager()
 impedance = manager.dict()
 
-with open(args.freq_file, 'rb') as fileObj:
+
+freq_file = 'data/valid_freq_test.json'
+with open(freq_file, 'rb') as fileObj:
     freqs = json.load(fileObj)
 
-amp = args.amp 
-t0 = args.t0 
-sampr = args.sampr
-delay = args.delay
-poolSize = args.poolSize
+amp = 0.01 #args.amp 
+t0 = 5 #args.t0 
+sampr = 40e3 #args.sampr
+delay = 3 #args.delay
+poolSize = 4 #args.poolSize
+outfile = 'data/validation_test.json'
 
 # create tuple of input data 
 data = []
@@ -88,5 +91,5 @@ data = tuple(data)
 p = multiprocessing.Pool(poolSize)
 p.map(runInputValidation, data)
 
-with open(args.outfile, 'w') as fileObj:
+with open(outfile, 'w') as fileObj:
     json.dump(dict(impedance), fileObj)
