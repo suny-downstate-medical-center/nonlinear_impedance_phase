@@ -133,3 +133,17 @@ plt.yticks(fontsize=12)
 *** DRG, Amir2003-ww, https://senselab.med.yale.edu/ModelDB/ShowModel?model=51022#tabs-1
 **** low pass 
 *** Izhikevich 2003... not sure I'm using it correctly 
+
+* [2021-4-9 Fri] - getting back into it
+** downsample impedance values 
+zAmp_red = [] 
+zPhase_red = [] 
+while freqs_sorted[ind] <= f1: 
+    find = np.argmin(np.square(np.subtract(base['Freq'],freqs_sorted[ind]))) 
+    zAmp_red.append(base['ZinAmp'][find]) 
+    zPhase_red.append(base['ZinPhase'][find]) 
+    ind = ind + 1
+
+* [2021-4-11 Sun] - sorting out proper validation 
+** need valid impedance value for every estimated one
+*** parallelized and generalized impedance validation procedure 

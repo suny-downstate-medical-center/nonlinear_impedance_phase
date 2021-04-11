@@ -7,6 +7,8 @@ from pylab import fft, convolve
 from scipy.io import savemat
 import json
 from scipy.signal import find_peaks
+import multiprocessing
+import pickle 
 
 # get chirp stim: based on sam's code form evoizhi/sim.py
 def getChirp(f0, f1, t0, amp, Fs, delay):
@@ -379,6 +381,70 @@ def applyChirpVarDt(I, t, seg, soma_seg, t0, delay, Fs, f1, out_file_name = None
 
     out2 = {'soma_np' : soma_np,
             'cis_np' : cis_np,
+            'time' : time,
+            'current_np' : current_np}
+
+    if out_file_name:
+        savemat(out_file_name + '.mat', out)
+        savemat(out_file_name + '_traces.mat', out2)
+    else:
+        return out
+
+# apply chirp stimulus to segment
+def applyChirpZin(I, t, seg, t0, delay, Fs, f1, out_file_name = None):
+
+    ## place current clamp on soma
+    stim = h.IClamp(seg)
+    stim.amp = 0
+    stim.dur = (t0+delay*2) * Fs + 1
+    I.play(stim._ref_amp, t)
+
+    ## Record time
+    t_vec = h.Vector()
+    t_vec.record(h._ref_t)
+
+    ## Record soma voltage
+    cis_v = h.Vector()
+    cis_v.record(seg._ref_v)
+    
+    ## run simulation
+    h.celsius = 34
+    h.tstop = (t0+delay*2) * Fs + 1
+    h.run()
+
+    time = t_vec.as_numpy()
+    cis_np = cis_v.as_numpy()
+    current_np = np.interp(np.linspace(0, (t0+delay*2) * Fs, cis_np.shape[0], endpoint=True),
+                           np.linspace(0,(t0+delay*2) * Fs,(t0+delay*2) * Fs * 40 + 1,endpoint=True), I.as_numpy())
+    
+    samp_rate = (1 / (time[1] - time[0])) * Fs
+    
+    ## calculate impedance
+    Freq, ZinAmp, ZinPhase, ZinRes, ZinReact, ZinResAmp, ZinResFreq, QfactorIn, fVarIn = zMeasures(current_np, cis_np,  delay, samp_rate, f1, bwinsz=5)
+
+    freqsIn = np.argwhere(ZinPhase > 0)
+    if len(freqsIn) > 0:
+        ZinSynchFreq = Freq[freqsIn[-1]]
+        ZinPhaseL = np.trapz([float(ZinPhase[ind]) for ind in freqsIn], 
+            [float(Freq[ind]) for ind in freqsIn])
+    else:
+        ZinSynchFreq = 0 
+        ZinPhaseL = 0
+
+    ## generate output
+    out = {'Freq' : Freq,
+        'ZinRes' : ZinRes,
+        'ZinReact' : ZinReact,
+        'ZinAmp' : ZinAmp,
+        'ZinPhase' : ZinPhase,
+        'ZinSynchFreq' : ZinSynchFreq,
+        'ZinPhaseL' : ZinPhaseL,
+        'ZinResAmp' : ZinResAmp,
+        'ZinResFreq' : ZinResFreq,
+        'QfactorIn' : QfactorIn,
+        'fVarIn' : fVarIn}
+
+    out2 = {'cis_np' : cis_np,
             'time' : time,
             'current_np' : current_np}
 
