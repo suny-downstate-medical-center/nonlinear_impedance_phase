@@ -157,6 +157,7 @@ def HayCellSWC(morphology_file = '../suter_shepherd/BS0284.CNG.swc'):
 def M1Cell():
 	owd = os.getcwd()
 	os.chdir('models/DuraBernal')
+	print(os.getcwd())
 	from netParams_unified import netParams 
 	from cfg_unified import cfg
 	from netpyne import sim 
