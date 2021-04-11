@@ -70,16 +70,16 @@ manager = multiprocessing.Manager()
 impedance = manager.dict()
 
 
-freq_file = 'data/valid_freq_test.json'
+freq_file = 'data/standard_chirp_freqs.json'
 with open(freq_file, 'rb') as fileObj:
     freqs = json.load(fileObj)
 
-amp = 0.01 #args.amp 
+amp = 0.02 #args.amp 
 t0 = 5 #args.t0 
 sampr = 40e3 #args.sampr
-delay = 3 #args.delay
-poolSize = 4 #args.poolSize
-outfile = 'data/validation_test.json'
+delay = 5 #args.delay
+poolSize = 60 #args.poolSize
+outfile = 'data/chirp_freq_validation.json'
 
 # create tuple of input data 
 data = []
