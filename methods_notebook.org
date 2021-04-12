@@ -147,3 +147,4 @@ while freqs_sorted[ind] <= f1:
 * [2021-4-11 Sun] - sorting out proper validation 
 ** need valid impedance value for every estimated one
 *** parallelized and generalized impedance validation procedure 
+** looking at signal to noise ratio issues (combining noise / subthreshold oscillations + imepdance estimation)

@@ -81,7 +81,9 @@ def zMeasures(current, v,  delay, sampr, f1, bwinsz=1):
     Qfactor    = zResAmp / zAmp[0]
     fVar       = np.std(zAmp) / np.mean(zAmp)
 
-    return Freq, zAmp, zPhase, zRes, zReact, zResAmp, zResFreq, Qfactor, fVar
+    peak_to_peak = np.max(v) - np.min(v)
+
+    return Freq, zAmp, zPhase, zRes, zReact, zResAmp, zResFreq, Qfactor, fVar, peak_to_peak
 
 # voltage attenuation
 def Vattenuation(ZinAmp, ZcAmp):
@@ -127,8 +129,8 @@ def applyChirp(I, t, seg, soma_seg, t0, delay, Fs, f1, out_file_name = None):
     samp_rate = (1 / (time[1] - time[0])) * Fs
     
     ## calculate impedance
-    Freq, ZinAmp, ZinPhase, ZinRes, ZinReact, ZinResAmp, ZinResFreq, QfactorIn, fVarIn = zMeasures(current_np, cis_np,  delay, samp_rate, f1, bwinsz=5)
-    _, ZcAmp, ZcPhase, ZcRes, ZcReact, ZcResAmp, ZcResFreq, QfactorTrans, fVarTrans = zMeasures(current_np, soma_np,  delay, samp_rate, f1, bwinsz=5)
+    Freq, ZinAmp, ZinPhase, ZinRes, ZinReact, ZinResAmp, ZinResFreq, QfactorIn, fVarIn, peak_to_peak = zMeasures(current_np, cis_np,  delay, samp_rate, f1, bwinsz=5)
+    _, ZcAmp, ZcPhase, ZcRes, ZcReact, ZcResAmp, ZcResFreq, QfactorTrans, fVarTrans, peak_to_peak = zMeasures(current_np, soma_np,  delay, samp_rate, f1, bwinsz=5)
 
     freqsIn = np.argwhere(ZinPhase > 0)
     if len(freqsIn) > 0:
@@ -224,8 +226,8 @@ def applyChirpHighFs(I, t, seg, soma_seg, t0, delay, Fs, f1, out_file_name = Non
     samp_rate = (1 / (time[1] - time[0])) * Fs
     
     ## calculate impedance
-    Freq, ZinAmp, ZinPhase, ZinRes, ZinReact, ZinResAmp, ZinResFreq, QfactorIn, fVarIn = zMeasures(current_np, cis_np,  delay, samp_rate, f1, bwinsz=5)
-    _, ZcAmp, ZcPhase, ZcRes, ZcReact, ZcResAmp, ZcResFreq, QfactorTrans, fVarTrans = zMeasures(current_np, soma_np,  delay, samp_rate, f1, bwinsz=5)
+    Freq, ZinAmp, ZinPhase, ZinRes, ZinReact, ZinResAmp, ZinResFreq, QfactorIn, fVarIn, peak_to_peak = zMeasures(current_np, cis_np,  delay, samp_rate, f1, bwinsz=5)
+    _, ZcAmp, ZcPhase, ZcRes, ZcReact, ZcResAmp, ZcResFreq, QfactorTrans, fVarTrans, peak_to_peak = zMeasures(current_np, soma_np,  delay, samp_rate, f1, bwinsz=5)
 
     freqsIn = np.argwhere(ZinPhase > 0)
     if len(freqsIn) > 0:
@@ -327,8 +329,8 @@ def applyChirpVarDt(I, t, seg, soma_seg, t0, delay, Fs, f1, out_file_name = None
     samp_rate = (1 / (time[1] - time[0])) * Fs
     
     ## calculate impedance
-    Freq, ZinAmp, ZinPhase, ZinRes, ZinReact, ZinResAmp, ZinResFreq, QfactorIn, fVarIn = zMeasures(current_np, cis_np,  delay, samp_rate, f1, bwinsz=5)
-    _, ZcAmp, ZcPhase, ZcRes, ZcReact, ZcResAmp, ZcResFreq, QfactorTrans, fVarTrans = zMeasures(current_np, soma_np,  delay, samp_rate, f1, bwinsz=5)
+    Freq, ZinAmp, ZinPhase, ZinRes, ZinReact, ZinResAmp, ZinResFreq, QfactorIn, fVarIn, peak_to_peak = zMeasures(current_np, cis_np,  delay, samp_rate, f1, bwinsz=5)
+    _, ZcAmp, ZcPhase, ZcRes, ZcReact, ZcResAmp, ZcResFreq, QfactorTrans, fVarTrans, peak_to_peak = zMeasures(current_np, soma_np,  delay, samp_rate, f1, bwinsz=5)
 
     freqsIn = np.argwhere(ZinPhase > 0)
     if len(freqsIn) > 0:
@@ -390,6 +392,78 @@ def applyChirpVarDt(I, t, seg, soma_seg, t0, delay, Fs, f1, out_file_name = None
     else:
         return out
 
+def applyChirpPlusNoise(Ichirp, Inoise, t, seg, t0, delay, Fs, f1, out_file_name = None):
+    ## place current clamp on soma
+    stim = h.IClamp(seg)
+    stim.amp = 0
+    stim.dur = (t0+delay*2) * Fs + 1
+    Ichirp.play(stim._ref_amp, t)
+
+    stimNoise = h.IClamp(seg)
+    stim.amp = 0
+    stim.dur = (t0+delay*2) * Fs + 1
+    Inoise.play(stimNoise._ref_amp, t)
+
+    ## Record time
+    t_vec = h.Vector()
+    t_vec.record(h._ref_t)
+
+    ## Record soma voltage
+    cis_v = h.Vector()
+    cis_v.record(seg._ref_v)
+    
+    ## run simulation
+    h.celsius = 34
+    h.tstop = (t0+delay*2) * Fs + 1
+    h.run()
+
+    time = t_vec.as_numpy()
+    cis_np = cis_v.as_numpy()
+    current_np = np.interp(np.linspace(0, (t0+delay*2) * Fs, cis_np.shape[0], endpoint=True),
+                           np.linspace(0,(t0+delay*2) * Fs,(t0+delay*2) * Fs * 40 + 1,endpoint=True), Ichirp.as_numpy())
+    
+    samp_rate = (1 / (time[1] - time[0])) * Fs
+
+    ## calculate impedance
+    Freq, ZinAmp, ZinPhase, ZinRes, ZinReact, ZinResAmp, ZinResFreq, QfactorIn, fVarIn, peak_to_peak = zMeasures(current_np, cis_np,  delay, samp_rate, f1, bwinsz=1)
+
+    freqsIn = np.argwhere(ZinPhase > 0)
+    if len(freqsIn) > 0:
+        ZinSynchFreq = Freq[freqsIn[-1]]
+        ZinPhaseL = np.trapz([float(ZinPhase[ind]) for ind in freqsIn], 
+            [float(Freq[ind]) for ind in freqsIn])
+    else:
+        ZinSynchFreq = 0 
+        ZinPhaseL = 0
+
+    pre_v = [cis_v for cis_v, T in zip(cis_np, time) if (delay-1)*1000 <= T <= delay*1000]
+    noise_peak_to_peak = np.max(pre_v) - np.min(pre_v)
+
+    ## generate output
+    out = {'Freq' : Freq,
+        'ZinRes' : ZinRes,
+        'ZinReact' : ZinReact,
+        'ZinAmp' : ZinAmp,
+        'ZinPhase' : ZinPhase,
+        'ZinSynchFreq' : ZinSynchFreq,
+        'ZinPhaseL' : ZinPhaseL,
+        'ZinResAmp' : ZinResAmp,
+        'ZinResFreq' : ZinResFreq,
+        'QfactorIn' : QfactorIn,
+        'fVarIn' : fVarIn,
+        'noise_peak_to_peak' : noise_peak_to_peak,
+        'chirp_peak_to_peak' : peak_to_peak}
+
+    out2 = {'cis_np' : cis_np,
+            'time' : time,
+            'current_np' : current_np}
+
+    if out_file_name:
+        savemat(out_file_name + '.mat', out)
+        savemat(out_file_name + '_traces.mat', out2)
+    else:
+        return out
+
 # apply chirp stimulus to segment
 def applyChirpZin(I, t, seg, t0, delay, Fs, f1, out_file_name = None):
 
@@ -420,7 +494,7 @@ def applyChirpZin(I, t, seg, t0, delay, Fs, f1, out_file_name = None):
     samp_rate = (1 / (time[1] - time[0])) * Fs
     
     ## calculate impedance
-    Freq, ZinAmp, ZinPhase, ZinRes, ZinReact, ZinResAmp, ZinResFreq, QfactorIn, fVarIn = zMeasures(current_np, cis_np,  delay, samp_rate, f1, bwinsz=5)
+    Freq, ZinAmp, ZinPhase, ZinRes, ZinReact, ZinResAmp, ZinResFreq, QfactorIn, fVarIn, peak_to_peak = zMeasures(current_np, cis_np,  delay, samp_rate, f1, bwinsz=1)
 
     freqsIn = np.argwhere(ZinPhase > 0)
     if len(freqsIn) > 0:
@@ -509,7 +583,6 @@ def applyNoise(I, t, seg, soma_seg, t0, delay, Fs, out_file_name=None):
     h.tstop = (t0+delay*2) * Fs + 1
     h.run()
 
-    
     soma_np = soma_v.as_numpy()
         
     current_np = np.interp(np.linspace(0, (t0+delay*2) * Fs, soma_np.shape[0], endpoint=True),
@@ -521,8 +594,8 @@ def applyNoise(I, t, seg, soma_seg, t0, delay, Fs, out_file_name=None):
         
     ## calculate impedance
     f1 = 1000
-    Freq, ZinAmp, ZinPhase, ZinRes, ZinReact, ZinResAmp, ZinResFreq, QfactorIn, fVarIn = zMeasures(current_np, cis_np,  delay, samp_rate, f1, bwinsz=15)
-    _, ZcAmp, ZcPhase, ZcRes, ZcReact, ZcResAmp, ZcResFreq, QfactorTrans, fVarTrans = zMeasures(current_np, soma_np,  delay, samp_rate, f1, bwinsz=15)
+    Freq, ZinAmp, ZinPhase, ZinRes, ZinReact, ZinResAmp, ZinResFreq, QfactorIn, fVarIn, peak_to_peak = zMeasures(current_np, cis_np,  delay, samp_rate, f1, bwinsz=15)
+    _, ZcAmp, ZcPhase, ZcRes, ZcReact, ZcResAmp, ZcResFreq, QfactorTrans, fVarTrans, peak_to_peak = zMeasures(current_np, soma_np,  delay, samp_rate, f1, bwinsz=15)
 
     freqsIn = np.argwhere(ZinPhase > 0)
     if len(freqsIn) > 0:
