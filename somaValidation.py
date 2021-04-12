@@ -30,8 +30,8 @@ def runInputValidation(input_data):
     h.tstop = (t0+delay*2) * Fs + 1
     h.run()
     v_trim = [v for v, T in zip(soma_v, time) if int((delay+2)*1000) < T < int(delay*t0*1000)] 
-    i_trim = [x for x, T in zip(i,time) int((delay+2)*1000) < T < int(delay*t0*1000)] 
-    time_trim = [T for v, T in zip(soma_v, time) int((delay+2)*1000) < T < int(delay*t0*1000)] 
+    i_trim = [x for x, T in zip(i,time) if int((delay+2)*1000) < T < int(delay*t0*1000)] 
+    time_trim = [T for v, T in zip(soma_v, time) if int((delay+2)*1000) < T < int(delay*t0*1000)] 
     current = i_trim
     v = v_trim 
     #current = current[int(delay*sampr - 0.5*sampr+1):-int(delay*sampr- 0.5*sampr)] 
@@ -70,16 +70,17 @@ manager = multiprocessing.Manager()
 impedance = manager.dict()
 
 
-freq_file = 'data/standard_chirp_freqs.json'
-with open(freq_file, 'rb') as fileObj:
-    freqs = json.load(fileObj)
+# freq_file = 'data/standard_chirp_freqs.json'
+# with open(freq_file, 'rb') as fileObj:
+#     freqs = json.load(fileObj)
+freqs = np.linspace(0.5, 20, 60)
 
 amp = 0.02 #args.amp 
 t0 = 5 #args.t0 
 sampr = 40e3 #args.sampr
 delay = 5 #args.delay
 poolSize = 60 #args.poolSize
-outfile = 'data/chirp_freq_validation.json'
+outfile = 'data/chirp_freq_validation_testv2.json'
 
 # create tuple of input data 
 data = []
