@@ -29,9 +29,9 @@ def runInputValidation(input_data):
     h.celsius = 34
     h.tstop = (t0+delay*2) * Fs + 1
     h.run()
-    v_trim = [v for v, T in zip(soma_v, time) if 5000 < T < 9000] 
-    i_trim = [x for x, T in zip(i,time) if 5000 < T < 9000] 
-    time_trim = [T for v, T in zip(soma_v, time) if 5000 < T < 9000] 
+    v_trim = [v for v, T in zip(soma_v, time) if int((delay+2)*1000) < T < int(delay*t0*1000)] 
+    i_trim = [x for x, T in zip(i,time) int((delay+2)*1000) < T < int(delay*t0*1000)] 
+    time_trim = [T for v, T in zip(soma_v, time) int((delay+2)*1000) < T < int(delay*t0*1000)] 
     current = i_trim
     v = v_trim 
     #current = current[int(delay*sampr - 0.5*sampr+1):-int(delay*sampr- 0.5*sampr)] 
