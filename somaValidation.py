@@ -71,16 +71,16 @@ impedance = manager.dict()
 
 
 # freq_file = 'data/standard_chirp_freqs.json'
-# with open(freq_file, 'rb') as fileObj:
-#     freqs = json.load(fileObj)
-freqs = np.linspace(0.5, 20, 60)
+with open(freq_file, 'rb') as fileObj:
+    freqs = json.load(fileObj)
+# freqs = np.linspace(0.5, 20, 60)
 
-amp = 0.02 #args.amp 
+amp = 0.01 #0.02 #args.amp 
 t0 = 5 #args.t0 
 sampr = 40e3 #args.sampr
 delay = 5 #args.delay
 poolSize = 60 #args.poolSize
-outfile = 'data/chirp_freq_validation_testv2.json'
+outfile = 'data/chirp_freq_validation_amp01.json'
 
 # create tuple of input data 
 data = []
