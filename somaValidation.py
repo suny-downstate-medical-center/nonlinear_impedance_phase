@@ -70,7 +70,7 @@ manager = multiprocessing.Manager()
 impedance = manager.dict()
 
 
-# freq_file = 'data/standard_chirp_freqs.json'
+freq_file = 'data/standard_chirp_freqs.json'
 with open(freq_file, 'rb') as fileObj:
     freqs = json.load(fileObj)
 # freqs = np.linspace(0.5, 20, 60)
