@@ -392,7 +392,7 @@ def applyChirpVarDt(I, t, seg, soma_seg, t0, delay, Fs, f1, out_file_name = None
     else:
         return out
 
-def applyChirpPlusNoise(Ichirp, Inoise, t, seg, t0, delay, Fs, f1, out_file_name = None):
+def applyChirpPlusNoise(Ichirp, Inoise, t, tnoise, seg, t0, delay, Fs, f1, out_file_name = None):
     ## place current clamp on soma
     stim = h.IClamp(seg)
     stim.amp = 0
@@ -400,9 +400,9 @@ def applyChirpPlusNoise(Ichirp, Inoise, t, seg, t0, delay, Fs, f1, out_file_name
     Ichirp.play(stim._ref_amp, t)
 
     stimNoise = h.IClamp(seg)
-    stim.amp = 0
-    stim.dur = (t0+delay*2) * Fs + 1
-    Inoise.play(stimNoise._ref_amp, t)
+    stimNoise.amp = 0
+    stimNoise.dur = (t0+delay*2) * Fs + 1
+    Inoise.play(stimNoise._ref_amp, tnoise)
 
     ## Record time
     t_vec = h.Vector()
@@ -561,7 +561,7 @@ def STA(pks, I, V, sampr, delay):
     return out
 
 # run STA sims
-def applyNoise(I, t, seg, soma_seg, t0, delay, Fs, out_file_name=None):
+def applyNoise(I, t, seg, soma_seg, t0, delay, Fs, out_file_name=None, binsize=1):
     ## place current clamp on soma
     stim = h.IClamp(seg)
     stim.amp = 0
@@ -593,9 +593,9 @@ def applyNoise(I, t, seg, soma_seg, t0, delay, Fs, out_file_name=None):
     samp_rate = (1 / (time[1] - time[0])) * Fs
         
     ## calculate impedance
-    f1 = 1000
-    Freq, ZinAmp, ZinPhase, ZinRes, ZinReact, ZinResAmp, ZinResFreq, QfactorIn, fVarIn, peak_to_peak = zMeasures(current_np, cis_np,  delay, samp_rate, f1, bwinsz=15)
-    _, ZcAmp, ZcPhase, ZcRes, ZcReact, ZcResAmp, ZcResFreq, QfactorTrans, fVarTrans, peak_to_peak = zMeasures(current_np, soma_np,  delay, samp_rate, f1, bwinsz=15)
+    f1 = 500
+    Freq, ZinAmp, ZinPhase, ZinRes, ZinReact, ZinResAmp, ZinResFreq, QfactorIn, fVarIn, peak_to_peak = zMeasures(current_np, cis_np,  delay, samp_rate, f1, bwinsz=binsize)
+    _, ZcAmp, ZcPhase, ZcRes, ZcReact, ZcResAmp, ZcResFreq, QfactorTrans, fVarTrans, peak_to_peak = zMeasures(current_np, soma_np,  delay, samp_rate, f1, bwinsz=binsize)
 
     freqsIn = np.argwhere(ZinPhase > 0)
     if len(freqsIn) > 0:

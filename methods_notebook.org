@@ -148,3 +148,7 @@ while freqs_sorted[ind] <= f1:
 ** need valid impedance value for every estimated one
 *** parallelized and generalized impedance validation procedure 
 ** looking at signal to noise ratio issues (combining noise / subthreshold oscillations + imepdance estimation)
+
+* [2021-4-12 Mon] - log and noise 
+** new functions/scripts for adding background noise and runnig log chirp 
+** validation for 20 s noise frequencies still running 
