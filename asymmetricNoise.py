@@ -20,7 +20,7 @@ time = h.Vector().record(h._ref_t)
 amp = 0.01 
 print('Running ' + str(amp))
 I, t = getNoise(0.0, 0.75, t0, amp, Fs, delay)   
-base = applyNoise(I, t, seg, t0, delay, Fs, f1, binsize=25)
+base = applyNoise(I, t, seg, seg, t0, delay, Fs, binsize=25)
 
 # compute asymmetry in voltage trace 
 v_trim = [v for v, T in zip(soma_v, time) if 4900 < T < 20100]
@@ -31,7 +31,7 @@ for amp in amps:
     # run chirp 
     print('Running ' + str(amp))
     I, t = getNoise(0.0, 0.75, t0, amp, Fs, delay)   
-    out = applyNoise(I, t, seg, t0, delay, Fs, f1, binsize=25)
+    out = applyNoise(I, t, seg, seg, t0, delay, Fs, binsize=25)
     
     # compute asymmetry in voltage trace 
     v_trim = [v for v, T in zip(soma_v, time) if 4900 < T < 20100]
