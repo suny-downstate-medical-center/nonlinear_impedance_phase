@@ -73,7 +73,7 @@ def zMeasures(current, v,  delay, sampr, f1, bwinsz=1):
 
     ## trim
     mask = (Freq >= 0.5) & (Freq <= f1)
-    Freq, zAmp, zPhase, zRes, zReact = Freq[mask], zAmp[mask], zPhase[mask], zRes[mask], zReact[mask]
+    Freq, zAmp, zPhase, zRes, zReact, z = Freq[mask], zAmp[mask], zPhase[mask], zRes[mask], zReact[mask], z[mask]
 
     ## resonance
     zResAmp    = np.max(zAmp)
@@ -83,7 +83,7 @@ def zMeasures(current, v,  delay, sampr, f1, bwinsz=1):
 
     peak_to_peak = np.max(v) - np.min(v)
 
-    return Freq, zAmp, zPhase, zRes, zReact, zResAmp, zResFreq, Qfactor, fVar, peak_to_peak
+    return Freq, zAmp, zPhase, zRes, zReact, zResAmp, zResFreq, Qfactor, fVar, peak_to_peak, z
 
 # voltage attenuation
 def Vattenuation(ZinAmp, ZcAmp):
@@ -494,7 +494,7 @@ def applyChirpZin(I, t, seg, t0, delay, Fs, f1, out_file_name = None):
     samp_rate = (1 / (time[1] - time[0])) * Fs
     
     ## calculate impedance
-    Freq, ZinAmp, ZinPhase, ZinRes, ZinReact, ZinResAmp, ZinResFreq, QfactorIn, fVarIn, peak_to_peak = zMeasures(current_np, cis_np,  delay, samp_rate, f1, bwinsz=1)
+    Freq, ZinAmp, ZinPhase, ZinRes, ZinReact, ZinResAmp, ZinResFreq, QfactorIn, fVarIn, peak_to_peak, z = zMeasures(current_np, cis_np,  delay, samp_rate, f1, bwinsz=1)
 
     freqsIn = np.argwhere(ZinPhase > 0)
     if len(freqsIn) > 0:
@@ -516,7 +516,8 @@ def applyChirpZin(I, t, seg, t0, delay, Fs, f1, out_file_name = None):
         'ZinResAmp' : ZinResAmp,
         'ZinResFreq' : ZinResFreq,
         'QfactorIn' : QfactorIn,
-        'fVarIn' : fVarIn}
+        'fVarIn' : fVarIn,
+        'z' : z}
 
     out2 = {'cis_np' : cis_np,
             'time' : time,
@@ -594,8 +595,8 @@ def applyNoise(I, t, seg, soma_seg, t0, delay, Fs, out_file_name=None, binsize=1
         
     ## calculate impedance
     f1 = 500
-    Freq, ZinAmp, ZinPhase, ZinRes, ZinReact, ZinResAmp, ZinResFreq, QfactorIn, fVarIn, peak_to_peak = zMeasures(current_np, cis_np,  delay, samp_rate, f1, bwinsz=binsize)
-    _, ZcAmp, ZcPhase, ZcRes, ZcReact, ZcResAmp, ZcResFreq, QfactorTrans, fVarTrans, peak_to_peak = zMeasures(current_np, soma_np,  delay, samp_rate, f1, bwinsz=binsize)
+    Freq, ZinAmp, ZinPhase, ZinRes, ZinReact, ZinResAmp, ZinResFreq, QfactorIn, fVarIn, peak_to_peak, zin = zMeasures(current_np, cis_np,  delay, samp_rate, f1, bwinsz=binsize)
+    _, ZcAmp, ZcPhase, ZcRes, ZcReact, ZcResAmp, ZcResFreq, QfactorTrans, fVarTrans, peak_to_peak, zc = zMeasures(current_np, soma_np,  delay, samp_rate, f1, bwinsz=binsize)
 
     freqsIn = np.argwhere(ZinPhase > 0)
     if len(freqsIn) > 0:
@@ -644,7 +645,9 @@ def applyNoise(I, t, seg, soma_seg, t0, delay, Fs, out_file_name=None, binsize=1
         'QfactorTrans' : QfactorTrans,
         'fVarIn' : fVarIn,
         'fVarTrans' : fVarTrans,
-        'dist' : dist}
+        'dist' : dist,
+        'zin' : zin,
+        'zc' : zc}
 
     out2 = {'soma_np' : soma_np,
             'cis_np' : cis_np,

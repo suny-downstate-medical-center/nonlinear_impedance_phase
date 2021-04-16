@@ -152,3 +152,10 @@ while freqs_sorted[ind] <= f1:
 * [2021-4-12 Mon] - log and noise 
 ** new functions/scripts for adding background noise and runnig log chirp 
 ** validation for 20 s noise frequencies still running 
+
+* [2021-4-16 Fri] - chirp and noise comparisons 
+** put together nice figure of chirp vs. noise comparison
+*** should i include log chirp? - yes, log chirp is the best 
+** trouble doing linear prediction
+*** frequency domain mult and time domain convolution don't look right
+*** may be my mistake 
