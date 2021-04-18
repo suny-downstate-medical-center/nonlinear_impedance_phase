@@ -108,6 +108,7 @@ try:
 except:
     os._exit(1)
 
+data = []
 for STD in stds:
     for t_0 in t0s:
         for binsize in binsizes:
