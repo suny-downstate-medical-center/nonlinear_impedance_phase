@@ -117,6 +117,6 @@ for STD in stds:
 data = tuple(data)
 
 poolSize = 50
-p.multiprocessing.Pool(poolSize)
+p = multiprocessing.Pool(poolSize)
 p.map(runNoise, data)
 # runNoise(data[0])
