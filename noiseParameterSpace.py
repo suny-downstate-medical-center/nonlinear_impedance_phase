@@ -13,11 +13,11 @@ import json
 from scipy.io import savemat 
 
 def runNoise(input_data):
-    std, t0, sampr, delay, bwinsz, outpath = input_data[0], input_data[1], input_data[2], input_data[3], input_data[4], input_data[5]
+    std, t0, sampr, delay, bwinsz, outpath = input_data[0], input_data[1], input_data[2], input_data[3], int(input_data[4]), input_data[5]
     soma_v = h.Vector().record(seg._ref_v) 
     time = h.Vector().record(h._ref_t)
     Fs = 1000
-    I, t = getNoise(0, std, t0, amp, Fs, delay)
+    I, t = getNoise(0, std, int(t0), 0.01, Fs, delay)
     i = h.Vector().record(h.IClamp[0]._ref_i)
     stim.amp = 0
     stim.dur = (t0+delay*2) * Fs + 1
@@ -25,6 +25,7 @@ def runNoise(input_data):
     ## run simulation
     h.celsius = 34
     h.tstop = (t0+delay*2) * Fs + 1
+    print('Running: std-' + str(std) + ' t0-' + str(t0) + ' bin size-' + str(bwinsz))
     h.run()
     v_trim = [v for v, T in zip(soma_v, time) if int((delay+2)*1000) < T < int(delay*t0*1000)] 
     i_trim = [x for x, T in zip(i,time) if int((delay+2)*1000) < T < int(delay*t0*1000)] 
@@ -64,7 +65,7 @@ def runNoise(input_data):
     zPhase = convolve(zPhase, fblur, 'same')
 
     ## trim
-    mask = (Freq >= 0.5) & (Freq <= f1)
+    mask = (Freq >= 0.5) & (Freq <= 500)
     Freq, zAmp, zPhase, zRes, zReact, z = Freq[mask], zAmp[mask], zPhase[mask], zRes[mask], zReact[mask], z[mask]
 
     ## resonance
@@ -106,7 +107,7 @@ out_path = 'data/noiseParams/'
 try:
     os.makedirs(out_path)
 except:
-    os._exit(1)
+    pass
 
 data = []
 for STD in stds:
@@ -118,3 +119,4 @@ data = tuple(data)
 poolSize = 50
 p.multiprocessing.Pool(poolSize)
 p.map(runNoise, data)
+# runNoise(data[0])
