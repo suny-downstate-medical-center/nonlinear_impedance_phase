@@ -134,7 +134,7 @@ data = []
 for noise_amp in noise_amps:
     for binsz in binsizes:
         for noise_std in noise_stds:
-            data.append(['log',noise_amp, noise_std, 60, binsz, 'data/plusNoiseData/')
+            data.append(['log',noise_amp, noise_std, 60, binsz, 'data/plusNoiseData/'])
 # data.append(['log', 0.005, 0.3, 10, 10, 'data/plusNoiseData/'])
 
 # runTrial(data[0])
