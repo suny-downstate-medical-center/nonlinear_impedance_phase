@@ -159,3 +159,6 @@ while freqs_sorted[ind] <= f1:
 ** trouble doing linear prediction
 *** frequency domain mult and time domain convolution don't look right
 *** may be my mistake 
+
+* [2021-4-19 Mon] - noise parameter space 
+** varied duration, window size for smoothing, and std of gaussian distribution
