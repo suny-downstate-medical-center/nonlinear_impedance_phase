@@ -1,7 +1,7 @@
 from getCells import M1Cell   
 s = M1Cell()  
 seg = s.net.cells[0].secs['soma']['hObj'](0.5)  
-from chirpUtils import getChirpLog
+from chirpUtils import getChirp
 from neuron import h 
 stim = h.IClamp(seg)
 from pylab import fft, convolve
@@ -18,7 +18,7 @@ f0 = 0.5
 f1 = 500 #20
 soma_v = h.Vector().record(seg._ref_v) 
 time = h.Vector().record(h._ref_t)
-I, t = getChirpLog(f0, f1, t0, amp, Fs, delay)
+I, t = getChirp(f0, f1, t0, amp, Fs, delay)
 i = h.Vector().record(h.IClamp[0]._ref_i)
 stim.amp = 0
 stim.dur = (t0+delay*2) * Fs + 1
@@ -37,7 +37,7 @@ current = np.hstack((np.repeat(current[0],int(delay*sampr)),current, np.repeat(c
 current = current - np.mean(current) 
 #v = v[int(delay*sampr - 0.5*sampr)+1:-int(delay*sampr - 0.5*sampr)] 
 v = v - np.mean(v) 
-v = np.hstack((np.repeat(v[0],int(delay*sampr)), v, np.repeat(0, int(delay*sampr)))) 
+v = np.hstack((np.repeat(0,int(delay*sampr)), v, np.repeat(0, int(delay*sampr)))) 
 f_current = (fft(current)/len(current))[0:int(len(current)/2)] 
 f_cis = (fft(v)/len(v))[0:int(len(v)/2)] 
 z = f_cis / f_current 

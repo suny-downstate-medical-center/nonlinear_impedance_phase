@@ -1,7 +1,7 @@
 from getCells import M1Cell   
 s = M1Cell()  
 seg = s.net.cells[0].secs['soma']['hObj'](0.5)  
-from chirpUtils import getChirpLog
+from chirpUtils import getChirpLog, getNoise
 from neuron import h 
 stim = h.IClamp(seg)
 from pylab import fft, convolve
@@ -10,15 +10,16 @@ import numpy as np
 import os
 
 amp = 0.02 
-t0 = 60 #20
+t0 = 2 #20
 delay = 5
 Fs = 1000
 sampr = 40e3 
 f0 = 0.5
-f1 = 500 #20
+f1 = 20
 soma_v = h.Vector().record(seg._ref_v) 
 time = h.Vector().record(h._ref_t)
-I, t = getChirpLog(f0, f1, t0, amp, Fs, delay)
+# I, t = getChirpLog(f0, f1, t0, amp, Fs, delay)
+I, t = getNoise(0.0, 0.5, t0, 0.01, Fs, delay)
 i = h.Vector().record(h.IClamp[0]._ref_i)
 stim.amp = 0
 stim.dur = (t0+delay*2) * Fs + 1
@@ -31,13 +32,13 @@ v_trim = [v for v, T in zip(soma_v, time) if int((delay)*1000) < T < int((delay+
 i_trim = [x for x, T in zip(i,time) if int((delay)*1000) < T < int((delay+t0)*1000)] 
 time_trim = [T for v, T in zip(soma_v, time) if int((delay)*1000) < T < int((delay+t0)*1000)] 
 current = i_trim
-v = v_trim 
+v = v_trim
 #current = current[int(delay*sampr - 0.5*sampr+1):-int(delay*sampr- 0.5*sampr)] 
-current = np.hstack((np.repeat(current[0],int(delay*sampr)),current, np.repeat(current[-1], int(delay*sampr)))) 
 current = current - np.mean(current) 
+current = np.hstack((np.repeat(0,int(delay*sampr)),current, np.repeat(0, int(delay*sampr)))) 
 #v = v[int(delay*sampr - 0.5*sampr)+1:-int(delay*sampr - 0.5*sampr)] 
-v = v - np.mean(v) 
-v = np.hstack((np.repeat(v[0],int(delay*sampr)), v, np.repeat(0, int(delay*sampr)))) 
+v = v - np.mean(v)
+v = np.hstack((np.repeat(0,int(delay*sampr)), v, np.repeat(0, int(delay*sampr))))  
 f_current = (fft(current)/len(current))[0:int(len(current)/2)] 
 f_cis = (fft(v)/len(v))[0:int(len(v)/2)] 
 z = f_cis / f_current 
@@ -53,7 +54,7 @@ Qfactor    = zResAmp / zamp[0]
 fVar       = np.std(zamp) / np.mean(zamp)
 peak_to_peak = np.max(v) - np.min(v)
 ## smoothing
-bwinsz = 1
+bwinsz = 1 #5
 fblur = np.array([1.0/bwinsz for i in range(bwinsz)])
 zamp = convolve(zamp,fblur,'same')
 phase = convolve(phase, fblur, 'same')
