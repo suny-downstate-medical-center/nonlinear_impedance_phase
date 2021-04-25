@@ -11,6 +11,7 @@ import os
 import multiprocessing
 import json 
 from scipy.io import savemat 
+from sklearn.metrics import mean_squared_error
 
 def runTrial(input_data):
     stim_type, noise_amp, noise_std, t0, f1, binsizes, outpath = input_data[0], input_data[1], input_data[2], input_data[3], input_data[4], input_data[5], input_data[6]
