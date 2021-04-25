@@ -202,4 +202,5 @@ window size of 18
 ** noise - also before removing Z(0.5 < f < 20) w/ window size of 18 - herre translates to 0.567 Hz 
 
 * [2021-4-25 Sun] - returning to noise and response assymetry
-** pluseNoise: v0.01 - configured for linear chirp over 0.5 - 20 Hz over 50 noise parameter combos
+** pluseNoise.py: v0.01 - configured for linear chirp over 0.5 - 20 Hz over 50 noise parameter combos
+** responseAsym.py: v0.00 - replaces assymetricNoise.py, configured for 20s chirp with amps as high as 0.31 
