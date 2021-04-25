@@ -57,7 +57,7 @@ def runTrial(input_data):
     ## run sim 
     h.celsius = 34
     h.tstop = (t0+delay*2) * Fs + 1
-    print('Running: amp-' +str(noise_amp) + ' std-' + str(noise_std) + ' t0-' + str(t0) + ' bin size-' + str(bwinsz))
+    print('Running: amp-' +str(noise_amp) + ' std-' + str(noise_std) + ' t0-' + str(t0))
     h.run()
 
     ## crop signals for during stimulation
