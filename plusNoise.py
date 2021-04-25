@@ -62,9 +62,9 @@ def runTrial(input_data):
     h.run()
 
     ## crop signals for during stimulation
-    v_trim = [v for v, T in zip(soma_v, time) if int(delay*1000) < T < int(delay+t0)*1000)] 
-    i_trim = [x for x, T in zip(i,time) if int(delay*1000) < T < int(delay+t0)*1000)] 
-    time_trim = [T for v, T in zip(soma_v, time) if int(delay*1000) < T < int(delay+t0)*1000)] 
+    v_trim = [v for v, T in zip(soma_v, time) if int(delay)*1000 < T < int(delay+t0)*1000) 
+    i_trim = [x for x, T in zip(i,time) if int(delay)*1000 < T < int(delay+t0)*1000] 
+    time_trim = [T for v, T in zip(soma_v, time) if int(delay)*1000 < T < int(delay+t0)*1000] 
     current = i_trim
     v = v_trim 
     
