@@ -21,7 +21,6 @@ def runTrial(input_data):
     Fs = 1000
     delay = 5
     sampr = 40e3
-    bwinsz = bnsz
     Inoise, tnoise = getNoise(0.0, noise_std, int(t0+2*delay), noise_amp, Fs, 0) 
     if stim_type == 'chirp':
         I, t = getChirp(0.5, f1, t0, 0.02, Fs, delay)
