@@ -162,3 +162,44 @@ while freqs_sorted[ind] <= f1:
 
 * [2021-4-19 Mon] - noise parameter space 
 ** varied duration, window size for smoothing, and std of gaussian distribution
+
+* [2021-4-22 Thu] - worked out issues w/ z calculation 
+** previously interpolating I that is played into IClamp, now recording i from IClamp 
+*** eliminates progressive errors in impedance phase 
+*** [[figures/chirp_vs_logchirp_vs_noise_v2.svg][new comparison of log, chirp, and noise]] 
+Comparison of using linear chirp, logarithmic chirp, and Gaussian noise 
+to compute input impedance.  
+Errors were computed against impedance measurements from our validation paradigm. 
+Impedance amplitude and phase profiles are unfiltered. 
+Top row: Linear and logarithmic chirps had instantaneous frequencies increasing 
+from 0.5-20 Hz over 20 s. 
+The noise stimulus was 20 s.
+Left: In the low frequency range, logarithmic chirp has the largest errors. 
+White noise has lower error, but there are transient spikes in |Z$_{in}$| as high 
+as 6 M$\Omega$.
+Linear chirp has the lowers MSE and good agreement with validated |Z$_{in}| at all
+frequencies. 
+Right: The same pattern can be seen in $\Phi_{in}$.
+Bottom row: Linear and logarithmic chirps had instantaneous frequencies increasing 
+from 0.5-500 Hz over 60 s. 
+Left:  The largest errors in |Z$_{in}$| were from linear chirp, with errors at 
+low frequencies as high as 20 M$\Omega#, but good agreement with validation 
+|Z$_{in}$| at higher frequencies.  Logarithmic chirp has lower errors, but follows
+a similar pattern.  Noise produces good agreement with validation |Z$_{in}$| across
+the frequency spectrum, but still suffers from transient spikes.
+Left: Computing $\Phi_{in}$ with gaussian white noise had the largest MSE with 
+errors increasing at higher frequencies. Linear and logarithmic chirp have lower 
+MSE, but follow the same pattern seen in |Z_{in}| with large errors at low
+frequencies.
+** comparison of noise durations - longer is better, but only a marginal improvement 
+*** [[figures/compareNoiseDuration.svg][comparison of 2s vs 20s of white noise with 5nA std]]
+** looking for optimal filter window size
+*** [[figures/logChirp_errVsBinSize.svg][error vs bin size, filter before or after trim Z beyond freq lims]]
+*** best for logarithmic chirp to filter before removing Z(0.5 < f < 20) w/
+window size of 18
+
+* [2021-4-23 Fri] - more optimal filter sizes 
+** noise - also before removing Z(0.5 < f < 20) w/ window size of 18 - herre translates to 0.567 Hz 
+
+* [2021-4-25 Sun] - returning to noise and response assymetry
+** pluseNoise: v0.01 - configured for linear chirp over 0.5 - 20 Hz over 50 noise parameter combos
