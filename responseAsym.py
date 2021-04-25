@@ -150,7 +150,7 @@ def runTrial(input_data):
             'zPhaseErr' : zPhaseErr,
             'asymmetry' : asym}
 
-    savemat(outpath + stim_type + '_amp-' + str(amp) + '-f0-' + str(f0) + '-t0-' + str(t0) + '.mat', out)
+    savemat(outpath + stim_type + '_amp-' + str(amp) + '-f1-' + str(f1) + '-t0-' + str(t0) + '.mat', out)
 
 amps = np.logspace(np.log10(0.015), np.log10(0.31), num=9, endpoint=True)
 t0 = 20 
