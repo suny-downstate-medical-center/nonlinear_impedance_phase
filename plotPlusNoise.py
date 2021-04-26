@@ -26,8 +26,8 @@ for filename in filenames:
         data = loadmat('data/chirpNoiseData/' + filename)
         xind = np.argmin(np.square(np.subtract(noise_amps,noise_amp)))
         yind = np.argmin(np.square(np.subtract(noise_stds, noise_std)))
-        zPhaseErrs[xind][yind] = data['ZampErr']
-        zAmpErrs[xind][yind] = data['ZphaseErr']
+        zPhaseErrs[xind][yind] = data['zAmpErr']
+        zAmpErrs[xind][yind] = data['zPhaseErr']
         noise_v_std[xind][yind] = data['noise_v_std']
         noise_v_amp[xind][yind] = data['noise_peak_to_peak']
 
