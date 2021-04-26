@@ -47,6 +47,28 @@ for filename in filenames:
         optAmpErr[xind][yind] = np.min(amperrs)
         optPhsErr[xind][yind] = np.min(phserrs)
 
+noise_v_std_trim = []
+noise_v_amp_trim = []
+zPhaseErrs_trim = []
+zAmpErrs_trim = []
+optFiltAmp_trim = []
+optFiltPhs_trim = []
+optPhsErr_trim = []
+optAmpErr_trim = []
+
+for noisevamp, noisestd, amperr, phserr, optphserr, optamperr, optphswin, optampwin
+  in sorted(zip(noise_v_amp.flatten(), noise_v_std.flatten(), zAmpErrs.flatten(), 
+    zPhaseErrs.flatten(), optPhsErr.flatten(), optAmpErr.flatten(), 
+    optFiltAmp.flatten(), optFiltPhs.flatten()):
+    if nose_v_amp < 6.0:
+        noise_v_std_trim.append(noisestd)
+        noise_v_amp_trim.append(noisevamp)
+        zPhaseErrs_trim.append(amperr)
+        zAmpErrs_trim.append(phserr)
+        optFiltAmp_trim.append(optampwin)
+        optFiltPhs_trim.append(optphswin)
+        optPhsErr_trim.append(optphserr)
+        optAmpErr_trim.append(optamperr)
 
 
 # v0.00 - plot amplitude and phase errs by amp and std of noise 
