@@ -187,7 +187,7 @@ for noise_amp in noise_amps:
 # data.append(['log', 0.005, 0.3, 10, 10, 'data/plusNoiseData/'])
 
 # runTrial(data[0])
-poolSize = 50
+poolSize = 40 #50
 p = multiprocessing.Pool(poolSize)
 p.map(runTrial, data)
 
