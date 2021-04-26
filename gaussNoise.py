@@ -10,7 +10,7 @@ import numpy as np
 import os
 
 amp = 0.02 
-t0 = 2 #20
+t0 = 20
 delay = 5
 Fs = 1000
 sampr = 40e3 

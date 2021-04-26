@@ -35,7 +35,7 @@ plt.plot([(T-5100)/1000 for T in t_trim], base_v_trim, label='0.01 mV', color='b
 plt.title('0.02 mV Assymetry', fontsize=16)
 plt.xlabel('Time (s)', fontsize=14)
 plt.ylabel(r'$\Delta$ V$_{memb}$ (mV)', fontsize=14)
-plt.ylim(-0.6, 0.6)
+plt.ylim(-1, 1)
 plt.xlim(-0.1,20.1)
 plt.xticks(fontsize=12)
 plt.yticks(fontsize=12)
@@ -46,7 +46,7 @@ plt.xlabel('Time (s)', fontsize=14)
 plt.ylabel(r'$\Delta$ V$_{memb}$ (mV)', fontsize=14)
 plt.xticks(fontsize=12)
 plt.yticks(fontsize=12)
-plt.ylim(-18,18)
+plt.ylim(-13,13)
 plt.xlim(-0.1, 20.1)
 
 files = os.listdir('data/chirpAsymV2/')
@@ -64,7 +64,6 @@ asym_sort = [a for a in sorted(asym)]
 zAmpErr_sorted = [z for a, z in sorted(zip(asym, zAmpErrs))]
 zPhaseErr_sorted = [z for a, z in sorted(zip(asym, zPhaseErrs))]
 
-plt.figure()
 data = loadmat('data/chirpAsymV2/chirp_amp-0.014999999999999996-f1-20-t0-20.mat')
 plt.subplot(2,3,2)
 plt.plot(data['Freq_cut'][0], data['zAmp_cut'][0], color='k')
@@ -98,8 +97,8 @@ plt.xticks(fontsize=12)
 plt.yticks(fontsize=12)
 
 plt.subplot(2,3,6)
-plt.semilogx(asym_sort, zAmpErr_sorted, color='k', linestyle='-', linewidth=1.5)
-plt.scatter(asym_sort, zAmpErr_sorted, color='k', linewidth=1.5)
+plt.semilogx(asym_sort, zPhaseErr_sorted, color='k', linestyle='-', linewidth=1.5)
+plt.scatter(asym_sort, zPhaseErr_sorted, color='k', linewidth=1.5)
 plt.title(r'$\Phi_{in}$ Error', fontsize=16)
 plt.xlabel('Response Asymmetry (mV)', fontsize=14)
 plt.ylabel('Mean Squared Error (radians$^2$)', fontsize=14)

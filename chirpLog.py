@@ -10,12 +10,12 @@ import numpy as np
 import os
 
 amp = 0.02 
-t0 = 60 #20
+t0 = 20 #20
 delay = 5
 Fs = 1000
 sampr = 40e3 
 f0 = 0.5
-f1 = 500 #20
+f1 = 20 #20
 soma_v = h.Vector().record(seg._ref_v) 
 time = h.Vector().record(h._ref_t)
 I, t = getChirpLog(f0, f1, t0, amp, Fs, delay)

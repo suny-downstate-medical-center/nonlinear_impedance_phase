@@ -10,7 +10,8 @@ import multiprocessing
 filenames = os.listdir('data/chirpNoiseData/')
 noise_stds = [0.1, 0.3, 0.5, 0.7, 0.9]
 noise_amps = np.linspace(0.005, 0.2, num=10)
-binsizes = [1, 5, 10, 15, 20, 25, 30, 35, 40]
+# binsizes = [1, 5, 10, 15, 20, 25, 30, 35, 40]
+binsizes = [1, 5, 10, 15, 20, 25, 30, 35, 40, 50, 60, 70, 80, 90, 100, 120, 140, 160, 180, 200]
 
 noise_v_std = np.zeros((len(noise_amps), len(noise_stds)))
 noise_v_amp = np.zeros((len(noise_amps), len(noise_stds)))
