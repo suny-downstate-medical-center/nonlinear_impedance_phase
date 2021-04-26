@@ -9,7 +9,7 @@ asym = []
 zAmpErrs = []
 zPhaseErrs = []
 for filename in files:
-    data = loadmat('data/chirpAsymV2' + filename)
+    data = loadmat('data/chirpAsymV2/' + filename)
     asym.append(data['asymmetry'])
     zAmpErrs.append(data['zAmpErr'])
     zPhaseErrs.append(data['zPhaseErr'])
