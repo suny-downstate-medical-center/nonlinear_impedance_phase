@@ -38,9 +38,9 @@ plt.yticks(fontsize=12)
 
 data = loadmat('data/chirpAsymV2/chirp_amp-0.21230141534998076-f1-20-t0-20.mat')
 plt.subplot(2,3,2)
-plt.plot(data['Freq_cut'][0], data['ZinAmp'][0], color='gray')
+plt.plot(data['Freq_cut'][0], data['zAmp_cut'][0], color='gray')
 plt.subplot(2,3,3)
-plt.plot(data['Freq_cut'][0], data['ZinPhase'][0], color='gray')
+plt.plot(data['Freq_cut'][0], data['zPhase_cut'][0], color='gray')
 
 plt.subplot(2,3,5)
 plt.semilogx(asym_sort, zAmpErr_sorted, color='k', linestyle='-', linewidth=1.5)
