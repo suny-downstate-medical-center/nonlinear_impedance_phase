@@ -56,7 +56,7 @@ plt.semilogx(asym_sort, zAmpErr_sorted, color='k', linestyle='-', linewidth=1.5)
 plt.plot(asym_sort, zAmpErr_sorted, color='k', linewidth=1.5)
 plt.title(r'$\Phi_{in}$ (radians$^2$)', fontsize=16)
 plt.xlabel('Response Asymmetry (mV)', fontsize=14)
-plt.ylabel('Mean Squared Error (radians$^2$)', fontisze=14)
+plt.ylabel('Mean Squared Error (radians$^2$)', fontsize=14)
 plt.xticks(fontsize=12)
 plt.yticks(fontsize=12)
 
