@@ -57,7 +57,7 @@ optPhsErr_trim = []
 optAmpErr_trim = []
 
 for noisevamp, noisestd, amperr, phserr, optphserr, optamperr, optphswin, optampwin in sorted(zip(noise_v_amp.flatten(), noise_v_std.flatten(), zAmpErrs.flatten(), zPhaseErrs.flatten(), optPhsErr.flatten(), optAmpErr.flatten(), optFiltAmp.flatten(), optFiltPhs.flatten())):
-    if noise_v_amp < 6.0:
+    if noisevamp < 6.0:
         noise_v_std_trim.append(noisestd)
         noise_v_amp_trim.append(noisevamp)
         zPhaseErrs_trim.append(amperr)
