@@ -24,7 +24,7 @@ plt.subplot(2,3,2)
 plt.plot(data['Freq_cut'][0], data['zAmp_cut'][0], color='k')
 plt.title('Input Impedance Amplitude', fontsize=16)
 plt.xlabel('Frequency (Hz)', fontsize=14)
-plt.ylabel(r'|Z_{in}| (M$\Omega$)', fontsize=14)
+plt.ylabel(r'|Z$_{in}$| (M$\Omega$)', fontsize=14)
 plt.xticks(fontsize=12)
 plt.yticks(fontsize=12)
 
