@@ -63,8 +63,8 @@ for noisevamp, noisestd, amperr, phserr, optphserr, optamperr, optphswin, optamp
         noise_v_amp_trim.append(noisevamp)
         zPhaseErrs_trim.append(phserr)
         zAmpErrs_trim.append(amperr)
-        optFiltAmp_trim.append(data['Freq_cut'][0][optampwin-1]-data['Freq'][0][0])
-        optFiltPhs_trim.append(data['Freq_cut'][0][optphswin-1]-data['Freq'][0][0])
+        optFiltAmp_trim.append(data['Freq_cut'][0][int(optampwin)-1]-data['Freq'][0][0])
+        optFiltPhs_trim.append(data['Freq_cut'][0][int(optphswin)-1]-data['Freq'][0][0])
         optPhsErr_trim.append(optphserr)
         optAmpErr_trim.append(optamperr)
 
