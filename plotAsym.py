@@ -1,7 +1,53 @@
+from getCells import M1Cell   
+s = M1Cell()  
+seg = s.net.cells[0].secs['soma']['hObj'](0.5)   
+from neuron import h, gui    
+import numpy as np  
 from scipy.io import loadmat 
 import os 
 from matplotlib import pyplot as plt 
 plt.ion()
+from chirpUtils import getChirp, applyChirpZin  
+
+soma_v = h.Vector().record(seg._ref_v)      
+time = h.Vector().record(h._ref_t)  
+f0, f1, t0, Fs, delay = 0.5, 20, 20, 1000, 5 
+amp = 0.015
+print('Running ' + str(amp)) 
+I, t = getChirp(f0, f1, t0, amp, Fs, delay) 
+base = applyChirpZin(I, t, seg, t0, delay, Fs, f1)
+
+base_v_trim = [v for v, T in zip(soma_v, time) if 4900 < T < 25100]                  
+base_v_trim = np.subtract(base_v_trim, base_v_trim[0])
+t_trim = [T for T in time if 4900 < T < 25100] 
+
+amp = 0.212
+print('Running ' + str(amp)) 
+I, t = getChirp(f0, f1, t0, amp, Fs, delay) 
+out = applyChirpZin(I, t, seg, t0, delay, Fs, f1)   
+
+v_trim = [v for v, T in zip(soma_v, time) if 4900 < T < 25100]                               
+v_trim = np.subtract(v_trim, v_trim[0])
+
+plt.figure()
+plt.subplot(2,3,1)
+plt.plot([(T-5100)/1000 for T in t_trim], base_v_trim, label='0.01 mV', color='black')
+plt.title('0.02 mV Assymetry', fontsize=16)
+plt.xlabel('Time (s)', fontsize=14)
+plt.ylabel(r'$\Delta$ V$_{memb}$ (mV)', fontsize=14)
+plt.ylim(-0.6, 0.6)
+plt.xlim(-0.1,20.1)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+plt.subplot(2,3,4)
+plt.plot([(T-5100)/1000 for T in t_trim], v_trim, label='1.20 mV', color='gray')
+plt.title('1.22 mV Assymetry', fontsize=16)    
+plt.xlabel('Time (s)', fontsize=14)
+plt.ylabel(r'$\Delta$ V$_{memb}$ (mV)', fontsize=14)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+plt.ylim(-18,18)
+plt.xlim(-0.1, 20.1)
 
 files = os.listdir('data/chirpAsymV2/')
 
