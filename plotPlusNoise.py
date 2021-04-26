@@ -18,8 +18,9 @@ zPhaseErrs = np.zeros((len(noise_amps), len(noise_stds)))
 zAmpErrs = np.zeros((len(noise_amps), len(noise_stds)))
 optFiltAmp = np.zeros((len(noise_amps), len(noise_stds)))
 optFiltPhs = np.zeros((len(noise_amps), len(noise_stds)))
+optPhsErr = np.zeros((len(noise_amps), len(noise_stds)))
+optAmpErr = np.zeros((len(noise_amps), len(noise_stds)))
 
-# plot error for each std - amp pair
 for filename in filenames:
     noise_amp = float(filename.split('-')[1])
     noise_std = float(filename.split('-')[3])
@@ -43,7 +44,10 @@ for filename in filenames:
             phserrs.append(data['zPhaseErr'])
         optFiltAmp[xind][yind] = binsizes[np.argmin(amperrs)]
         optFiltPhs[xind][yind] = binsizes[np.argmin(phserrs)]
+        optAmpErr[xind][yind] = np.min(amperrs)
+        optPhsErr[xind][yind] = np.min(phserrs)
 
 
 
 # v0.00 - plot amplitude and phase errs by amp and std of noise 
+# v0.01 - adding optimal filter window size
