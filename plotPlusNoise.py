@@ -58,16 +58,64 @@ optPhsErr_trim = []
 optAmpErr_trim = []
 
 for noisevamp, noisestd, amperr, phserr, optphserr, optamperr, optphswin, optampwin in sorted(zip(noise_v_amp.flatten(), noise_v_std.flatten(), zAmpErrs.flatten(), zPhaseErrs.flatten(), optPhsErr.flatten(), optAmpErr.flatten(), optFiltAmp.flatten(), optFiltPhs.flatten())):
-    if noisevamp < 6.0:
+    if noisevamp < 3.0:
         noise_v_std_trim.append(noisestd)
         noise_v_amp_trim.append(noisevamp)
         zPhaseErrs_trim.append(phserr)
         zAmpErrs_trim.append(amperr)
-        optFiltAmp_trim.append(optampwin)
-        optFiltPhs_trim.append(optphswin)
+        optFiltAmp_trim.append(data['Freq_cut'][0][optampwin-1]-data['Freq'][0][0])
+        optFiltPhs_trim.append(data['Freq_cut'][0][optphswin-1]-data['Freq'][0][0])
         optPhsErr_trim.append(optphserr)
         optAmpErr_trim.append(optamperr)
 
+plt.figure()
+plt.subplot(3,2,1)
+plt.plot(noise_v_amp_trim, zAmpErrs_trim, 'k')
+plt.xlabel('Noise Amplitude (mV)', fontsize=14)
+plt.ylabel('Mean Squared Error (M$\Omega^2$)', fontsize=14)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+plt.title(r'Unfiltered |Z$_{in}$| Error', fontsize=16)
+
+plt.subplot(3,2,2)
+plt.plot(noise_v_amp_trim, zPhaseErrs_trim, 'k')
+plt.title(r'Unfiltered $\Phi_{in}$ Error', fontsize=16)
+plt.xlabel('Noise Amplitude (mV)', fontsize=14)
+plt.ylabel('Mean Squared Error (radians$^2$)', fontsize=14)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+
+plt.subplot(3,2,3)
+plt.plot(noise_v_amp_trim, optFiltAmp_trim, 'k')
+plt.title(r'Optimal |Z$_{in}$| Filter', fontsize=16)
+plt.xlabel('Noise Amplitude (mV)', fontsize=14)
+plt.ylabel('Window Size (Hz)', fontsize=14)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+
+plt.subplot(3,2,4)
+plt.plot(noise_v_amp_trim, optFiltPhs_trim, 'k')
+plt.title(r'Optimal $\Phi_{in}$ Filter', fontsize=16)
+plt.xlabel('Noise Amplitude (mV)', fontsize=14)
+plt.ylabel('Window Size (Hz)', fontsize=14)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+
+plt.subplot(3,2,5)
+plt.plot(noise_v_amp_trim, optAmpErr_trim, 'k')
+plt.title('Minimum |Z$_{in}$| Error', fontsize=16)
+plt.xlabel('Noise Amplitude (mV)', fontsize=14)
+plt.ylabel('Mean Squared Error (M$\Omega^2$)', fontsize=14)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+
+plt.subplot(3,2,6)
+plt.plot(noise_v_amp_trim, optPhsErr_trim, 'k')
+plt.title('Minimum $\Phi_{in}$ Error', fontsize=16)
+plt.xlabel('Noise Amplitude (mV)', fontsize=14)
+plt.ylabel('Mean Squared Error (radians$^2$)', fontsize=14)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
 
 # v0.00 - plot amplitude and phase errs by amp and std of noise 
 # v0.01 - adding optimal filter window size
