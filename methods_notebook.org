@@ -208,3 +208,4 @@ window size of 18
 * [2021-4-26 Mon] - plotting yesterday's sim output 
 ** plotPlusNoise.py: v0.00 - plot amplitude and phase errs by amp and std of noise 
 *** plotPlusNoise.py: v0.01 - adding optimal filter window size
+** plusNoise.py - v0.02 - filter window sizes now range from 50-200

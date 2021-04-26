@@ -60,8 +60,8 @@ for noisevamp, noisestd, amperr, phserr, optphserr, optamperr, optphswin, optamp
     if noisevamp < 6.0:
         noise_v_std_trim.append(noisestd)
         noise_v_amp_trim.append(noisevamp)
-        zPhaseErrs_trim.append(amperr)
-        zAmpErrs_trim.append(phserr)
+        zPhaseErrs_trim.append(phserr)
+        zAmpErrs_trim.append(amperr)
         optFiltAmp_trim.append(optampwin)
         optFiltPhs_trim.append(optphswin)
         optPhsErr_trim.append(optphserr)
