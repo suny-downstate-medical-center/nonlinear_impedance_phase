@@ -10,9 +10,9 @@ zAmpErrs = []
 zPhaseErrs = []
 for filename in files:
     data = loadmat('data/chirpAsymV2/' + filename)
-    asym.append(data['asymmetry'])
-    zAmpErrs.append(data['zAmpErr'])
-    zPhaseErrs.append(data['zPhaseErr'])
+    asym.append(data['asymmetry'][0][0])
+    zAmpErrs.append(data['zAmpErr'][0][0])
+    zPhaseErrs.append(data['zPhaseErr'][0][0])
 
 asym_sort = [a for a in sorted(asym)]
 zAmpErr_sorted = [z for a, z in sorted(zip(asym, zAmpErrs))]
