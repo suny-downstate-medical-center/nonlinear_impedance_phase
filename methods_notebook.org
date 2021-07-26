@@ -210,3 +210,43 @@ window size of 18
 *** plotPlusNoise.py: v0.01 - adding optimal filter window size
 ** plusNoise.py - v0.02 - filter window sizes now range from 50-200
 ** plotAsym.py - v0.00 - plotting output from asymmetric chirp sims 
+
+* [2021-4-27 Tue] - input impedance 
+** bill liked, but definitely not thrilled about, existing figures 
+** he and srdjan still very keen on access problem 
+*** more important an issue in the apical dendrite since pipette tip needs to be
+so much smaller 
+*** figured out how to change input location in linear circuit builder 
+
+* [2021-7-19 Mon] - circuit builder issues 
+** trying to replicate circuit from DeFelice1997-kd, but can't export circuit to .ses  
+*** from "Print matrix info": Circuit equations have 0 inconsistencies 
+*** error/warning from "Create class":
+Unhandled exception in event loop:
+Exception None
+Press ENTER to continue...                                                                           
+NEURON: no label on cell port
+ near line 1
+ {mkclass()}
+^
+)
+)
+)
+)
+Exception in gui thread
+
+* [2021-7-23 Fri] - progress with circuit builder 
+** met with ted
+*** wasn't saving session, instead was saving template (.hoc, rather than .ses)
+*** need to label nodes, or at lease between cell and circuit 
+*** suggested using different circuit layout
+from neuron import h, gui 
+soma = h.Section(name='soma')
+h.load_file('simpleCellCircuit.ses')
+*** couldn't get template working other day, just figured out how to attach, 
+dont know where Isrc is 
+from neuron import h, gui 
+soma = h.Section(name='soma')
+h.load_file('secondClass.hoc')
+lm = h.LM()
+lm.Vm_loc(0.5, soma)
