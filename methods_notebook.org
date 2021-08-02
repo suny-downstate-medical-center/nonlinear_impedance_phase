@@ -245,8 +245,31 @@ soma = h.Section(name='soma')
 h.load_file('simpleCellCircuit.ses')
 *** couldn't get template working other day, just figured out how to attach, 
 dont know where Isrc is 
+# code
 from neuron import h, gui 
 soma = h.Section(name='soma')
 h.load_file('secondClass.hoc')
 lm = h.LM()
 lm.Vm_loc(0.5, soma)
+
+* [2021-7-27 Tue] - using fzap and simple model 
+** have .ses working for chirp 
+*** need to have channels to get RMP 
+** olah paper
+*** axon diameter:log-normal distribution with mean of 0.6 µm and variance of
+0.4 µm2.
+
+* [2021-8-2 Mon] - meeting w/ srdjan and ted today 
+** notes for meeting 
+*** ted seems to think no need for access resistance and junction potential,
+bill and presumably srdjan feel otherwise 
+**** two starter versions of the circuit 
+***** [[figures/example_run_tedConfig.png][no representation of Racc]]
+***** [[figures/example_run_billConfig.png][guessed some vals for Racc and J]]
+*** olah paper 
+**** could incorporate detailed representation of the pipette
+[[figures/detailed_pipette.png][pipette values from olah]]
+**** a lot of the paper's focus was on amplifier and other instrumentation - 
+do we want to include this kind of detail?
+*** srdjan have any useful recordings/data/values for this?
+** meeting minutes 

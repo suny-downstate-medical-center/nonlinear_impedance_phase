@@ -1,0 +1,74 @@
+{load_file("nrngui.hoc")}
+objectvar save_window_, rvp_
+objectvar scene_vector_[4]
+objectvar ocbox_, ocbox_list_, scene_, scene_list_
+{ocbox_list_ = new List()  scene_list_ = new List()}
+{pwman_place(0,0,0)}
+
+//Begin LinearCircuit[0]
+{
+load_file("lincir.hoc", "LinearCircuit")
+}
+{
+ocbox_ = new LinearCircuit(1)
+}
+{object_push(ocbox_)}
+{version(2)}
+{mkelm(5, 50, 110, 2, 1.5708)}
+{mklabel(0, "Isrc", 10.657, 4.095)}
+{mklabel(2, "Vobs", -1.0078, 12.091)}
+{sel.extra_info.restore()}
+3
+1e+09 0
+1e+09 0
+1e+09 0
+{sel.extra_info.set_xtrn(1)}
+{mkelm(6, 50, 70, 2, 0)}
+{mkelm(1, 75, 130, 2.5, 0)}
+1
+{mklabel(0, "R1", 1.9878, 13.257)}
+{mklabel(2, "Vx", 0.318, 13.257)}
+{mkelm(2, 100, 110, 2, -1.5708)}
+1
+{mklabel(0, "Cpip", 19.564, 1.179)}
+{mkelm(1, 125, 130, 2.5, 0)}
+1
+{mklabel(0, "R2", -1.353, 13.257)}
+{mklabel(2, "Vm", -0.69, 12.674)}
+{mkelm(1, 150, 110, 2, -1.5708)}
+1
+{mklabel(0, "Rseal", 19.14, 4.095)}
+{mkelm(0, 75, 90, 2.5, 0)}
+{mkelm(0, 125, 90, 2.5, 0)}
+{mkelm(8, 230, 90, 4, 0)}
+{mklabel(0, "_pysec.compartCell_PT_HH_full_0.apic_22(0.5)", -14.784, -30.1465)}
+{sel.extra_info.set("_pysec.compartCell_PT_HH_full_0.apic_22", 0.5) sel.extra_info.name(sel)}
+{mkelm(0, 190, 130, 4, 0)}
+{parasitic_ = 0  noconsist_ = 0}
+{g.exec_menu("Simulate")  tool(2)}
+{sel = nil}
+{object_pop()}
+{
+{
+save_window_=ocbox_.g
+save_window_.size(0,300,0,200)
+scene_vector_[2] = save_window_
+ocbox_.g = save_window_
+save_window_.save_name("ocbox_.g")
+save_window_.label(60.657, 114.095, "Isrc", 1, 1, 0.5, 0.5, 1)
+save_window_.label(48.9921, 142.091, "Vobs", 1, 1, 0.5, 0.5, 1)
+save_window_.label(76.9878, 143.257, "R1", 1, 1, 0.5, 0.5, 1)
+save_window_.label(100.318, 143.257, "Vx", 1, 1, 0.5, 0.5, 1)
+save_window_.label(119.564, 111.179, "Cpip", 1, 1, 0.5, 0.5, 1)
+save_window_.label(123.647, 143.257, "R2", 1, 1, 0.5, 0.5, 1)
+save_window_.label(149.31, 142.674, "Vm", 1, 1, 0.5, 0.5, 1)
+save_window_.label(169.14, 114.095, "Rseal", 1, 1, 0.5, 0.5, 1)
+save_window_.label(215.216, 59.8535, "_pysec.compartCell_PT_HH_full_0.apic_22(0.5)", 1, 1, 0.5, 0.5, 1)
+}
+ocbox_.map("LinearCircuit[0]", 62, 130, 887.04, 638.4)
+}
+objref ocbox_
+//End LinearCircuit[0]
+
+objectvar scene_vector_[1]
+{doNotify()}
