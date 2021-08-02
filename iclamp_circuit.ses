@@ -1,0 +1,84 @@
+{load_file("nrngui.hoc")}
+objectvar save_window_, rvp_
+objectvar scene_vector_[4]
+objectvar ocbox_, ocbox_list_, scene_, scene_list_
+{ocbox_list_ = new List()  scene_list_ = new List()}
+{pwman_place(0,0,0)}
+
+//Begin LinearCircuit[0]
+{
+load_file("lincir.hoc", "LinearCircuit")
+}
+{
+ocbox_ = new LinearCircuit(1)
+}
+{object_push(ocbox_)}
+{version(2)}
+{mkelm(5, 60, 140, 2, 1.5708)}
+{mklabel(0, "Isrc", -17.0395, -0.73)}
+{mklabel(2, "Vobs", -2.4241, 8.943)}
+{sel.extra_info.restore()}
+3
+1e+09 0
+1e+09 0
+1e+09 0
+{sel.extra_info.set_xtrn(1)}
+{mkelm(1, 80, 160, 2, 0)}
+1
+{mklabel(0, "R1", -0.2795, 11.601)}
+{mklabel(2, "Vx", 0.093, 7.615)}
+{mkelm(2, 100, 140, 2, -1.5708)}
+0.0001
+{mklabel(0, "Cpip", -16.7364, 1.041)}
+{mkelm(1, 120, 160, 2, 0)}
+4
+{mklabel(0, "R2", 1.352, 11.158)}
+{mklabel(2, "Vy", 3.497, 8.058)}
+{mkelm(1, 140, 140, 2, -1.5708)}
+10000
+{mklabel(0, "Rseal", 16.341, -0.73)}
+{mkelm(4, 165, 160, 2.5, 0)}
+{mklabel(0, "J", 15, 15)}
+{mklabel(2, "Vm", 2.215, 8.943)}
+{sel.extra_info.restore()}
+3
+1e+09 0
+1e+09 0
+1e+09 0
+{sel.extra_info.set_xtrn(1)}
+{mkelm(8, 190, 140, 2, 0)}
+{mklabel(0, "_pysec.compartCell_PT_HH_full_0.apic_22(0.5)", 37.203, -17.56)}
+{sel.extra_info.set("_pysec.compartCell_PT_HH_full_0.apic_22", 0.5) sel.extra_info.name(sel)}
+{mkelm(0, 120, 120, 2, 0)}
+{mkelm(0, 80, 120, 2, 0)}
+{mkelm(6, 60, 100, 2, 0)}
+{parasitic_ = 0  noconsist_ = 0}
+{g.exec_menu("Simulate")  tool(2)}
+{sel = nil}
+{object_pop()}
+{
+{
+save_window_=ocbox_.g
+save_window_.size(0,300,0,200)
+scene_vector_[2] = save_window_
+ocbox_.g = save_window_
+save_window_.save_name("ocbox_.g")
+save_window_.label(42.9605, 139.27, "Isrc", 1, 1, 0.5, 0.5, 1)
+save_window_.label(57.5758, 168.943, "Vobs", 1, 1, 0.5, 0.5, 1)
+save_window_.label(79.7205, 171.601, "R1", 1, 1, 0.5, 0.5, 1)
+save_window_.label(100.093, 167.615, "Vx", 1, 1, 0.5, 0.5, 1)
+save_window_.label(83.2636, 141.041, "Cpip", 1, 1, 0.5, 0.5, 1)
+save_window_.label(121.352, 171.158, "R2", 1, 1, 0.5, 0.5, 1)
+save_window_.label(143.497, 168.058, "Vy", 1, 1, 0.5, 0.5, 1)
+save_window_.label(156.341, 139.27, "Rseal", 1, 1, 0.5, 0.5, 1)
+save_window_.label(180, 175, "J", 1, 1, 0.5, 0.5, 1)
+save_window_.label(192.215, 168.943, "Vm", 1, 1, 0.5, 0.5, 1)
+save_window_.label(227.203, 122.44, "_pysec.compartCell_PT_HH_full_0.apic_22(0.5)", 1, 1, 0.5, 0.5, 1)
+}
+ocbox_.map("LinearCircuit[0]", 62, 269, 1200, 650.88)
+}
+objref ocbox_
+//End LinearCircuit[0]
+
+objectvar scene_vector_[1]
+{doNotify()}

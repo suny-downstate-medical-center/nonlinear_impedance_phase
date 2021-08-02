@@ -272,4 +272,4 @@ bill and presumably srdjan feel otherwise
 **** a lot of the paper's focus was on amplifier and other instrumentation - 
 do we want to include this kind of detail?
 *** srdjan have any useful recordings/data/values for this?
-** meeting minutes 
+*** new circuit layout [[iclamp_circuit.ses][iclamp with junction potential]]

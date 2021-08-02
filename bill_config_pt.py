@@ -6,13 +6,17 @@ from neuron import h, gui
 import numpy as np  
 #from chirpUtils import getNoise, getChirp, getLogCh 
 
-h.load_file('bill_circuit_config.ses')
+h.load_file('iclamp_circuit.ses')
+h.tstop = 27000
 h.LinearCircuit[0].R1 = 1 # 1 mOhm
 h.LinearCircuit[0].R2 = 4 # 4 Momh
 h.LinearCircuit[0].Cpip = 0.0001 # 0.1 pF
 h.LinearCircuit[0].Rseal = 10000 # 110 Gohm
-h.LinearCircuit[0].Racc = 2.0
-h.LinearCircuit[0].J = 0.2 
+# h.LinearCircuit[0].Racc = 2.0
+# h.LinearCircuit[0].J = 0.2 
+j = h.Vector([2 for i in range(int(1/h.dt * h.tstop))])
+t = h.Vector([i/(1/h.dt) for i in range(int(1/h.dt * h.tstop))])
+j.play(h.LinearCircuit[0]._ref_J, t)
 
 dummy = h.Section(name='dummy')
 fz = h.Fzap(dummy(0.5))
@@ -30,7 +34,6 @@ ivec = h.Vector().record(h.LinearCircuit[0]._ref_Isrc)
 v_obs = h.Vector().record(h.LinearCircuit[0]._ref_Vobs)
 v_memb = h.Vector().record(h.LinearCircuit[0]._ref_Vm)
 
-h.tstop = 27000
 h.run()
 
 from matplotlib import pyplot as plt 
