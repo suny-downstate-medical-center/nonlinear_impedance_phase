@@ -136,6 +136,6 @@ out['dist'] = dist
 # out['zc'] = list(z)
 
 import json 
-filename = sys.argv[-1] + '.json'
+filename = 'imped_data/' + sys.argv[-2] + '_' + sys.argv[-1] + '.json'
 with open(filename, 'w') as fileObj:
     json.dump(out, fileObj)
