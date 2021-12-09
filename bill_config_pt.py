@@ -7,11 +7,10 @@ import numpy as np
 #from chirpUtils import getNoise, getChirp, getLogCh 
 
 h.load_file('iclamp_circuit.ses')
-h.tstop = 27000
-h.LinearCircuit[0].R1 = 1 # 1 mOhm
-h.LinearCircuit[0].R2 = 4 # 4 Momh
-h.LinearCircuit[0].Cpip = 0.0001 # 0.1 pF
-h.LinearCircuit[0].Rseal = 10000 # 110 Gohm
+h.LinearCircuit[0].R1 = 100 # 1 mOhm
+h.LinearCircuit[0].R2 = 16 # 4 Momh
+h.LinearCircuit[0].Cpip = 0.002 # 0.1 pF
+h.LinearCircuit[0].Rseal = 1000 # 110 Gohm
 # h.LinearCircuit[0].Racc = 2.0
 # h.LinearCircuit[0].J = 0.2 
 j = h.Vector([2 for i in range(int(1/h.dt * h.tstop))])
@@ -21,11 +20,14 @@ j.play(h.LinearCircuit[0]._ref_J, t)
 dummy = h.Section(name='dummy')
 fz = h.Fzap(dummy(0.5))
 fz.f0 = 0.5 
-fz.f1 = 20
-fz.amp = 0.1
-fz.delay = 6000 
-fz.dur = 20000
+fz.f1 = 10
+fz.amp = 0.025 
+fz.delay = 10000 
+fz.dur = 10000
 fz._ref_x = h.LinearCircuit[0]._ref_Isrc
+
+h.tstop = fz.dur + 2 * fz.delay
+h.dt = 0.1
 
 time = h.Vector().record(h._ref_t)
 soma_v = h.Vector().record(soma_seg._ref_v)
@@ -34,6 +36,7 @@ ivec = h.Vector().record(h.LinearCircuit[0]._ref_Isrc)
 v_obs = h.Vector().record(h.LinearCircuit[0]._ref_Vobs)
 v_memb = h.Vector().record(h.LinearCircuit[0]._ref_Vm)
 
+h.finitialize()
 h.run()
 
 from matplotlib import pyplot as plt 
