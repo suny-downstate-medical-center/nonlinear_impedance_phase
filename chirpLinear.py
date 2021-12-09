@@ -8,7 +8,7 @@ if sys.argv[-2] == 'M1Cell':
 elif sys.argv[-2] == 'HayCellMig':
     from getCells import HayCellMig
     cell, _ = HayCellMig()
-    soma_seg = cell.soma(0.5)
+    soma_seg = cell.soma[0](0.5)
     sec_name = sys.argv[-1].split('_')[0]
     sec_num = sys.argv[-1].split('_')[1]
     execstr = 'seg = cell.' + sec_name + '[' + sec_num + '](0.5)'
