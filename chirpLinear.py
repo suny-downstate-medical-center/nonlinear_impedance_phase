@@ -1,14 +1,17 @@
+import sys
+
 if sys.argv[-2] == 'M1Cell':
     from getCells import M1Cell   
     s = M1Cell()  
-    import sys
     soma_seg = s.net.cells[0].secs['soma']['hObj'](0.5)  
     seg = s.net.cells[0].secs[sys.argv[-1]]['hObj'](0.5)
 elif sys.argv[-2] == 'HayCellMig':
     from getCells import HayCellMig
     cell, _ = HayCellMig()
     soma_seg = cell.soma(0.5)
-    execstr = 'seg = cell.' + sys.argv[-1] + '(0.5)'
+    sec_name = sys.argv[-1].split('_')[0]
+    sec_num = sys.argv[-1].split('_')[1]
+    execstr = 'seg = cell.' + sec_name + '[' + sec_num + '](0.5)'
     exec(execstr)
 
 from chirpUtils import getChirp, fromtodistance
