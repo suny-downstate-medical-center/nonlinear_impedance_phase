@@ -1,37 +1,66 @@
-import sys
+import argparse
 
-if sys.argv[-2] == 'M1Cell':
+parser = argparse.ArgumentParser(description = '''Run chirp stimulus simulation''')
+parser.add_argument('--cellModel', nargs='?', type=str, default='HayCellMig')
+parser.add_argument('--section', nargs='?', type=str, default='apic_0')
+parser.add_argument('--amp', nargs='?', type=float, default=1.0)
+parser.add_argument('--f0', nargs='?', type=float, default=0.5)
+parser.add_argument('--f1', nargs='?', type=float, default=20.0)
+parser.add_argument('--delay', nargs='?', type=int, default=3)
+parser.add_argument('--t0', nargs='?', type=int, default=20)
+parser.add_argument('--offset', nargs='?', type=float, default=0.0)
+parser.add_argument('--blockIh', nargs='?', type=str, default=None)
+args = parser.parse_args()
+
+if args.cellModel == 'M1Cell':
     from getCells import M1Cell   
     s = M1Cell()  
     soma_seg = s.net.cells[0].secs['soma']['hObj'](0.5)  
     seg = s.net.cells[0].secs[sys.argv[-1]]['hObj'](0.5)
-elif sys.argv[-2] == 'HayCellMig':
+    from neuron import h
+elif args.cellModel == 'HayCellMig':
     from getCells import HayCellMig
     cell, _ = HayCellMig()
     soma_seg = cell.soma[0](0.5)
-    sec_name = sys.argv[-1].split('_')[0]
-    sec_num = sys.argv[-1].split('_')[1]
+    sec_name = args.section.split('_')[0]
+    sec_num = args.section.split('_')[1]
     execstr = 'seg = cell.' + sec_name + '[' + sec_num + '](0.5)'
+    # seg = soma_seg
     exec(execstr)
+    from neuron import h
+elif args.cellModel == 'RichHuman':
+    from getCells import RichHuman
+    h, trunk = RichHuman()
+    soma_seg = h.filament_100000042[0](0.5)
+    seg = h.filament_100000042[trunk[int(len(trunk)/2)]](0.5)
 
 from chirpUtils import getChirp, fromtodistance
-from neuron import h 
 stim = h.IClamp(seg)
 from pylab import fft
 import numpy as np 
+from scipy.signal import find_peaks
+import json 
+
+if args.blockIh:
+    for sec in h.allsec():
+        for seg in sec.allseg():
+            try:
+                seg.gbar_hd = 0
+            except:
+                pass
 
 dist = fromtodistance(seg, soma_seg)
-amp = 0.02 
-t0 = 50 #20
-delay = 5
+amp = args.amp #0.02 
+t0 = args.t0 #20
+delay = args.delay
 Fs = 1000
 sampr = 40e3 
-f0 = 0.5
-f1 = 50 #20
+f0 = args.f0
+f1 = args.f1
 soma_v = h.Vector().record(soma_seg._ref_v) 
 seg_v = h.Vector().record(seg._ref_v) 
 time = h.Vector().record(h._ref_t)
-I, t = getChirp(f0, f1, t0, amp, Fs, delay)
+I, t = getChirp(f0, f1, t0, amp, Fs, delay, offset=args.offset)
 i = h.Vector().record(h.IClamp[0]._ref_i)
 stim.amp = 0
 stim.dur = (t0+delay*2) * Fs + 1
@@ -39,6 +68,7 @@ I.play(stim._ref_amp, t)
 ## run simulation
 h.celsius = 34
 h.tstop = (t0+delay*2) * Fs + 1
+print('running ' + args.cellModel + ' ' + args.section + ' f0-' + str(round(args.f0)) + ' f1-' + str(round(args.f1)))
 h.run()
 v_trim = [v for v, T in zip(seg_v, time) if int((delay)*1000) < T < int((delay+t0)*1000)] 
 i_trim = [x for x, T in zip(i,time) if int((delay)*1000) < T < int((delay+t0)*1000)] 
@@ -66,7 +96,7 @@ Qfactor    = zResAmp / zamp[0]
 fVar       = np.std(zamp) / np.mean(zamp)
 peak_to_peak = np.max(v) - np.min(v)
 ## smoothing
-# bwinsz = 1
+# bwinsz = 10
 # fblur = np.array([1.0/bwinsz for i in range(bwinsz)])
 # zamp = convolve(zamp,fblur,'same')
 # phase = convolve(phase, fblur, 'same')
@@ -111,7 +141,7 @@ Qfactor    = zResAmp / zamp[0]
 fVar       = np.std(zamp) / np.mean(zamp)
 peak_to_peak = np.max(v) - np.min(v)
 ## smoothing
-# bwinsz = 1
+# bwinsz = 10
 # fblur = np.array([1.0/bwinsz for i in range(bwinsz)])
 # zamp = convolve(zamp,fblur,'same')
 # phase = convolve(phase, fblur, 'same')
@@ -138,7 +168,28 @@ out['fVarC'] = float(fVar)
 out['dist'] = dist
 # out['zc'] = list(z)
 
-import json 
-filename = 'imped_data/' + sys.argv[-2] + '_' + sys.argv[-1] + '.json'
+allspks, _ = find_peaks(v_trim, 0)
+
+if len(allspks):
+    stim_pks, stim_amps = find_peaks(i.as_numpy())
+    stim_troughs, trough_amps = find_peaks(i.as_numpy() * -1)
+    soma_np = soma_v.as_numpy()
+    seg_np = seg_v.as_numpy()
+    time_np = time.as_numpy()
+    lags = []
+    freq = []
+    for peakt, finish, nextt in zip(stim_pks[:-1], stim_troughs[:-1], stim_pks[1:]):
+        start = peakt - (finish-peakt) 
+        spks, _ = find_peaks(soma_np[start:finish], 0)
+        if len(spks):
+            lags.append(time_np[start+spks[0]]-time_np[peakt])
+            freq.append(1 / ((time_np[finish]-time_np[start])/1000))
+    out['lags'] = lags
+    out['freq'] = freq
+if args.blockIh:
+    filename = 'supra_data/' + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockIh.json'
+else:
+    filename = 'supra_data/' + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '.json'
+
 with open(filename, 'w') as fileObj:
     json.dump(out, fileObj)

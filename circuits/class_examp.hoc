@@ -1,0 +1,99 @@
+// Created by LinearCircuit[0] of NEURON -- VERSION 8.0a-587-g053f3ed9 HEAD (053f3ed9) 2021-06-14
+// manages LinearMechanism of rank 4
+// See first public declaration and proc init() for important
+//  methods and variable names
+// Change begintemplate and endtemplate statements if LM is not
+//  an appropriate name for the class.
+// Usage: (assume object reference is "lm")
+//  1) Attach segments to all the lm.*_loc(x) methods.
+//  2) lm.install() creates the LinearMechanism
+//  3) If any parameters are changed after lm.install(), call lm.refill()
+//  Named voltage nodes and internal states can be plotted using their alias
+//    names in proc init()
+//  Stimuli can be changed dynamically during a run using Vector.play. See
+//    their alias names in proc init()
+//  Initial conditions for named voltage nodes can be changed prior to finitialize().
+//    Initial conditions are 0 by default (not copied from the original
+//    LinearCircuit builder that generated this file).
+
+// netlist: 4 v nodes  11 elements
+//  index type name (endname)...(endname) (v node indices)
+//   0 Ground[0]  () (  -1 )
+//   1 InsideCell[0] _pysec.compartCell_PT_HH_full_0.soma(0.5) (Vm) (  0 )
+//   2 Resistor[0] R3 (Vin) (Vx) (  1  2 )
+//   3 Wire[0]  () () (  1  1 )
+//   4 Capacitor[0] C5 () () (  1  -1 )
+//   5 Resistor[0] R6 () () (  2  -1 )
+//   6 Resistor[0] R7 () () (  2  0 )
+//   7 Wire[0]  () () (  -1  -1 )
+//   8 Wire[0]  () () (  -1  -1 )
+//   9 Ground[0]  () (  -1 )
+//  10 Current[0] I11 () () (  -1  1 )
+
+begintemplate LM
+public install, refill, Vm_loc, R3, C5, R6, R7
+ //also see the aliases in proc init() for more public names
+public _lm, _c, _g, _b, _y, _y0, _sl, _xloc, _layer, _afac
+objref this,_lm,  _c, _g, _b, _y, _y0, _srs[1], _sl, _xloc, _layer, _afac
+proc init() { localobj _sf
+  _n = 4
+  _c = new Matrix(_n,_n,2)
+  _g = new Matrix(_n,_n,2)
+  _b = new Vector(_n)
+  _y = new Vector(_n)
+  _y0 = new Vector(_n)
+
+  _ncellport = 1
+  objref _srs[_ncellport+1] // in case _ncellport=0
+  _xloc = new Vector(_ncellport)
+  _layer = new Vector(_ncellport)
+  _afac = new Vector(_ncellport)
+  _sf = new StringFunctions()
+  // element parameters
+  R3 = 1
+  C5 = 1
+  R6 = 1
+  R7 = 1
+  // named voltage nodes and initial conditions
+  _sf.alias(this, "Vm", &_y.x[0])
+  _sf.alias(this, "Vin", &_y.x[1])
+  _sf.alias(this, "Vin_0", &_y0.x[1])
+  _sf.alias(this, "Vx", &_y.x[2])
+  _sf.alias(this, "Vx_0", &_y0.x[2])
+  // internal states
+  _sf.alias(this, "i_I11", &_y.x[3])
+  // stimuli
+  _sf.alias(this, "I_I11", &_b.x[3])
+}
+proc Vm_loc() {local ix
+  ix = 0
+  _srs[ix] = new SectionRef()
+  _xloc.x[ix] = $1
+  _layer.x[ix] = 0
+}
+proc refill() {local i,a
+  for i=0, _ncellport-1 _srs[i].sec {
+    a = area(_xloc.x[i])
+    if (a == 0) { a = 100 }
+    _afac.x[i] = -100./a
+  }
+  _c.x[1][1] = -C5
+  _g.x[0][0] = (-1.0/R7)*_afac.x[0]
+  _g.x[0][2] = (1.0/R7)*_afac.x[0]
+  _g.x[1][1] = -1.0/R3
+  _g.x[1][2] = 1.0/R3
+  _g.x[2][0] = 1.0/R7
+  _g.x[2][1] = 1.0/R3
+  _g.x[2][2] = -1.0/R3 - 1.0/R6 - 1.0/R7
+  _g.x[3][3] = 1.0
+}
+proc install() { local i
+  _sl = new SectionList()
+  for i=0, _ncellport-1 {
+    _srs[i].sec { _sl.append() }
+  }
+  refill()
+  _y.copy(_y0)
+  _lm = new LinearMechanism(_c, _g, _y, _y0, _b, _sl, _xloc, _layer)
+}
+endtemplate LM

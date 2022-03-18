@@ -1,0 +1,66 @@
+{load_file("nrngui.hoc")}
+objectvar save_window_, rvp_
+objectvar scene_vector_[4]
+objectvar ocbox_, ocbox_list_, scene_, scene_list_
+{ocbox_list_ = new List()  scene_list_ = new List()}
+{pwman_place(0,0,0)}
+
+//Begin LinearCircuit[0]
+{
+load_file("lincir.hoc", "LinearCircuit")
+}
+{
+ocbox_ = new LinearCircuit(1)
+}
+{object_push(ocbox_)}
+{version(2)}
+{mkelm(8, 230, 100, 3, 0)}
+{mklabel(0, "_pysec.compartCell_PT_HH_full_0.soma(0.5)", 0, 0)}
+{sel.extra_info.set("_pysec.compartCell_PT_HH_full_0.soma", 0.5) sel.extra_info.name(sel)}
+{mkelm(4, 60, 105, 2.5, 1.5708)}
+{mklabel(0, "B2", 15, 15)}
+{sel.extra_info.restore()}
+3
+1e+09 0
+1e+09 0
+1e+09 0
+{mkelm(1, 120, 130, 2, 0)}
+1
+{mklabel(0, "R3", 15, 15)}
+{mkelm(0, 80, 130, 2, 0)}
+{mkelm(2, 100, 105, 2.5, -1.5708)}
+1
+{mklabel(0, "C5", 15, 15)}
+{mkelm(1, 140, 105, 2.5, -1.5708)}
+1
+{mklabel(0, "R6", 15, 15)}
+{mkelm(1, 185, 130, 4.5, 0)}
+1
+{mklabel(0, "R7", 15, 15)}
+{mkelm(0, 120, 80, 2, 0)}
+{mkelm(0, 80, 80, 2, 0)}
+{mkelm(6, 60, 60, 2, 0)}
+{parasitic_ = 0  noconsist_ = 0}
+{sel = nil}
+{object_pop()}
+{
+{
+save_window_=ocbox_.g
+save_window_.size(0,300,0,200)
+scene_vector_[2] = save_window_
+ocbox_.g = save_window_
+save_window_.save_name("ocbox_.g")
+save_window_.label(230, 100, "_pysec.compartCell_PT_HH_full_0.soma(0.5)", 1, 1, 0.5, 0.5, 1)
+save_window_.label(75, 120, "B2", 1, 1, 0.5, 0.5, 1)
+save_window_.label(135, 145, "R3", 1, 1, 0.5, 0.5, 1)
+save_window_.label(115, 120, "C5", 1, 1, 0.5, 0.5, 1)
+save_window_.label(155, 120, "R6", 1, 1, 0.5, 0.5, 1)
+save_window_.label(200, 145, "R7", 1, 1, 0.5, 0.5, 1)
+}
+ocbox_.map("LinearCircuit[0]", 62, 134, 891.84, 564.48)
+}
+objref ocbox_
+//End LinearCircuit[0]
+
+objectvar scene_vector_[1]
+{doNotify()}

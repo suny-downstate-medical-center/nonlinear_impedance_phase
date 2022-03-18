@@ -124,6 +124,18 @@ def HayCell(morphology_file = './morphologies/cell1.asc'):
 	os.chdir(owd)
 	return cell, apical_maintrunk
 
+def RichHuman():
+	owd = os.getcwd()
+	os.chdir('models/HumanCellOrganized_v2/')
+	from neuron import h
+	h.load_file('stdrun.hoc')
+	h.load_file('import3d.hoc')
+	h.load_file('SimulationParameters_PlusSomeDefinitions.hoc')
+	h.load_file('ModelSetup.hoc')
+	trunk_secs = [1,3,7,15,24,37,59,85,109,123,131,137,143,145,149,155]
+	os.chdir(owd)
+	return h, trunk_secs
+
 def HayCellMig(morphology_file = './morphologies/cell1.asc'):
 	owd = os.getcwd()
 	os.chdir('./models/Hay')
@@ -155,15 +167,14 @@ def HayCellSWC(morphology_file = '../suter_shepherd/BS0284.CNG.swc'):
 	return cell
 
 def M1Cell():
-	import sys
 	# sys.path.insert(0, '../../my_netpyne/')
-	sys.path.insert(0, '~/netpyne/')
-	owd = os.getcwd()
-	os.chdir('models/DuraBernal')
+	sys.path.insert(0, 'models/DuraBernal/')
+	# owd = os.getcwd()
+	# os.chdir('./models/DuraBernal')
 	print(os.getcwd())
 	from netParams_unified import netParams 
 	from cfg_unified import cfg
 	from netpyne import sim 
 	sim.create(netParams, cfg)
-	os.chdir(owd)
+	# os.chdir(owd)
 	return sim 

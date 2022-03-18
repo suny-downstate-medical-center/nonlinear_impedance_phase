@@ -11,12 +11,25 @@ import multiprocessing
 import pickle 
 
 # get chirp stim: based on sam's code form evoizhi/sim.py
-def getChirp(f0, f1, t0, amp, Fs, delay):
+def getChirp(f0, f1, t0, amp, Fs, delay, offset=0):
     time = np.linspace(0,t0+delay*2, (t0+delay*2)*Fs*40+1)
     chirp_time = np.linspace(0, t0, (t0)*Fs*40+1)
     ch = chirp(chirp_time, f0, t0, f1, method='linear',phi=-90)
     ch = np.hstack((np.zeros(Fs*40*delay), ch, np.zeros(Fs*40*delay)))
-    vch = h.Vector(); vch.from_python(ch); vch.mul(amp)
+    vch = h.Vector(); vch.from_python(ch); vch.mul(amp); vch.add(offset)
+    vtt = h.Vector(); vtt.from_python(time); vtt.mul(Fs)
+    return vch, vtt
+
+def getRampChirp(f0, f1, t0, amp, Fs, delay, offset=0, slope=None):
+    time = np.linspace(0,t0+delay*2, (t0+delay*2)*Fs*40+1)
+    chirp_time = np.linspace(0, t0, (t0)*Fs*40+1)
+    ch = chirp(chirp_time, f0, t0, f1, method='linear',phi=-90)
+    if not slope:
+        slope = 1 / t0 
+    ramp = np.array([t*slope for t in chirp_time])
+    chramp = ch * ramp 
+    chramp = np.hstack((np.zeros(Fs*40*delay), chramp, np.zeros(Fs*40*delay)))
+    vch = h.Vector(); vch.from_python(chramp); vch.mul(amp); vch.add(offset)
     vtt = h.Vector(); vtt.from_python(time); vtt.mul(Fs)
     return vch, vtt
 

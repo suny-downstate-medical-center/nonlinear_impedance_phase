@@ -1,0 +1,35 @@
+// Created by LinearCircuit[0] of NEURON -- VERSION 8.0a-587-g053f3ed9 HEAD (053f3ed9) 2021-06-14
+// manages LinearMechanism of rank 4
+// See first public declaration and proc init() for important
+//  methods and variable names
+// Change begintemplate and endtemplate statements if LM is not
+//  an appropriate name for the class.
+// Usage: (assume object reference is "lm")
+//  1) Attach segments to all the lm.*_loc(x) methods.
+//  2) lm.install() creates the LinearMechanism
+//  3) If any parameters are changed after lm.install(), call lm.refill()
+//  Named voltage nodes and internal states can be plotted using their alias
+//    names in proc init()
+//  Stimuli can be changed dynamically during a run using Vector.play. See
+//    their alias names in proc init()
+//  Initial conditions for named voltage nodes can be changed prior to finitialize().
+//    Initial conditions are 0 by default (not copied from the original
+//    LinearCircuit builder that generated this file).
+
+// netlist: 4 v nodes  12 elements
+//  index type name (endname)...(endname) (v node indices)
+//   0 Ground[0]  () (  -1 )
+//   1 InsideCell[0] _pysec.compartCell_PT_HH_full_0.soma(0.5) () (  0 )
+//   2 Battery[0] B2 () () (  -1  1 )
+//   3 Capacitor[0] C3 () () (  1  -1 )
+//   4 Resistor[0] R4 () () (  1  2 )
+//   5 Resistor[0] R5 () () (  2  -1 )
+//   6 Resistor[0] R6 () () (  2  0 )
+//   7 Wire[0]  () () (  1  1 )
+//   8 Wire[0]  () () (  -1  -1 )
+//   9 Wire[0]  () () (  -1  -1 )
+//  10 Ground[0]  () (  -1 )
+//  11 Wire[0]  () () (  0  0 )
+
+begintemplate LM
+public install, refill

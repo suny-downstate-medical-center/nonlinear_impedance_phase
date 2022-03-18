@@ -273,3 +273,77 @@ bill and presumably srdjan feel otherwise
 do we want to include this kind of detail?
 *** srdjan have any useful recordings/data/values for this?
 *** new circuit layout [[iclamp_circuit.ses][iclamp with junction potential]]
+
+* [2021-12-9 Thu] - looking at sync freq from vaidya and johnston 
+** code for plotting phase for trunk and oblique 
+import json
+from matplotlib import pyplot as plt 
+import numpy as np
+fig, axs = plt.subplots(1,2)
+trunk = [1, 12, 22]
+obliq = [102, 79, 87]
+data = []
+dists = []
+for t in trunk:
+    with open('imped_data/M1Cell_apic_' + str(t) + '.json', 'rb') as fileObj:
+        tmp = json.load(fileObj)
+    dists.append(tmp['dist'])
+    data.append(tmp)
+inds = np.argsort(dists)
+for ind in inds:
+    axs[0].plot(data[ind]['Freq'], data[ind]['ZcPhase'], label=str(round(data[ind]['dist']))+' um')
+axs[0].set_title('Apical Trunk', fontsize=14)
+axs[0].set_ylabel('Transfer Impedance Phase', fontsize=12)
+axs[0].set_xlabel('Frequency (Hz)', fontsize=12)
+axs[0].legend()
+data = []
+dists = []
+for t in obliq:
+    with open('imped_data/M1Cell_apic_' + str(t) + '.json', 'rb') as fileObj:
+        tmp = json.load(fileObj)
+    dists.append(tmp['dist'])
+    data.append(tmp)
+inds = np.argsort(dists)
+for ind in inds:
+    axs[1].plot(data[ind]['Freq'], data[ind]['ZcPhase'], label=str(round(data[ind]['dist']))+' um')
+axs[1].set_title('Apical Oblique', fontsize=14)
+axs[1].set_xlabel('Frequency (Hz)', fontsize=12)
+axs[1].legend()
+
+* [2021-12-13 Mon] - looking at Rich et al 2021 human cell 
+** importing 
+import os 
+os.chdir('models/HumanCellOrganized_v2/')
+from neuron import h
+h.load_file('stdrun.hoc')
+h.load_file('import3d.hoc')
+h.load_file('SimulationParameters_PlusSomeDefinitions.hoc')
+h.load_file('ModelSetup.hoc')
+trunk_secs = [1,3,7,15,24,37,59,85,109,123,131,137,143,145,149,155]
+
+* [2022-2-16 Wed] - suprathreshold/nonlinear phase 
+** analog for linear phase - lag between peak of stimulus to somatic AP 
+*** similar phase lead at low frequencies
+*** seemingly opposite relationship between distance and "synchronous frequency"
+*** suprathreshold phase response depends on amplitude / spike rates 
+** M1Cell not working anymore 
+** possible figs 
+*** compare subthreshold to suprathreshold phase 
+*** distance dependence 
+*** amplitude dependence 
+*** different holding currents  
+
+* [2022-3-14 Mon] - phase precession and roll 
+** phase roll paper 
+*** [[https://paperpile.com/app/p/63a428b5-8425-0bb9-b995-f3c9caee4a5c][Sloin2022-pe]]
+** phase roll with constant amplitude sinusoid, phase precession with ramped 
+amplitude sinusoid 
+** ramped sinusoid phase precession 
+*** h-dependent 
+*** location dependent 
+*** frequency dependent?
+*** amplitude / slope dependent?
+
+* [2022-3-17 Thu] 
+** DONE - put together basic figures for precession and roll 
+** DONE - email kubie about how to frame for the phase precession people 
