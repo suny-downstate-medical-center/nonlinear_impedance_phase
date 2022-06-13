@@ -1,4 +1,4 @@
-#!/usr/bin/csh
+#!/usr/bin/bash
 conda activate py39
 python3 chirpLinear.py --section=apic_36 --amp=3.35 --f0=8.0 --f1=8.0 --t0=2 --saveTraces=True
 python3 chirpLinear.py --section=apic_36 --amp=3.45 --f0=8.0 --f1=8.0 --t0=2 --saveTraces=True
