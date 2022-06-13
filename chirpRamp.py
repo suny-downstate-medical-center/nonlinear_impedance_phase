@@ -10,6 +10,7 @@ parser.add_argument('--delay', nargs='?', type=int, default=3)
 parser.add_argument('--t0', nargs='?', type=int, default=20)
 parser.add_argument('--offset', nargs='?', type=float, default=0.0)
 parser.add_argument('--blockIh', nargs='?', type=str, default=None)
+parser.add_argument('--slopeFactor', nargs='?', type=float, default=None)
 parser.add_argument('--saveTraces', nargs='?', type=str, default=None)
 args = parser.parse_args()
 
@@ -35,7 +36,7 @@ elif args.cellModel == 'RichHuman':
     soma_seg = h.filament_100000042[0](0.5)
     seg = h.filament_100000042[trunk[int(len(trunk)/2)]](0.5)
 
-from chirpUtils import getChirp, fromtodistance
+from chirpUtils import getRampChirp, fromtodistance
 stim = h.IClamp(seg)
 from pylab import fft
 import numpy as np 
@@ -44,8 +45,8 @@ import json
 import os
 
 try:
-    os.makedirs('supra_data/')
-    os.makedirs('supra_traces/')
+    os.makedirs('ramp_data/')
+    os.makedirs('ramp_traces/')
 except:
     pass
 
@@ -68,7 +69,11 @@ f1 = args.f1
 soma_v = h.Vector().record(soma_seg._ref_v) 
 seg_v = h.Vector().record(seg._ref_v) 
 time = h.Vector().record(h._ref_t)
-I, t = getChirp(f0, f1, t0, amp, Fs, delay, offset=args.offset)
+if not args.slopeFactor:
+    I, t = getRampChirp(f0, f1, t0, amp, Fs, delay, offset=args.offset)
+else:
+    slope = 1 / (t0 * args.slopeFactor)
+    I, t = getRampChirp(f0, f1, t0, amp, Fs, delay, offset=args.offset, slope=slope)
 i = h.Vector().record(h.IClamp[0]._ref_i)
 stim.amp = 0
 stim.dur = (t0+delay*2) * Fs + 1
@@ -136,7 +141,6 @@ v = v_trim
 v = v - np.mean(v) 
 v = np.hstack((np.repeat(0,int(delay*sampr)), v, np.repeat(0, int(delay*sampr)))) 
 f_cis = (fft(v)/len(v))[0:int(len(v)/2)] 
-i_trim = [v for v, T in zip(i, time) if int((delay)*1000) < T < int((delay+t0)*1000)] 
 z = f_cis / f_current 
 phase = np.arctan2(np.imag(z), np.real(z))
 Freq       = np.linspace(0.0, sampr/2.0, len(z))
@@ -184,8 +188,8 @@ if len(allspks):
     stim_troughs, trough_amps = find_peaks(i.as_numpy() * -1)
     soma_np = soma_v.as_numpy()
     seg_np = seg_v.as_numpy()
-    time_np = time.as_numpy()
     iphase = np.angle(hilbert(i.as_numpy()), deg=True)
+    time_np = time.as_numpy()
     lags = []
     freq = []
     angles = []
@@ -201,11 +205,10 @@ if len(allspks):
         freq.append(1 / ((time_np[finish]-time_np[start])/1000))
     out['lags'] = lags
     out['freq'] = freq
-    out['angles'] = angles 
 if args.blockIh:
-    filename = 'supra_data/' + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockIh.json'
+    filename = 'ramp_data/' + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockIh.json'
 else:
-    filename = 'supra_data/' + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '.json'
+    filename = 'ramp_data/' + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '.json'
 
 with open(filename, 'w') as fileObj:
     json.dump(out, fileObj)
@@ -215,8 +218,8 @@ if args.saveTraces:
             'i' : i.as_numpy(),
             'time' : time.as_numpy()}
     if args.blockIh:
-        tracefile = 'supra_traces/'  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockIh.npy'
+        tracefile = 'ramp_traces/'  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockIh.npy'
     else:
-        tracefile = 'supra_traces/'  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '.npy'
+        tracefile = 'ramp_traces/'  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '.npy'
     with open(tracefile, 'wb') as fileObj:
         np.save(fileObj, traces)

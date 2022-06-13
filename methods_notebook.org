@@ -347,3 +347,51 @@ amplitude sinusoid
 * [2022-3-17 Thu] 
 ** DONE - put together basic figures for precession and roll 
 ** DONE - email kubie about how to frame for the phase precession people 
+
+* [2022-4-7 Thu] - prelim findings fig for proposal 
+** plot lag vs. stimulus cycle for ramp and constant chirp 
+import json 
+import numpy as np 
+from matplotlib import pyplot as plt 
+plt.ion()
+with open('supra_data/HayCellMig_apic_0_amp_1.0_offset_0.0_f0_8_f1_8.json', 'rb') as fileObj:
+    control = json.load(fileObj)
+with open('supra_data/HayCellMig_apic_0_amp_1.0_offset_0.0_f0_8_f1_8_blockIh.json', 'rb') as fileObj:
+    blockIh = json.load(fileObj)
+fig, axs = plt.subplots(nrows=1, ncols=2)
+axs[0].plot([i+1 for i in range(len(control['lags'])-1)], control['lags'][1:], 'b*-', label='Control')
+axs[0].plot([i+1 for i in range(len(blockIh['lags'])-1)], blockIh['lags'][1:], 'r*-', label='Block Ih')
+with open('ramp_data/HayCellMig_apic_0_amp_2.0_offset_0.0_f0_8_f1_8.json', 'rb') as fileObj:
+    control = json.load(fileObj)
+with open('ramp_data/HayCellMig_apic_0_amp_2.0_offset_0.0_f0_8_f1_8_blockIh.json', 'rb') as fileObj:
+    blockIh = json.load(fileObj)
+axs[1].plot([i+1 for i in range(len(control['lags']))], control['lags'], 'b*-', label='Control')
+axs[1].plot([i+1 for i in range(len(blockIh['lags']))], blockIh['lags'], 'r*-', label='Block Ih')
+
+* [2022-6-6 Mon] - getting back into it 
+** using hilbert transform to extract phase angle, use angles rather than lags 
+
+* [2022-6-7 Tue] - possible figures 
+** 1. subthreshold vs suprathreshold, insufficiency of chirp 
+** 2. just traces showing precession and roll 
+** 3. precession - location-, amplitude-, frequency-, Ih-dependent 
+*** maybe just perisomatic or apical for amp, freq, and Ih 
+** 4. roll - location-, amplitude-, frequency-, Ih-dependent
+*** same 
+** 5. [if rapid report, get rid of 1.] - neuromodulation of precession/roll 
+
+* [2022-6-9 Thu] - sims to run 
+** const amplitude 
+*** Perisomatic (apic_0)
+**** 8Hz, 1.0 nA 
+**** 4Hz, 0.56 nA 
+*** Apical (apic_36)
+**** 8Hz, 3.45 nA 
+**** 4Hz, 2.26 nA 
+** ramp amplitude 
+*** Perisomatic (apic_0)
+**** 8 Hz, 1.9 nA 
+**** 4 Hz, 1.9 nA 
+*** Apical (apic_36)
+**** 8 Hz, 3.9 nA 
+**** 4 Hz, 4.0 nA 
