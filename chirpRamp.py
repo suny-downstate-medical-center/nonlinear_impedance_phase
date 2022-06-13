@@ -205,6 +205,7 @@ if len(allspks):
         freq.append(1 / ((time_np[finish]-time_np[start])/1000))
     out['lags'] = lags
     out['freq'] = freq
+    out['angles'] = angles 
 if args.blockIh:
     filename = 'ramp_data/' + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockIh.json'
 else:
