@@ -72,7 +72,7 @@ time = h.Vector().record(h._ref_t)
 if not args.slopeFactor:
     I, t = getRampChirp(f0, f1, t0, amp, Fs, delay, offset=args.offset)
 else:
-    slope = 1 / (t0 * args.slopeFactor)
+    slope = args.slopeFactor #1 / (t0 * args.slopeFactor)
     I, t = getRampChirp(f0, f1, t0, amp, Fs, delay, offset=args.offset, slope=slope)
 i = h.Vector().record(h.IClamp[0]._ref_i)
 stim.amp = 0
@@ -207,9 +207,9 @@ if len(allspks):
     out['freq'] = freq
     out['angles'] = angles 
 if args.blockIh:
-    filename = 'ramp_data/' + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockIh.json'
+    filename = 'ramp_data/' + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockIh.json'
 else:
-    filename = 'ramp_data/' + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '.json'
+    filename = 'ramp_data/' + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '.json'
 
 with open(filename, 'w') as fileObj:
     json.dump(out, fileObj)
@@ -219,8 +219,8 @@ if args.saveTraces:
             'i' : i.as_numpy(),
             'time' : time.as_numpy()}
     if args.blockIh:
-        tracefile = 'ramp_traces/'  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockIh.npy'
+        tracefile = 'ramp_traces/'  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockIh.npy'
     else:
-        tracefile = 'ramp_traces/'  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '.npy'
+        tracefile = 'ramp_traces/'  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '.npy'
     with open(tracefile, 'wb') as fileObj:
         np.save(fileObj, traces)

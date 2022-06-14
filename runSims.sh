@@ -94,75 +94,75 @@ conda activate py39
 # python3 chirpLinear.py --section=apic_0 --amp=0.56 --f0=10.0 --f1=10.0 --t0=2 --saveTraces=True
 # python3 chirpLinear.py --section=apic_0 --amp=0.56 --f0=11.0 --f1=11.0 --t0=2 --saveTraces=True
 # python3 chirpLinear.py --section=apic_0 --amp=0.56 --f0=12.0 --f1=12.0 --t0=2 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=1.5 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=1.6 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=1.7 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=1.8 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=2.0 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=2.1 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=2.2 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=2.3 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=2.4 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=2.5 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=1.5 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=1.6 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=1.7 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=1.8 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=2.0 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=2.1 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=2.2 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=2.3 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=2.4 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=2.5 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=3.5 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=3.6 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=3.7 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=3.8 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=4.0 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=4.1 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=4.2 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=4.3 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=4.4 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=4.5 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=3.5 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=3.6 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=3.7 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=3.8 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=4.0 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=4.1 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=4.2 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=4.3 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=4.4 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=4.5 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --blockIh=True 
-python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --blockIh=True 
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --blockIh=True
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --blockIh=True 
-python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=1.0 --f1=1.0 --t0=20 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=2.0 --f1=2.0 --t0=10 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=3.0 --f1=3.0 --t0=10 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=4.0 --f1=4.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=5.0 --f1=5.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=6.0 --f1=6.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=7.0 --f1=7.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=9.0 --f1=9.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=10.0 --f1=10.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=11.0 --f1=11.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=12.0 --f1=12.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=1.0 --f1=1.0 --t0=20 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=2.0 --f1=2.0 --t0=10 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=3.0 --f1=3.0 --t0=10 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=4.0 --f1=4.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=5.0 --f1=5.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=6.0 --f1=6.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=7.0 --f1=7.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=9.0 --f1=9.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=10.0 --f1=10.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=11.0 --f1=11.0 --t0=6 --saveTraces=True
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=12.0 --f1=12.0 --t0=6 --saveTraces=True
+python3 chirpRamp.py --section=apic_0 --amp=1.5 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=1.6 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=1.7 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=1.8 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=2.0 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=2.1 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=2.2 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=2.3 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=2.4 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=2.5 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=1.5 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=1.6 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=1.7 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=1.8 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=2.0 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=2.1 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=2.2 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=2.3 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=2.4 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=2.5 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=3.5 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=3.6 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=3.7 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=3.8 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=4.0 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=4.1 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=4.2 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=4.3 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=4.4 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=4.5 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=3.5 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=3.6 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=3.7 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=3.8 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=4.0 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=4.1 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=4.2 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=4.3 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=4.4 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=4.5 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --blockIh=True  --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --blockIh=True  --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=4.0 --f1=4.0 --t0=4 --saveTraces=True --blockIh=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --blockIh=True  --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=1.0 --f1=1.0 --t0=20 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=2.0 --f1=2.0 --t0=10 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=3.0 --f1=3.0 --t0=10 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=4.0 --f1=4.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=5.0 --f1=5.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=6.0 --f1=6.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=7.0 --f1=7.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=9.0 --f1=9.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=10.0 --f1=10.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=11.0 --f1=11.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=12.0 --f1=12.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=1.0 --f1=1.0 --t0=20 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=2.0 --f1=2.0 --t0=10 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=3.0 --f1=3.0 --t0=10 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=4.0 --f1=4.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=5.0 --f1=5.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=6.0 --f1=6.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=7.0 --f1=7.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=9.0 --f1=9.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=10.0 --f1=10.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=11.0 --f1=11.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=12.0 --f1=12.0 --t0=6 --saveTraces=True --slopeFactor=1.0
