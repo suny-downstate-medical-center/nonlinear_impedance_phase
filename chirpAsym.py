@@ -18,6 +18,7 @@ parser.add_argument('--ih_gbar_factor', nargs='?', type=float, default=None)
 parser.add_argument('--TTX', nargs='?', type=str, default=None)
 args = parser.parse_args()
 
+
 if args.cellModel == 'M1Cell':
     from getCells import M1Cell   
     s = M1Cell()  
@@ -104,7 +105,7 @@ h.celsius = 34
 h.tstop = (t0+delay*2) * Fs + 1
 print('running ' + args.cellModel + ' ' + args.section + ' f0-' + str(round(args.f0)) + ' f1-' + str(round(args.f1)))
 h.run()
-v_trim = [v for v, T in zip(seg_v, time) if int((delay)*1000) < T < int((delay+t0)*1000)] 
+v_trim = [v for v, T in zip(soma_v, time) if int((delay)*1000) < T < int((delay+t0)*1000)] 
 i_trim = [x for x, T in zip(i,time) if int((delay)*1000) < T < int((delay+t0)*1000)] 
 time_trim = [T for v, T in zip(soma_v, time) if int((delay)*1000) < T < int((delay+t0)*1000)] 
 current = i_trim
@@ -115,123 +116,72 @@ current = current - np.mean(current)
 #v = v[int(delay*sampr - 0.5*sampr)+1:-int(delay*sampr - 0.5*sampr)] 
 v = v - np.mean(v) 
 v = np.hstack((np.repeat(0,int(delay*sampr)), v, np.repeat(0, int(delay*sampr)))) 
-f_current = (fft(current)/len(current))[0:int(len(current)/2)] 
-f_cis = (fft(v)/len(v))[0:int(len(v)/2)] 
-z = f_cis / f_current 
-phase = np.arctan2(np.imag(z), np.real(z))
-Freq       = np.linspace(0.0, sampr/2.0, len(z))
-zRes       = np.real(z)
-zReact     = np.imag(z)
-zamp = abs(z)
-mask = (Freq >= 0.5) & (Freq <= f1)
-zResAmp    = np.max(zamp)
-zResFreq   = Freq[np.argmax(zamp)]
-Qfactor    = zResAmp / zamp[0]
-fVar       = np.std(zamp) / np.mean(zamp)
-peak_to_peak = np.max(v) - np.min(v)
-## smoothing
-# bwinsz = 10
-# fblur = np.array([1.0/bwinsz for i in range(bwinsz)])
-# zamp = convolve(zamp,fblur,'same')
-# phase = convolve(phase, fblur, 'same')
-Freq, zamp, phase, zRes, zReact, z = Freq[mask], zamp[mask], phase[mask], zRes[mask], zReact[mask], z[mask]
-freqsIn = np.argwhere(phase > 0)
-if len(freqsIn) > 0:
-    ZinSynchFreq = Freq[freqsIn[-1]]
-    ZinPhaseL = np.trapz([float(phase[ind]) for ind in freqsIn], 
-        [float(Freq[ind]) for ind in freqsIn])
-else:
-    ZinSynchFreq = 0 
-    ZinPhaseL = 0
+f = np.hstack((np.repeat(0,int(delay*sampr)), np.linspace(f0,f1,len(v_trim)),np.repeat(0,int(delay*sampr))))
 
-out = {'Freq' : list(Freq),
-    'ZinRes' : list(zRes),
-    'ZinReact' : list(zReact),
-    'ZinAmp' : list(zamp),
-    'ZinPhase' : list(phase),
-    'ZinSynchFreq' : float(ZinSynchFreq),
-    'ZinPhaseL' : float(ZinPhaseL),
-    'ZinResAmp' : float(zResAmp),
-    'ZinResFreq' : float(zResFreq),
-    'QfactorIn' : float(Qfactor),
-    'fVarIn' : float(fVar)}#,
-    # 'zin' : list(z)}
-
-v_trim = [v for v, T in zip(soma_v, time) if int((delay)*1000) < T < int((delay+t0)*1000)] 
-v = v_trim 
-v = v - np.mean(v) 
-v = np.hstack((np.repeat(0,int(delay*sampr)), v, np.repeat(0, int(delay*sampr)))) 
-f_cis = (fft(v)/len(v))[0:int(len(v)/2)] 
-i_trim = [v for v, T in zip(i, time) if int((delay)*1000) < T < int((delay+t0)*1000)] 
-z = f_cis / f_current 
-phase = np.arctan2(np.imag(z), np.real(z))
-Freq       = np.linspace(0.0, sampr/2.0, len(z))
-zRes       = np.real(z)
-zReact     = np.imag(z)
-zamp = abs(z)
-mask = (Freq >= 0.5) & (Freq <= f1)
-zResAmp    = np.max(zamp)
-zResFreq   = Freq[np.argmax(zamp)]
-Qfactor    = zResAmp / zamp[0]
-fVar       = np.std(zamp) / np.mean(zamp)
-peak_to_peak = np.max(v) - np.min(v)
-## smoothing
-# bwinsz = 10
-# fblur = np.array([1.0/bwinsz for i in range(bwinsz)])
-# zamp = convolve(zamp,fblur,'same')
-# phase = convolve(phase, fblur, 'same')
-Freq, zamp, phase, zRes, zReact, z = Freq[mask], zamp[mask], phase[mask], zRes[mask], zReact[mask], z[mask]
-freqsIn = np.argwhere(phase > 0)
-if len(freqsIn) > 0:
-    ZinSynchFreq = Freq[freqsIn[-1]]
-    ZinPhaseL = np.trapz([float(phase[ind]) for ind in freqsIn], 
-        [float(Freq[ind]) for ind in freqsIn])
-else:
-    ZinSynchFreq = 0 
-    ZinPhaseL = 0
-
-out['ZcRes'] = list(zRes)
-out['ZcReact'] = list(zReact)
-out['ZcAmp'] = list(zamp)
-out['ZcPhase'] = list(phase)
-out['ZcSynchFreq'] = float(ZinSynchFreq)
-out['ZcPhaseL'] = float(ZinPhaseL)
-out['ZcResAmp'] = float(zResAmp)
-out['ZcResFreq'] = float(zResFreq)
-out['QfactorC'] = float(Qfactor)
-out['fVarC'] = float(fVar)
-out['dist'] = dist
-# out['zc'] = list(z)
-
+iphase = np.angle(hilbert(i.as_numpy()))
 allspks, _ = find_peaks(v_trim, 0)
+pks, _ = find_peaks(v)
+trghs, _ = find_peaks(v*-1)
+ipks, _ = find_peaks(current)
+itrghs, _ = find_peaks(current*-1)
+trghs = [tr for tr in trghs if tr > pks[0]]
+f_minus = None
+phi_minus = None
+asym = -np.min(v)-np.max(v)
+peak_to_peak = np.max(v) - np.min(v)
+v_init = v_trim[0]
 
-datadir = 'sub_data/'
-tracedir = 'sub_traces/'
 if len(allspks):
-    stim_pks, stim_amps = find_peaks(i.as_numpy())
-    stim_troughs, trough_amps = find_peaks(i.as_numpy() * -1)
-    soma_np = soma_v.as_numpy()
-    seg_np = seg_v.as_numpy()
-    time_np = time.as_numpy()
-    iphase = np.angle(hilbert(i.as_numpy()), deg=True)
-    lags = []
-    freq = []
-    angles = []
-    for peakt, finish, nextt in zip(stim_pks[:-1], stim_troughs[:-1], stim_pks[1:]):
+    phi_plus = []
+    f_plus = []
+    for peakt, finish, nextt in zip(ipks[:-1], itrghs[:-1], ipks[1:]):
         start = peakt - (finish-peakt) 
-        spks, _ = find_peaks(soma_np[start:finish], 0)
+        spks, _ = find_peaks(v[start:finish], 0)
         if len(spks):
-            lags.append(time_np[start+spks[0]]-time_np[peakt])
-            angles.append(iphase[start+spks[0]])
+            phi_plus.append(iphase[peakt]-iphase[spks[0]+start])
         else:
-            lags.append(np.nan)
-            angles.append(np.nan)
-        freq.append(1 / ((time_np[finish]-time_np[start])/1000))
-    out['lags'] = lags
-    out['freq'] = freq
-    out['angles'] = angles 
-    datadir = 'supra_data/'
-    tracedir = 'supra_traces/'
+            phi_plus.append(np.nan)
+        f_plus.append(f[peakt])
+    trghs, _ = find_peaks(v*-1, 0)
+    trghs = [tr for tr in trghs if tr > pks[0]]
+    phi_minus = []
+    for trgh, itrgh in zip(trghs, itrghs):
+        if iphase[trgh] < 0 and iphase[itrgh] < 0:
+            phi_minus.append((iphase[itrgh] + 2*np.pi) - (iphase[trgh] + 2*np.pi))
+        elif iphase[trgh] < 0:
+            phi_minus.append(iphase[itrgh]-(iphase[trgh] + 2*np.pi))
+        elif iphase[itrgh] < 0:
+            phi_minus.append((iphase[itrgh] + 2*np.pi) - iphase[trgh])
+        else:
+            phi_minus.append(iphase[itrgh]-iphase[trgh])            
+    f_minus = [f[trgh] for trgh in itrghs]
+else:
+    phi_plus = [iphase[ipk]-iphase[pk] for pk, ipk in zip(pks, ipks)]
+    f_plus = [f[pk] for pk in pks]
+    phi_minus = []
+    for trgh, itrgh in zip(trghs, itrghs):
+        if iphase[trgh] < 0 and iphase[itrgh] < 0:
+            phi_minus.append((iphase[itrgh] + 2*np.pi) - (iphase[trgh] + 2*np.pi))
+        elif iphase[trgh] < 0:
+            phi_minus.append(iphase[itrgh]-(iphase[trgh] + 2*np.pi))
+        elif iphase[itrgh] < 0:
+            phi_minus.append((iphase[itrgh] + 2*np.pi) - iphase[trgh])
+        else:
+            phi_minus.append(iphase[itrgh]-iphase[trgh])            
+    f_minus = [f[trgh] for trgh in itrghs]
+
+out = {'f_plus' : f_plus, 
+        'f_minus' : f_minus, 
+        'phi_plus' : phi_plus,
+        'phi_minus' : phi_minus,
+        'TTX' : args.TTX,
+        'offset' : args.offset,
+        'v_init' : v_init,
+        'peak_to_peak' : peak_to_peak, 
+        'asym' : asym}
+
+datadir = 'asym_data/'
+tracedir = 'asym_traces/'
 if args.blockIh:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockIh.json'
 elif args.vhalfl:
@@ -256,9 +206,46 @@ if args.saveTraces:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_vhalf_' + str(round(args.vhalfl)) + '.npy'
     elif args.ih_gbar_factor:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_gbarfactor_' + str(round(args.ih_gbar_factor,2)) + '.npy'
+    elif args.TTX:
+        tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_TTX.npy'
     else:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '.npy'
     with open(tracefile, 'wb') as fileObj:
         np.save(fileObj, traces)
 
-print("--- %s seconds ---" % (systime.time() - start_time))
+# from matplotlib import pyplot as plt
+# fig, axs = plt.subplots(3,1,sharex=True)
+# axs[0].plot(current)
+# axs[1].plot(v)
+# axs[2].plot(iphase)
+# for pk in ipks:
+#     axs[0].plot(pk, current[pk], 'k*')
+#     axs[2].plot(pk, iphase[pk], 'k*')
+# for trgh in itrghs:
+#     axs[0].plot(trgh, current[trgh], 'g*')
+#     axs[2].plot(trgh, iphase[trgh], 'g*')
+# for pk in pks:
+#     axs[1].plot(pk, v[pk], 'r*')
+#     axs[2].plot(pk, iphase[pk], 'r*')
+# for trgh in trghs:
+#     axs[1].plot(trgh, v[trgh], 'y*')
+#     if iphase[trgh] < 0:
+#         axs[2].plot(trgh, iphase[trgh]+2*np.pi, 'y*')
+#     else:
+#         axs[2].plot(trgh, iphase[trgh], 'y*')
+
+# fig2, ax = plt.subplots(1,1)
+# if len(allspks):
+#     ax.plot(f_plus, phi_plus, '*--', label='Spike Times')
+#     ax.set_ylabel(r'$\Phi$(f)$^{+}$ (rad)', fontsize=14)
+# else:
+#     ax.plot(f_plus, phi_plus, '*--', label='Nonlinear Upper Envelope')  
+#     ax.plot(f_minus, phi_minus, '*--', label='Nonlinear Lower Envelope')
+#     ax.set_ylabel(r'$\Phi$(f)$^{+/-}$ (rad)', fontsize=14)
+# # with open('sub_data/HayCellMig_soma_0_amp_0.025_offset_0.0_f0_0_f1_20.json', 'rb') as fileObj:
+# #     chirp_data = json.load(fileObj)
+# # ax.plot(chirp_data['Freq'], chirp_data['ZinPhase'], label='Linear Response')
+# ax.set_xlabel('Frequency (Hz)', fontsize=14)
+
+# ax.legend()
+

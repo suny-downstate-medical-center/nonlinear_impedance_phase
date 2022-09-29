@@ -395,3 +395,359 @@ axs[1].plot([i+1 for i in range(len(blockIh['lags']))], blockIh['lags'], 'r*-', 
 *** Apical (apic_36)
 **** 8 Hz, 3.9 nA 
 **** 4 Hz, 4.0 nA 
+
+* [2022-6-23 Thu] - sfn abs, figs, vaidya stim protocol
+** submitted abstract for sfn 
+*** [[https://docs.google.com/document/d/18zPJFahz_G0opLqehJZI-OZaTqGrtxBP5aGvtcE1FnE/edit?usp=sharing][abstract]]
+** decent figures for phase advance and retreat 
+*** [[figures/supra_phase.svg][phase retreat (roll)]]
+*** [[figures/supra_ramp_phase.svg][phase advance (precession)]]
+**** TODO: change roll->retreat; precession->advance in titles 
+** implementing stimulation paradigm from Vaidya2013-sx
+*** alternating dendritic exc (4) and somatic inh (2) at 7 hz 
+*** exc: tau 3, e=0mV, 2mv somatic EPSP 
+*** inh: tau 8, e=-80mV, 3nS conductance 
+*** so far, very square looking 
+
+* paper outline 
+** Introduction 
+*** Overview of subthreshold impedance and chirp 
+Impedance characterizes the frequency dependent filtering properties of the 
+neuronal membrane for small, subthreshold stimul. 
+Impedance has been estimated in neurons by applying current stimulus in the form 
+of either a chirp (sinusoidal signal whose instantaneous frequency increases with
+time) or white noise and recording the resulting changes in membrane potential.
+The ratio of the Fourier transformed \vmemb to the Fourier transformed current 
+stimulus is the impedance, which has a real part (impedance amplitude), which 
+characterizes frequency dependent signal attenuation, and an imaginary part 
+(impedance phase), which characterizes the temporal relationship between the 
+input stimulus and \vmemb.
+This method only holds when the neuronal membrane behaves as a linear, time-
+invariant/stationary system (i.e. for small, subthreshold inputs).
+Since the primary outputs of neurons are action potentials, which are nonlinear 
+[and nonstationary], impedance is inadequate for studying much of neuronal function.
+*** Methods for suprathreshold analogous to impedance amplitude 
+**** STA 
+Spike-triggered averaging was the first method to try bridging the gap between 
+subthreshold membrane potential oscillations and suprathreshold activity Bryant1976-ek.
+For instance, hippocampal pyramidal neurons showed Ih-dependent selectivity for 
+theta-frequency inputs comparable to their subthreshold resonsance Das2017-tb.
+**** suprathreshold chirp shows spiking aroung the resonance frequency, but not
+for the lowest frequencies or higher frequencies, in line with the bandpass 
+nature of the membrane filtering properties Ulrich2002-dd.
+**** nonlinear, subthreshold Pena2019-qv
+At higher, but still subthreshold, intensities of stimulating current, the responses 
+to excitation and inhibition become assymetric (nonlinear).  
+Pena2019-qv extend impedance amplitude framework to assess these nonlinear voltage 
+responses in a conductance based model neuron.
+**** suprathreshold 
+Fischer2017-jx used suprathreshold sinusoidal stimuli with constant frequencies to 
+assess the the frequency dependence of spiking patterns in mechano-sensory neurons 
+in leeches.  
+By stimulating at various frequencies and either counting total number of spikes or 
+computing spike frequency over a given duration, they developed another nonlinear 
+analog to impedance amplitude.
+*** Our method for suprathreshold analogous to impedance phase 
+While these methods provide useful analogs to impedance amplitude for nonlinear 
+regimes of neural activity, they ignore the temporal relationship between input 
+and output captured by impedance phase in the subthreshold, linear regime.
+To fill this gap, we stimulated a model neuron with suprathreshold sinusoidal 
+current signals and registered the phase angles of the stimulus at which action 
+potentials occurred. 
+We found that for constant amplitude, sinusoidal currents of constant frequency, 
+the stimulus phase at which an action potential was generated increased with 
+successive stimulus cycles. We refer to this phenomemon as phase advance.
+Conversely, for sinusoidal currents of constant frequency whose amplitude increased
+over time, the stimulus phase at which an action potential was generated decreased
+with successive stimulus cycles.  We refer to this as phase retreat.
+Both scenarios serve to highlight the nonstationarity of the neuron in the nonlinear 
+spiking regime of activity.
+** Methods 
+*** explanation of cell model, previous results for subthreshold 
+**** Modified version of neocortical layer 5b pyramidal neuron from Hay2011-if 
+which incorporates a combination of Ih and TASK-like shunting current described 
+in Migliore2012-ev.
+**** constant HCN channel density in the basal dendrites, exponentially increasing 
+density with distance from the soma in apical dendrites.
+**** This model was shown in Kelley2021-hr to have location-dependent, subthreshold 
+impedance amplitude and, importantly, phase profiles in close agreement with 
+experimental observations.  [In most other models of L5b PYR neurons, either the 
+phase or amplitude profiles agreed with experiments, but usually not both].
+**** more description from original paper . . . 
+*** overview of stimulation paradigms 
+**** chirp stimuli
+When using a chirp stimulus, the instantaneous frequency of the waveform increased 
+linearly from 0.5-20 Hz over a 20s duration.  
+When using a chirp stimulus to demonstrate the subthreshold impedance properties of
+the neuron, we chose a stimulus amplitude that produced symmetrical changes in Vmmeb 
+about Vrest.
+For suprathreshold chirp stimulus, we chose an amplitude sufficient to produce one 
+spike per stimulus cycle when the stimulus frequency <12 Hz.  In order to produce
+spiking for higher frequency stimuli, the amplitude would need to increase, which 
+would elicit more spikes at the lower frequencies.
+**** sinusoids 
+Becasue the responses to suprathreshold stimuli were clearly nonstationary, we 
+focused on sinusoidal stimuli with constant freqeuncy.
+***** constant ampltiude sine
+First, we used stimuli with a constant amplitude, and that amplitude was chosen to
+elicit a single spike on each cycle of the stimulus. At lower amplitudes the cell
+may only spike on the first stimulus cycle, and at higher amplitudes the cell may 
+produce multiple spikes per stimulus cycle.
+We repeated this stimulation for frequencies 2-9 Hz to asses the frequency dependence 
+of the spike phase relationship.  
+We also assesed the amplitude-dependence of the spike phase relationship for stimuli 
+of a particular frequency. 
+Location-dependence was assesed by comparing stimulation in the soma versus stimulation
+in the apical dendrite. 
+We evaluated the influence of Ih by blocking HCN channels throughout the neuron.
+***** ramped sinusoid 
+We stimulated both the soma and the apical dendrite (~300 um from the soma).
+Next, we used stimuli with an amplitude that increased linearly over time. Here,
+the neuron did not spike during the first couple (smalled amplitude) stimulus 
+cycles, but by the end of the stimulation the neuron produced one spike per stimulus 
+cycle.
+Unless otherwise noted, the amplitude of the stimulus increased 1nA/s. 
+We similarly assesed the frequency-, amplitude-, location-, and Ih-dependence of the
+spike-phase relationship for stimuli of increasing amplitude.
+** Results 
+*** inadequacy of chirp for suprathreshold phase, need for sinusoids
+Chirp stimulation was inadequate to characterize the relationship between stimulus 
+phase and spiking because spiking activity is nonstationary.
+In response to a chirp stimulus, the stimulus phase angle of each spike increased
+monotonically as the stimulus frequency increases from 0.5 to 6 Hz.
+At the lowest frequencies, the spikes preceded the peaks of the stimulus cycles.
+At ~4Hz, the spiking activity was coincident with the peak of the stimulus cycle.
+At higher frequencies, the spikes lagged behind the peaks of the stimulus cycles.
+This monotonic increase broke down beyond 6 Hz with large jumps in the spike-phase 
+relationship as stimulus frequeny increased.
+This breakdown suggested that spiking activity was nonstationary so we probed the 
+spike-phase relationship for sinusoidal stimuli of constant frequency to show how 
+it changed over time.
+*** phase advance of spiking relative to stimulus 
+For particular combinations of sinusoidal stimulus amplitude and frequency, 
+spike-phase increased over the course of stimulation, a phenomenon we termed phase 
+advance.  
+We used an 8 Hz, 1 nA sinusoidal stimulus near the soma as an example of phase 
+advance. 
+The first spike initiated 20deg before the peak of the stimulus cycle. 
+The phase of each spike increased over the next six cycles, with the seventh 
+spike occuring 25deg after the peak of the stimulus cycle.   
+After the eighth stimulus cycle, the relationship between spikes and stimulus phase
+remained relatively constant.
+Phase advance was location dependent.  When stimulating the apical dendrite rather
+than perisomatically, the spike-phase curve shifted upward, with the first spike 
+occuring ~10deg before the stimulus cycle peak and the curve saturing at ~35deg
+after the stimulus cycle.
+Phase advance was also dependent on Ih.  Blocking the HCN channels eliminated 
+phase advance, with spikes alternating every other stimulus cycle, and after the 
+first spike the relationship between stimulus phase an+d spiking remains constant 
+for the duration of the stimulus.
+Using 1 nA amplitude stimuli, we showed that phase advance is frequency dependent.
+At that amplitude, phase advance was clear at 8 Hz but not at other frequencies.
+It should be noted, however, that there can be strong phase advance at different 
+frequencies for different stimulus amplitudes (data not shown).
+We also showed that for an 8 Hz stimulus, the spike-phase relationship changed with 
+different stimulus amplitudes. Interestingly, the spike-phase curve did not change 
+smoothly as the stimulus amplitude changed.
+*** phase retreat of spiking relative to stimulus 
+We also stimulated the neuron with sinusoidal current stimuli whose amplitude
+increased linearly with time.  
+For specific combinations of stimulus freqeuncyy and amplitude sweep, spike-phase 
+decreased over the course of stimulation, a phenomemon we termed phase retreat. 
+When stimulating the neuron near the soma with an 8 Hz stimulus whose amplitude 
+increased by 1.9 nA/s, the first spike occurred ~25deg after the peak of the stimulus 
+cycle, and spike-phase decreased until the fifth spike, which occurred ~30 deg 
+before the peak of the stimulus cycle.  
+Phase retreat was location dependent.  When stimulating the apical dendrite, 
+rather than perisomatically, the spike-phase curve shifted upward, with the 
+first spike occurrent ~55deg before the stimulus cycle peak. 
+Spike-phase decreased with successive stimulus cycles, with the tenth spike 
+occurring 20deg after the stimulus cycle peak.
+Phase retreat was modulated, but not dependent on, Ih. Blocking HCN channels 
+resulted in an upward shift in the spike-phase curve and a smaller range of 
+stimulus spike-phases.
+Phase retreat was dependent on stimulus frequency.  For a stimulus whose amplitude 
+increased by 1.9 nA/s, the greatest degree of phase-retreat occurred for an 8 Hz 
+stimulus, with either less phase retreat or spike-phase not decreasing monotonically
+for stimuli of other frequencies. For other amplitudes, however, monotonic phase 
+retreat occurred at other frequencies.
+*** neuromodulation 
+**** Can modulate the spike-phase curve via normodulation of Ih
+**** Phase advance: Decreasing vhalfl shifts curve, shift 
+curve upward (later spikes) beyond second spike/stim cycle. However, vhalfl=-91 produced later spike 
+phase than baseline, but vhalfl=-92 produced an earlier spike than at baseline.
+Increasing vhalfl conversely shifted the spike-phase curve downward (earlier spikes)
+**** Phase retreat: same trend without first spike weirdness at vhalfl=-92
+** Discussion 
+*** recap and interpret results 
+*** sinusoidal currents as models of rhythmic alternation of synaptic 
+excitation and inhibition Vaidya2013-sx
+*** modeling shows HCN regulates spike phase relative to LFP Sinha2015-lz
+*** possible implications for phase precession and phase roll Sloin2022-pe 
+
+* [2022-7-11 Mon] - TODOS 
+** DONE: finalize figure 1 
+*** current version [[figures/chirp_insufficiency.png][3 rows of panels, sub chirp, supra chirp, supra single freq]]]
+*** alt: put stimulus traces on same axes as response 
+*** alt: remove single freq stim figure, move to separate fig with traces for both retreat and advance
+**** could also add traces to retreat and advance figs 
+** DONE: address (or decide whether to address) neuromodulation 
+*** look at Maki-Marttunen2022-lj or talk to joao and salva re reasonable values of vhalf   
+
+* [2022-7-14 Thu] - neuromodulation
+** increasing vhalfl for hcn reduces amplitude "threshold" and seems to increase 
+phase advance, takes longer to "latch"
+*** see supra_data/HayCellMig_soma_0_amp_0.6_offset_0.0_f0_8_f1_8_vhalfl_-80.json
+ 
+* [2022-7-15 Fri] - more neuromodulation 
+** from Maki-Marttunen2022-lj review re neuromdolator concentrations 
+2. Concentrations of ACh and dopamine
+In the referenced studies, the modulations of voltage dependency were performed by either
+controlling intracellular cAMP through a glass pipette during the patch-clamp recording or by
+the perfusion of the antagonist in the extracellular solution. The concentration of
+neuromodulators reported by the submitting authors is likely beyond the physiological
+operating range of cortical neurons reported previously.
+For example, Hironaka et al. (2001) reported that the ACh concentration in the rat prefrontal
+cortex ranged from 10 nM to 30 nM (PMID: 11368961). On the other hand, the dose of ACh
+used in the referenced work (Zhao et al., 2016) used 50 μM of ACh. Additionally, Spühler
+and Hauri (2013) developed a simulation allowing in silico estimation of dopamine
+concentrations in prefrontal cortex (PMID: 23951205). Spühler and Hauri found that the
+concentration of dopamine in the prefrontal cortex likely falls between 9.5 nM to 250 nM in
+the steady state and 23.4 nM to 989 nM with 26 Hz phasic dopamine release. The submitting
+authors instead refer to Byczkowicz et al. (2019), which used 200 μM of dopamine in their
+study.
+Zhao et al. (2016) and Byczkowicz et al. (2019) used doses of Ach and Dopamine,
+respectively, that are more than 200 times high than what was previously reported as possible
+in vivo. These doses may represent a non-physiological perturbation that are not ideal for a
+simulation that attempts to reconstruct normal, physiological spiking activity.
+The submitting authors need to adjust the effects of neuromodulators based on physiological
+concentrations. If they find similar results as to what was reported here, then it’s interesting.
+We thank the reviewer for this comment. There are indeed at least two ways of
+experimentally studying the effects of cAMP-coupled neuromodulators on I h activation:
+either applying the neuromodulator (or corresponding agonist) to the extracellular medium, or
+directly applying cAMP (or cAMP pathway inhibitor) into the intracellular medium. Apart
+from Zhao et al. 2016, all our references use the latter approach (although, as noted by thereviewer, Byczkowicz et al. also applied dopamine in a related experiment; and Zhao et al.
+also find similar results using the latter approach) but similar magnitudes for voltage shifts
+have been reported using the former approach. For example., Wu and Hablitz 2005
+(PMC6725283) reported a depolarizing shift of the half-inactivation voltage of 7 mV by
+application of 30 uM dopamine, while our references found shifts ranging from 4 to 17 mV
+by increased intracellular cAMP. We now mention this on p. 18:
+It should be noted that although the above data and the data on HCN2-channel modulation
+[Byczkowicz et al., 2019] were based on measured effects of direct increase of intracellular
+cAMP, voltage shifts of similar magnitude have been observed when dopamine was applied
+in the extracellular medium (e.g., 30 μM dopamine shifted the half-inactivation voltage of I h
+currents in layer I interneurons by +7 mV in [Wu and Hablitz, 2005]).
+As for the neuromodulator concentrations used in our references, it is true that ACh
+concentrations measured in the extracellular medium in vivo are within the nanomolar range
+(as shown in e.g. Hironaka et al. 2001 mentioned by the reviewer), which is much smaller
+than the in vitro experiment of Zhao et al., 2016. However, one should keep in mind that, in
+vivo, the local, transient concentrations of ACh are much higher in the synaptic cleft and
+other confined volumes near the post-synaptic neuron’s dendrites than the measured global
+concentrations in the extracellular medium. In Barberis et al. 2011 (PMC3123770), it was
+estimated that an ejection of 4000 GABA molecules implies a concentration pulse of
+hundreds of 𝜇M in the synaptic cleft. Similar estimates were made for ACh in Aidoo, A. Y.,
+& Ward, K. (2006), Mathematical and computer modelling, 44(9-10), 952-962. By contrast, a
+neurotransmitter concentration of a nanomolar magnitude in the synaptic cleft would
+correspond to a handful of neurotransmitter molecules. Thus, we do not consider the bath
+concentrations used in our references exaggeratingly large (especially since the experiments
+that directly altered intracellular cAMP concentrations yielded similar ranges of voltage
+shifts), although we agree with the reviewer that further research with varied concentrations
+would be enlightening.
+To show the relevance of the chosen range of voltage shifts, we have included references to
+additional experiments supporting our use of 5-10 mV shifts, namely Chen et al. 2001
+(mentioned by the reviewer), Ulens and Tytgat 2001, Ludwig et al. 1998, Wang et al. 2001,
+Ko et al. 2016 – see our response above. To further highlight the fact that smaller
+neuromodulator concentrations can lead to large effects, we also refer to a study where 10 uM
+serotonin application had significant effects on L5PC excitability, mediated by I h current. In
+addition to the sentences added in response to the comment above, on p. 17 we write:
+Moreover, similar to cholinergic M2 receptors, serotonergic 5HT1A receptors (Gi/o coupled)
+shift the half-inactivation voltage of Ih currents toward hyperpolarized potentials [Ko et al.,
+2016], and these receptors mediated an inhibitory net effect in a subgroup of prefrontal
+cortical L5PCs [Elliott et al., 2018].
+To discuss the future directions for detailed modelling of I h channels, we now write on p. 22:
+Furthermore, modelling of intracellular cAMP concentration and its effects on the I h
+activation would be beneficial since the concentration of cAMP varies across dendrites [Katz
+and Clemens, 2001], and thus I h channels in one part of the dendritic tree may be more prone
+to negative cAMP modulation and others to positive one.
+** nice results for altering vhalfl for both advance and retreat 
+** probably want to user smaller slope for ramped sine / phase retreat figures 
+
+* [2022-7-17 Sun] - neuromodulation figure  
+
+* [2022-7-22 Fri] - starting paper 
+** started paper on overleaf 
+
+* [2022-8-3 Wed] - paper notes 
+** Kamondi1998-rd
+*** used two compartment (soma and dendrite) model of CA1 pyramidal cell without ih 
+from Pinsky1994-fy
+*** stimulated dendrite and soma with sinusoidal currents and observed "spike phase precession"
+*** "To mimic the passage of a rat across the place field, let us suppose that 
+the excitatory drive to the neuron's dendrite is gradually increased as the rat 
+enters and moves across the place field."
+
+* [2022-8-18 Thu] - focusing on apical stim for phase retreat 
+** reasoning:
+*** more dramatic drop in spike-phase over cycles 
+*** clearly monotonic decrease 
+*** no doublets, will look better (and consistent) for the trace 
+*** more clear amplitude dependence 
+*** follows more closely from buzsaki paper 
+
+* [2022-9-15 Thu] - synaptic stims 
+** still looks ugly, but got something that looks like phase retreat w/ ff inhibition 
+*** excitatory 
+oblq_secs = [9, 87, 105, 19]#, 101]
+gmaxs = [0.01*12, 0.004*12, 0.0027*12, 0.006*12]#, 0.0038/4]
+*** inhibitory
+peri_secs = [0, 7]
+inh_syns[sec_num][-1].gmax = 0.003 * 50 
+** very hard to oscillations symmetrical about vmemb
+
+* [2022-9-21 Wed] - asym phase and synaptic stims 
+** adapted framework from Pena et al for asymmetric impedance amplitude for 
+asymetric impedance phase
+*** clear differences between upper envelope and lower envelope 
+*** can use for spiking activity 
+** synaptic stims 
+*** tried sampling gmax for AMPA and GABA synapses from sinusoid - very tricky 
+*** trying alternating excitatory and inhibitory Exp2Syn - still very tricky 
+**** weights need to be asymmetric for symmetric voltage excursions 
+**** not sure what the point is if synapses are so highly contrived (trying to get 
+as close to sin as possible)
+
+* [2022-9-26 Mon] - nonlinear phase computations 
+** new fig - comparison of of linear to nonlinear phase, amplitude/asymmetry 
+dependence, holding voltage dependence, h-current dependence, location dependence 
+
+* TODOS 
+** DONE: address advance/retreat at other frequencies (i.e. different amplitudes)
+*** leaving be for right now.  can mention in text for phase advance. clearly visible for 
+retreat
+** DONE: rerun retreat sims for slope 0.5 
+*** running locally 
+** DONE: reverse order of plots for neuromod figure 
+** DONE: manipulate gmax for ih 
+*** decreases in gbad_hd had minimal effects, but increasing it quickly resulted 
+in unexcitability, for now going to leave out, but raises the question of whether 
+it's better off using M1 cell
+** DONE: decide whether blocking Ih should go into neuromodulation or leave where it is 
+*** staying where it is 
+** DONE: need to decide whether to use slope factor of 1 (which has spike doublets) 
+or 0.5 (which is not quite monotonic) for phase retreat / ramp chirp
+** DONE: include bandpassed spiking mentioned in Ulrich in intro 
+** DONE: consider focusing on dendritic stimulation for phase retreat 
+*** much nicer
+** DONE: consider replacing amplitude panels with mean/holding current 
+*** seems to make a sizeable difference for phase advance, not so much for phase retreat 
+** DONE: consider adding comparison between phase advance and spike frequency adaptation 
+*** at least include in mention in text 
+** DONE: rerun neuromodulation for apical dendrite / phase retreat 
+** DONE: finalize figs - want consistent representations for "base" stimuli 
+** DONE: rewrite results (and anything else) to reflect switch of focus to apical 
+** DONE: incorporate discussion of buzsaki paper 
+** DONE: add refs for impedance in intro 
+** DONE: add simulations/code availablity section to methods 
+** TODO: finish plot showing traces and impedance phase for linear sub, nonlinear sub, supra w/ TTX, and supra 
+** TODO: convert other figures from phase via hilbert to new method 
+** TODO: rewrite text accordingly 

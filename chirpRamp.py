@@ -12,6 +12,8 @@ parser.add_argument('--offset', nargs='?', type=float, default=0.0)
 parser.add_argument('--blockIh', nargs='?', type=str, default=None)
 parser.add_argument('--slopeFactor', nargs='?', type=float, default=None)
 parser.add_argument('--saveTraces', nargs='?', type=str, default=None)
+parser.add_argument('--vhalfl', nargs='?', type=float, default=None)
+parser.add_argument('--ih_gbar_factor', nargs='?', type=float, default=None)
 args = parser.parse_args()
 
 if args.cellModel == 'M1Cell':
@@ -55,6 +57,21 @@ if args.blockIh:
         for seg in sec.allseg():
             try:
                 seg.gbar_hd = 0
+            except:
+                pass
+if args.vhalfl:
+    for sec in h.allsec():
+        for seg in sec.allseg():
+            try:
+                seg.hd.vhalfl = args.vhalfl
+            except:
+                pass 
+
+if args.ih_gbar_factor:
+    for sec in h.allsec():
+        for sec in sec.allseg():
+            try:
+                seg.gbar_hd = seg.gbar_hd * args.ih_gbar_factor
             except:
                 pass
 
@@ -183,6 +200,8 @@ out['dist'] = dist
 
 allspks, _ = find_peaks(v_trim, 0)
 
+datadir = 'subramp_data/'
+tracedir = 'subramp_traces/'
 if len(allspks):
     stim_pks, stim_amps = find_peaks(i.as_numpy())
     stim_troughs, trough_amps = find_peaks(i.as_numpy() * -1)
@@ -206,10 +225,16 @@ if len(allspks):
     out['lags'] = lags
     out['freq'] = freq
     out['angles'] = angles 
+    datadir = 'ramp_data/'
+    tracedir = 'ramp_traces/'
 if args.blockIh:
-    filename = 'ramp_data/' + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockIh.json'
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockIh.json'
+elif args.vhalfl:
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_vhalfl_' + str(round(args.vhalfl)) + '.json'
+elif args.ih_gbar_factor:
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_gbarfactor_' + str(round(args.ih_gbar_factor, 2)) + '.json'
 else:
-    filename = 'ramp_data/' + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '.json'
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '.json'
 
 with open(filename, 'w') as fileObj:
     json.dump(out, fileObj)
@@ -219,8 +244,12 @@ if args.saveTraces:
             'i' : i.as_numpy(),
             'time' : time.as_numpy()}
     if args.blockIh:
-        tracefile = 'ramp_traces/'  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockIh.npy'
+        tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockIh.npy'
+    elif args.vhalfl:
+        tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_vhalf_' + str(round(args.vhalfl)) + '.npy'
+    elif args.ih_gbar_factor:
+        tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_gbarfactor_' + str(round(args.ih_gbar_factor,2)) + '.npy'
     else:
-        tracefile = 'ramp_traces/'  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '.npy'
+        tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '.npy'
     with open(tracefile, 'wb') as fileObj:
         np.save(fileObj, traces)

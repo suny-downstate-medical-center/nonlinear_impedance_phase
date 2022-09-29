@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-conda activate py39
+# conda activate py39
 # python3 chirpLinear.py --section=apic_36 --amp=3.35 --f0=8.0 --f1=8.0 --t0=2 --saveTraces=True
 # python3 chirpLinear.py --section=apic_36 --amp=3.45 --f0=8.0 --f1=8.0 --t0=2 --saveTraces=True
 # python3 chirpLinear.py --section=apic_36 --amp=3.5 --f0=8.0 --f1=8.0 --t0=2 --saveTraces=True
@@ -166,13 +166,53 @@ conda activate py39
 # python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=10.0 --f1=10.0 --t0=6 --saveTraces=True --slopeFactor=1.0
 # python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=11.0 --f1=11.0 --t0=6 --saveTraces=True --slopeFactor=1.0
 # python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=12.0 --f1=12.0 --t0=6 --saveTraces=True --slopeFactor=1.0
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.75
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.8
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.85
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.9
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.95
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.05
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.1
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.15
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.2
-python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.25
+# python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.75
+# python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.8
+# python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.85
+# python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.9
+# python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.95
+# python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.05
+# python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.1
+# python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.15
+# python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.2
+# python3 chirpRamp.py --section=apic_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.25
+# python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=1.0 --f1=1.0 --t0=20 --saveTraces=True --slopeFactor=0.5
+# python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=2.0 --f1=2.0 --t0=10 --saveTraces=True --slopeFactor=0.5
+# python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=3.0 --f1=3.0 --t0=10 --saveTraces=True --slopeFactor=0.5
+# python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=4.0 --f1=4.0 --t0=6 --saveTraces=True --slopeFactor=0.5
+# python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=5.0 --f1=5.0 --t0=6 --saveTraces=True --slopeFactor=0.5
+# python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=6.0 --f1=6.0 --t0=6 --saveTraces=True --slopeFactor=0.5
+# python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=7.0 --f1=7.0 --t0=6 --saveTraces=True --slopeFactor=0.5
+# python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.5
+# python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=9.0 --f1=9.0 --t0=6 --saveTraces=True --slopeFactor=0.5
+# python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=10.0 --f1=10.0 --t0=6 --saveTraces=True --slopeFactor=0.5
+# python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=11.0 --f1=11.0 --t0=6 --saveTraces=True --slopeFactor=0.5
+# python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=12.0 --f1=12.0 --t0=6 --saveTraces=True --slopeFactor=0.5
+# python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --blockIh=True  --slopeFactor=0.5
+# python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.25
+# python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.3
+# python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.35
+# python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.4
+# python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.45
+# python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.55
+# python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.6
+# python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.65
+# python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.7
+# python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.75
+# python3 chirpRamp.py --section=apic_36 --amp=3.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.5
+# python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.5
+# python3 chirpRamp.py --section=soma_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
+# python3 chirpRamp.py --section=soma_0 --amp=2.0 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True
+python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.5 --ih_gbar_factor=0.5
+python3 chirpRamp.py --section=soma_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0 --ih_gbar_factor=0.5
+python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.5 --ih_gbar_factor=0.75
+python3 chirpRamp.py --section=soma_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0 --ih_gbar_factor=0.75
+python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.5 --ih_gbar_factor=1.25
+python3 chirpRamp.py --section=soma_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0 --ih_gbar_factor=1.25
+python3 chirpRamp.py --section=soma_0 --amp=1.7 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=0.5 --ih_gbar_factor=1.5
+python3 chirpRamp.py --section=soma_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0 --ih_gbar_factor=1.5
+python3 chirpLinear.py --section=soma_0 --amp=1.0 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --ih_gbar_factor=0.5
+python3 chirpLinear.py --section=soma_0 --amp=1.0 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --ih_gbar_factor=0.75
+python3 chirpLinear.py --section=soma_0 --amp=1.0 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --ih_gbar_factor=1.25
+python3 chirpLinear.py --section=soma_0 --amp=1.0 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --ih_gbar_factor=1.5
+# python3 chirpRamp.py --section=soma_0 --amp=1.9 --f0=8.0 --f1=8.0 --t0=6 --saveTraces=True --slopeFactor=1.0
