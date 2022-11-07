@@ -30,8 +30,8 @@ NEURON {
 	THREADSAFE SUFFIX hd
 	NONSPECIFIC_CURRENT i
 	NONSPECIFIC_CURRENT lk
-        RANGE gbar, vhalfl, elk, clk, glk, ehd
-        GLOBAL linf,taul
+        RANGE gbar, vhalfl, elk, clk, glk, ehd, linf,taul
+        :GLOBAL linf,taul
 }
 
 

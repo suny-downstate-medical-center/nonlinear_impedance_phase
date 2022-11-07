@@ -97,6 +97,15 @@ seg_v = h.Vector().record(seg._ref_v)
 time = h.Vector().record(h._ref_t)
 I, t = getChirp(f0, f1, t0, amp, Fs, delay, offset=args.offset)
 i = h.Vector().record(h.IClamp[0]._ref_i)
+ih = h.Vector().record(soma_seg.hd._ref_i)
+inat = h.Vector().record(soma_seg.NaTa_t._ref_ina)
+inap = h.Vector().record(soma_seg.Nap_Et2._ref_ina)
+iske2 = h.Vector().record(soma_seg.SK_E2._ref_ik)
+iskv3 = h.Vector().record(soma_seg.SKv3_1._ref_ik)
+icahva = h.Vector().record(soma_seg.Ca_HVA._ref_ica)
+icalva = h.Vector().record(soma_seg.Ca_LVAst._ref_ica)
+ikpst = h.Vector().record(soma_seg.K_Pst._ref_ik)
+iktst = h.Vector().record(soma_seg.K_Tst._ref_ik)
 stim.amp = 0
 stim.dur = (t0+delay*2) * Fs + 1
 I.play(stim._ref_amp, t)
@@ -199,7 +208,16 @@ with open(filename, 'w') as fileObj:
 if args.saveTraces:
     traces = {'soma_v' : soma_v.as_numpy(),
             'i' : i.as_numpy(),
-            'time' : time.as_numpy()}
+            'time' : time.as_numpy(),
+            'ih' : ih,
+            'inat' : inat,
+            'inap' : inap,
+            'iske2' : iske2,
+            'iskv3' : iskv3,
+            'icahva' : icahva,
+            'icalva' : icalva,
+            'ikpst' : ikpst,
+            'iktst' : iktst}
     if args.blockIh:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockIh.npy'
     elif args.vhalfl:
@@ -213,8 +231,26 @@ if args.saveTraces:
     with open(tracefile, 'wb') as fileObj:
         np.save(fileObj, traces)
 
-# from matplotlib import pyplot as plt
-# fig, axs = plt.subplots(3,1,sharex=True)
+from matplotlib import pyplot as plt
+fig, axs = plt.subplots(3,3,sharex=True)
+axs[0][0].plot(ih)
+axs[0][0].set_title('ih')
+axs[0][1].plot(inat)
+axs[0][1].set_title('inat')
+axs[0][2].plot(inap)
+axs[0][2].set_title('inap')
+axs[1][0].plot(iske2)
+axs[1][0].set_title('iske2')
+axs[1][1].plot(iskv3)
+axs[1][1].set_title('iskv3')
+axs[1][2].plot(icahva)
+axs[1][2].set_title('icahva')
+axs[2][0].plot(icalva)
+axs[2][0].set_title('icalva')
+axs[2][1].plot(ikpst)
+axs[2][1].set_title('ikpst')
+axs[2][2].plot(iktst)
+axs[2][2].set_title('iktst')
 # axs[0].plot(current)
 # axs[1].plot(v)
 # axs[2].plot(iphase)

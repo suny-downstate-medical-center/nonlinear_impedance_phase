@@ -720,6 +720,22 @@ as close to sin as possible)
 ** new fig - comparison of of linear to nonlinear phase, amplitude/asymmetry 
 dependence, holding voltage dependence, h-current dependence, location dependence 
 
+* [2022-10-3 Mon] - back to manuscript 
+** email people with nonlinear responses?
+
+* [2022-10-21 Fri] - rewriting results 
+** questions for bill:
+*** why sychrony point?  anything wrong with synchronous  frequency?  it's what we used in the last paper 
+
+* [2022-10-25 Tue] - channel conductances 
+** recording channel conductances at soma for subthreshold asym responses fig 
+*** doesn't really make sense for comparison between somatic and apical stim 
+where to record? 
+** bill's alternative: graph amplitude sensitivity against tau for m,h for each ?
+*** /usr/site/nrniv/local/python/mhn.py 
+**** doesn't work on neurosim or locally, problem w/ h.usetables, seg fault if comment out 
+**** just an idea;tau is a voltage-sensitive param that defines a response time for that channel
+
 * TODOS 
 ** DONE: address advance/retreat at other frequencies (i.e. different amplitudes)
 *** leaving be for right now.  can mention in text for phase advance. clearly visible for 
@@ -748,6 +764,14 @@ or 0.5 (which is not quite monotonic) for phase retreat / ramp chirp
 ** DONE: incorporate discussion of buzsaki paper 
 ** DONE: add refs for impedance in intro 
 ** DONE: add simulations/code availablity section to methods 
-** TODO: finish plot showing traces and impedance phase for linear sub, nonlinear sub, supra w/ TTX, and supra 
-** TODO: convert other figures from phase via hilbert to new method 
-** TODO: rewrite text accordingly 
+** DONE: finish plot showing traces and impedance phase for linear sub, nonlinear sub, supra w/ TTX, and supra 
+** DONE: convert other figures from phase via hilbert to new method 
+** DONE: consider new fig explaining method 
+*** looks crummy 
+** DONE: neuromodulation for nonlinear, subthreshold 
+** DONE: rewrite text accordingly 
+*** finished through results, need to do discussion 
+*** DONE: introduce inductive phase?
+**** for now, no
+*** DONE: introduce leading phase and synchronous frequency in methods 
+** DONE: change resting vmemb to holding vmemb 
