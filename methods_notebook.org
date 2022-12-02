@@ -775,3 +775,11 @@ or 0.5 (which is not quite monotonic) for phase retreat / ramp chirp
 **** for now, no
 *** DONE: introduce leading phase and synchronous frequency in methods 
 ** DONE: change resting vmemb to holding vmemb 
+** DONE: new RMPs
+** DONE: maybe new amplitudes 
+** TODO: maybe add methods fig
+** TODO: remove neuromod 
+*** rationale: two vhalfs in .mod, tiny effects, enough going on without it 
+** TODO: try extracting exp data from ulrich 
+*** really noisy, webplotdigitizer doesn't sample evenly
+*** didn't need exp data for first paper 

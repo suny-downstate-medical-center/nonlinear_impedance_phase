@@ -14,6 +14,9 @@ parser.add_argument('--slopeFactor', nargs='?', type=float, default=None)
 parser.add_argument('--saveTraces', nargs='?', type=str, default=None)
 parser.add_argument('--vhalfl', nargs='?', type=float, default=None)
 parser.add_argument('--ih_gbar_factor', nargs='?', type=float, default=None)
+parser.add_argument('--TTX', nargs='?', type=str, default=None)
+parser.add_argument('--blockSKv3', nargs='?', type=str, default=None)
+parser.add_argument('--blockSKE', nargs='?', type=str, default=None)
 args = parser.parse_args()
 
 if args.cellModel == 'M1Cell':
@@ -74,6 +77,27 @@ if args.ih_gbar_factor:
                 seg.gbar_hd = seg.gbar_hd * args.ih_gbar_factor
             except:
                 pass
+if args.TTX:
+    for sec in h.allsec():
+        for seg in sec.allseg():
+            try:
+                seg.NaTa_t.gNaTa_tbar = 0
+            except:
+                pass
+if args.blockSKv3:
+    for sec in h.allsec():
+        for seg in sec.allseg():
+            try:
+                seg.SKv3_1.gSKv3_1bar = 0
+            except:
+                pass
+if args.blockSKE:
+    for sec in h.allsec():
+        for seg in sec.allseg():
+            try:
+                seg.SK_E2.gSK_E2bar = 0
+            except:
+                pass
 
 dist = fromtodistance(seg, soma_seg)
 amp = args.amp #0.02 
@@ -92,6 +116,15 @@ else:
     slope = args.slopeFactor #1 / (t0 * args.slopeFactor)
     I, t = getRampChirp(f0, f1, t0, amp, Fs, delay, offset=args.offset, slope=slope)
 i = h.Vector().record(h.IClamp[0]._ref_i)
+ih = h.Vector().record(soma_seg.hd._ref_i)
+inat = h.Vector().record(soma_seg.NaTa_t._ref_ina)
+inap = h.Vector().record(soma_seg.Nap_Et2._ref_ina)
+iske2 = h.Vector().record(soma_seg.SK_E2._ref_ik)
+iskv3 = h.Vector().record(soma_seg.SKv3_1._ref_ik)
+icahva = h.Vector().record(soma_seg.Ca_HVA._ref_ica)
+icalva = h.Vector().record(soma_seg.Ca_LVAst._ref_ica)
+ikpst = h.Vector().record(soma_seg.K_Pst._ref_ik)
+iktst = h.Vector().record(soma_seg.K_Tst._ref_ik)
 stim.amp = 0
 stim.dur = (t0+delay*2) * Fs + 1
 I.play(stim._ref_amp, t)
@@ -227,12 +260,20 @@ if len(allspks):
     out['angles'] = angles 
     datadir = 'ramp_data/'
     tracedir = 'ramp_traces/'
-if args.blockIh:
+if args.blockIh and args.blockSKE:
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockIhSKE.json'
+elif args.blockIh:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockIh.json'
 elif args.vhalfl:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_vhalfl_' + str(round(args.vhalfl)) + '.json'
 elif args.ih_gbar_factor:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_gbarfactor_' + str(round(args.ih_gbar_factor, 2)) + '.json'
+elif args.blockSKE:
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockSKE.json'
+elif args.blockSKv3:
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockSKv3.json'
+elif args.TTX:
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_TTX.json'
 else:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '.json'
 
@@ -243,13 +284,42 @@ if args.saveTraces:
     traces = {'soma_v' : soma_v.as_numpy(),
             'i' : i.as_numpy(),
             'time' : time.as_numpy()}
-    if args.blockIh:
+    if args.blockIh and args.blockSKE:
+        tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockIhSKE.npy'
+    elif args.blockIh:
         tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockIh.npy'
     elif args.vhalfl:
         tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_vhalf_' + str(round(args.vhalfl)) + '.npy'
     elif args.ih_gbar_factor:
         tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_gbarfactor_' + str(round(args.ih_gbar_factor,2)) + '.npy'
+    elif args.blockSKE:
+        tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockSKE.npy'
+    elif args.TTX:
+        tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockTTX.npy'
+    elif args.blockSKv3:
+        tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockSKv3.npy'
     else:
         tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '.npy'
     with open(tracefile, 'wb') as fileObj:
         np.save(fileObj, traces)
+
+from matplotlib import pyplot as plt
+fig2, axs2 = plt.subplots(3,3,sharex=True)
+axs2[0][0].plot(ih)
+axs2[0][0].set_title('ih')
+axs2[0][1].plot(inat)
+axs2[0][1].set_title('inat')
+axs2[0][2].plot(inap)
+axs2[0][2].set_title('inap')
+axs2[1][0].plot(iske2)
+axs2[1][0].set_title('iske2')
+axs2[1][1].plot(iskv3)
+axs2[1][1].set_title('iskv3')
+axs2[1][2].plot(icahva)
+axs2[1][2].set_title('icahva')
+axs2[2][0].plot(icalva)
+axs2[2][0].set_title('icalva')
+axs2[2][1].plot(ikpst)
+axs2[2][1].set_title('ikpst')
+axs2[2][2].plot(iktst)
+axs2[2][2].set_title('iktst')

@@ -16,6 +16,8 @@ parser.add_argument('--saveTraces', nargs='?', type=str, default=None)
 parser.add_argument('--vhalfl', nargs='?', type=float, default=None)
 parser.add_argument('--ih_gbar_factor', nargs='?', type=float, default=None)
 parser.add_argument('--TTX', nargs='?', type=str, default=None)
+parser.add_argument('--blockSKv3', nargs='?', type=str, default=None)
+parser.add_argument('--blockSKE', nargs='?', type=str, default=None)
 args = parser.parse_args()
 
 
@@ -84,6 +86,20 @@ if args.TTX:
                 seg.NaTa_t.gNaTa_tbar = 0
             except:
                 pass
+if args.blockSKv3:
+    for sec in h.allsec():
+        for seg in sec.allseg():
+            try:
+                seg.SKv3_1.gSKv3_1bar = 0
+            except:
+                pass
+if args.blockSKE:
+    for sec in h.allsec():
+        for seg in sec.allseg():
+            try:
+                seg.SK_E2.gSK_E2bar = 0
+            except:
+                pass
 dist = fromtodistance(seg, soma_seg)
 amp = args.amp #0.02 
 t0 = args.t0 #20
@@ -127,7 +143,7 @@ v = v - np.mean(v)
 v = np.hstack((np.repeat(0,int(delay*sampr)), v, np.repeat(0, int(delay*sampr)))) 
 f = np.hstack((np.repeat(0,int(delay*sampr)), np.linspace(f0,f1,len(v_trim)),np.repeat(0,int(delay*sampr))))
 
-iphase = np.angle(hilbert(i.as_numpy()))
+iphase = np.angle(hilbert(current))
 allspks, _ = find_peaks(v_trim, 0)
 pks, _ = find_peaks(v)
 trghs, _ = find_peaks(v*-1)
@@ -199,6 +215,10 @@ elif args.ih_gbar_factor:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_gbarfactor_' + str(round(args.ih_gbar_factor, 2)) + '.json'
 elif args.TTX:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_TTX.json'
+elif args.blockSKv3:
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockSKv3.json'
+elif args.blockSKE:
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockSKE.json'
 else:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '.json'
 
@@ -226,49 +246,55 @@ if args.saveTraces:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_gbarfactor_' + str(round(args.ih_gbar_factor,2)) + '.npy'
     elif args.TTX:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_TTX.npy'
+    elif args.blockSKv3:
+        tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockSKv3.npy'
+    elif args.blockSKE:
+        tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockSKE.npy'
     else:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '.npy'
     with open(tracefile, 'wb') as fileObj:
         np.save(fileObj, traces)
 
 from matplotlib import pyplot as plt
-fig, axs = plt.subplots(3,3,sharex=True)
-axs[0][0].plot(ih)
-axs[0][0].set_title('ih')
-axs[0][1].plot(inat)
-axs[0][1].set_title('inat')
-axs[0][2].plot(inap)
-axs[0][2].set_title('inap')
-axs[1][0].plot(iske2)
-axs[1][0].set_title('iske2')
-axs[1][1].plot(iskv3)
-axs[1][1].set_title('iskv3')
-axs[1][2].plot(icahva)
-axs[1][2].set_title('icahva')
-axs[2][0].plot(icalva)
-axs[2][0].set_title('icalva')
-axs[2][1].plot(ikpst)
-axs[2][1].set_title('ikpst')
-axs[2][2].plot(iktst)
-axs[2][2].set_title('iktst')
-# axs[0].plot(current)
-# axs[1].plot(v)
-# axs[2].plot(iphase)
-# for pk in ipks:
-#     axs[0].plot(pk, current[pk], 'k*')
-#     axs[2].plot(pk, iphase[pk], 'k*')
-# for trgh in itrghs:
-#     axs[0].plot(trgh, current[trgh], 'g*')
-#     axs[2].plot(trgh, iphase[trgh], 'g*')
-# for pk in pks:
-#     axs[1].plot(pk, v[pk], 'r*')
-#     axs[2].plot(pk, iphase[pk], 'r*')
-# for trgh in trghs:
-#     axs[1].plot(trgh, v[trgh], 'y*')
-#     if iphase[trgh] < 0:
-#         axs[2].plot(trgh, iphase[trgh]+2*np.pi, 'y*')
-#     else:
-#         axs[2].plot(trgh, iphase[trgh], 'y*')
+fig2, axs2 = plt.subplots(3,3,sharex=True)
+axs2[0][0].plot(ih)
+axs2[0][0].set_title('ih')
+axs2[0][1].plot(inat)
+axs2[0][1].set_title('inat')
+axs2[0][2].plot(inap)
+axs2[0][2].set_title('inap')
+axs2[1][0].plot(iske2)
+axs2[1][0].set_title('iske2')
+axs2[1][1].plot(iskv3)
+axs2[1][1].set_title('iskv3')
+axs2[1][2].plot(icahva)
+axs2[1][2].set_title('icahva')
+axs2[2][0].plot(icalva)
+axs2[2][0].set_title('icalva')
+axs2[2][1].plot(ikpst)
+axs2[2][1].set_title('ikpst')
+axs2[2][2].plot(iktst)
+axs2[2][2].set_title('iktst')
+
+fig, axs = plt.subplots(3,1, sharex=True)
+axs[0].plot(current)
+axs[1].plot(v)
+axs[2].plot(iphase)
+for pk in ipks:
+    axs[0].plot(pk, current[pk], 'k*')
+    axs[2].plot(pk, iphase[pk], 'k*')
+for trgh in itrghs:
+    axs[0].plot(trgh, current[trgh], 'g*')
+    axs[2].plot(trgh, iphase[trgh], 'g*')
+for pk in pks:
+    axs[1].plot(pk, v[pk], 'r*')
+    axs[2].plot(pk, iphase[pk], 'r*')
+for trgh in trghs:
+    axs[1].plot(trgh, v[trgh], 'y*')
+    if iphase[trgh] < 0:
+        axs[2].plot(trgh, iphase[trgh]+2*np.pi, 'y*')
+    else:
+        axs[2].plot(trgh, iphase[trgh], 'y*')
 
 # fig2, ax = plt.subplots(1,1)
 # if len(allspks):

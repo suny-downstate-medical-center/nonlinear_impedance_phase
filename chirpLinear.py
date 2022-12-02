@@ -12,6 +12,8 @@ parser.add_argument('--delay', nargs='?', type=int, default=3)
 parser.add_argument('--t0', nargs='?', type=int, default=20)
 parser.add_argument('--offset', nargs='?', type=float, default=0.0)
 parser.add_argument('--blockIh', nargs='?', type=str, default=None)
+parser.add_argument('--blockSKE', nargs='?', type=str, default=None)
+parser.add_argument('--blockSKv3', nargs='?', type=str, default=None)
 parser.add_argument('--saveTraces', nargs='?', type=str, default=None)
 parser.add_argument('--vhalfl', nargs='?', type=float, default=None)
 parser.add_argument('--ih_gbar_factor', nargs='?', type=float, default=None)
@@ -81,6 +83,20 @@ if args.TTX:
         for seg in sec.allseg():
             try:
                 seg.NaTa_t.gNaTa_tbar = 0
+            except:
+                pass
+if args.blockSKv3:
+    for sec in h.allsec():
+        for seg in sec.allseg():
+            try:
+                seg.SKv3_1.gSKv3_1bar = 0
+            except:
+                pass
+if args.blockSKE:
+    for sec in h.allsec():
+        for seg in sec.allseg():
+            try:
+                seg.SK_E2.gSK_E2bar = 0
             except:
                 pass
 dist = fromtodistance(seg, soma_seg)
@@ -240,6 +256,10 @@ elif args.ih_gbar_factor:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_gbarfactor_' + str(round(args.ih_gbar_factor, 2)) + '.json'
 elif args.TTX:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_TTX.json'
+elif args.blockSKE:
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockSKE.json'
+elif args.blockSKv3:
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockSKv3.json'
 else:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '.json'
 
@@ -256,6 +276,12 @@ if args.saveTraces:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_vhalf_' + str(round(args.vhalfl)) + '.npy'
     elif args.ih_gbar_factor:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_gbarfactor_' + str(round(args.ih_gbar_factor,2)) + '.npy'
+    elif args.blockSKE:
+        tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockSKE.npy'
+    elif args.blockSKv3:
+        tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockSKv3.npy'
+    elif args.TTX:
+        tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_TTX.npy'
     else:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '.npy'
     with open(tracefile, 'wb') as fileObj:
