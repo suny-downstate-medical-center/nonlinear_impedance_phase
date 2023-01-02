@@ -736,6 +736,28 @@ where to record?
 **** doesn't work on neurosim or locally, problem w/ h.usetables, seg fault if comment out 
 **** just an idea;tau is a voltage-sensitive param that defines a response time for that channel
 
+* [2022-12-12 Mon] - exp data 
+** scipt for analyzing traces from sheets paper: *analyzeExpData.py*
+*** pulled data from webplotdigitizer
+
+* [2023-1-2 Mon] 
+** bill's comments 
+*** 6D doesn't make sense to me -- assuming that we are starting at the same amplitude 
+why no spike on 1st cycle ... ah ic half-cycle now too short at higher freq -- 
+ok i'll put that explanation in and we can correct it later if that's wrong
+*** 2:54 oh but more questions -- in fig4 we appear to be counting cycles from 0 but in 
+6 counting from 1 ??
+oh presumably both start at 0 but no spiking in fig6 ;  we need to give indication 
+of what starting point amplitude is -- prob you do in methods; lms ..   just says 
+"The neuron did not spike during the first few (smallest amplitude) stimulus  
+cycles,"  so in fig4 is 1nA so fig6 starts at ?0.8?? (just guessing) (edited)
+billl
+**** edited methods - "Unless otherwise noted, the amplitude of the stimulus started at 0 nA and continuously increased 0.65 nA/s."
+***  3:23 PM oh but that doesn't seem right eitehr since fig6A shows a spike on 0th cycle
+**** did not include non-spiking cycles in the trace figure, since wouldn't be able to see phase shift of spiking
+added to caption - "Traces start at fifth stimulus cycle.  The cell did not spike on earlier cycles."
+** rerunning ramp data at soma
+
 * TODOS 
 ** DONE: address advance/retreat at other frequencies (i.e. different amplitudes)
 *** leaving be for right now.  can mention in text for phase advance. clearly visible for 
@@ -777,9 +799,18 @@ or 0.5 (which is not quite monotonic) for phase retreat / ramp chirp
 ** DONE: change resting vmemb to holding vmemb 
 ** DONE: new RMPs
 ** DONE: maybe new amplitudes 
-** TODO: maybe add methods fig
-** TODO: remove neuromod 
+** DONE: maybe add methods fig
+** DONE: remove neuromod 
 *** rationale: two vhalfs in .mod, tiny effects, enough going on without it 
-** TODO: try extracting exp data from ulrich 
+** DONE: try extracting exp data from ulrich 
 *** really noisy, webplotdigitizer doesn't sample evenly
 *** didn't need exp data for first paper 
+** DONE: update methods fig 
+** DONE: look into two vhalfs 
+** DONE: update trace for phase retreat 
+** DONE: scale bars for traces 
+** DONE: SK->AHP
+** DONE: get rid of panel titles  
+** DONE: soma version of phase advance  
+** DONE: phase retreat/advance versions with slopes for location 
+*** don't like 

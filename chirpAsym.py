@@ -14,6 +14,7 @@ parser.add_argument('--offset', nargs='?', type=float, default=0.0)
 parser.add_argument('--blockIh', nargs='?', type=str, default=None)
 parser.add_argument('--saveTraces', nargs='?', type=str, default=None)
 parser.add_argument('--vhalfl', nargs='?', type=float, default=None)
+parser.add_argument('--vhalft', nargs='?', type=float, default=None)
 parser.add_argument('--ih_gbar_factor', nargs='?', type=float, default=None)
 parser.add_argument('--TTX', nargs='?', type=str, default=None)
 parser.add_argument('--blockSKv3', nargs='?', type=str, default=None)
@@ -71,7 +72,13 @@ if args.vhalfl:
                 seg.hd.vhalfl = args.vhalfl
             except:
                 pass 
-
+if args.vhalft:
+    for sec in h.allsec():
+        for seg in sec.allseg():
+            try:
+                seg.hd.vhalft = args.vhalft
+            except:
+                pass 
 if args.ih_gbar_factor:
     for sec in h.allsec():
         for sec in sec.allseg():
@@ -211,6 +218,8 @@ if args.blockIh:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockIh.json'
 elif args.vhalfl:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_vhalfl_' + str(round(args.vhalfl)) + '.json'
+elif args.vhalft:
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_vhalft_' + str(round(args.vhalft)) + '.json'
 elif args.ih_gbar_factor:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_gbarfactor_' + str(round(args.ih_gbar_factor, 2)) + '.json'
 elif args.TTX:
@@ -242,6 +251,8 @@ if args.saveTraces:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockIh.npy'
     elif args.vhalfl:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_vhalf_' + str(round(args.vhalfl)) + '.npy'
+    elif args.vhalft:
+        tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_vhalft_' + str(round(args.vhalft)) + '.npy'
     elif args.ih_gbar_factor:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_gbarfactor_' + str(round(args.ih_gbar_factor,2)) + '.npy'
     elif args.TTX:

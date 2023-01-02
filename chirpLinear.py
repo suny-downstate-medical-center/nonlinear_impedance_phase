@@ -248,7 +248,9 @@ if len(allspks):
     out['angles'] = angles 
     datadir = 'supra_data/'
     tracedir = 'supra_traces/'
-if args.blockIh:
+if args.blockIh and args.blockSKE:
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockIhSKE.json'
+elif args.blockIh:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockIh.json'
 elif args.vhalfl:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_vhalfl_' + str(round(args.vhalfl)) + '.json'
@@ -270,7 +272,9 @@ if args.saveTraces:
     traces = {'soma_v' : soma_v.as_numpy(),
             'i' : i.as_numpy(),
             'time' : time.as_numpy()}
-    if args.blockIh:
+    if args.blockIh and args.blockSKE:
+        tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockIhSKE.npy'
+    elif args.blockIh:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockIh.npy'
     elif args.vhalfl:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_vhalf_' + str(round(args.vhalfl)) + '.npy'
