@@ -143,7 +143,8 @@ time_trim = [T for v, T in zip(soma_v, time) if int((delay)*1000) < T < int((del
 current = i_trim
 v = v_trim 
 #current = current[int(delay*sampr - 0.5*sampr+1):-int(delay*sampr- 0.5*sampr)] 
-current = np.hstack((np.repeat(current[0],int(delay*sampr)),current, np.repeat(current[-1], int(delay*sampr)))) 
+# current = np.hstack((np.repeat(current[0],int(delay*sampr)),current, np.repeat(current[-1], int(delay*sampr)))) 
+current = np.hstack((np.repeat(args.offset,int(delay*sampr)),current, np.repeat(args.offset, int(delay*sampr)))) 
 current = current - np.mean(current) 
 #v = v[int(delay*sampr - 0.5*sampr)+1:-int(delay*sampr - 0.5*sampr)] 
 v = v - np.mean(v) 
@@ -162,6 +163,8 @@ phi_minus = None
 asym = -np.min(v)-np.max(v)
 peak_to_peak = np.max(v) - np.min(v)
 v_init = v_trim[0]
+z_plus = None 
+z_minus = None
 
 if len(allspks):
     phi_plus = []
@@ -189,8 +192,9 @@ if len(allspks):
     f_minus = [f[trgh] for trgh in itrghs]
 else:
     phi_plus = [iphase[ipk]-iphase[pk] for pk, ipk in zip(pks, ipks)]
-    f_plus = [f[pk] for pk in pks]
-    phi_minus = []
+    z_plus = [np.abs(v[pk])/amp for pk in pks]
+    z_minus = [np.abs(v[trgh])/amp for trgh in trghs]
+    f_plus = [f[pk] for pk in pks]    
     for trgh, itrgh in zip(trghs, itrghs):
         if iphase[trgh] < 0 and iphase[itrgh] < 0:
             phi_minus.append((iphase[itrgh] + 2*np.pi) - (iphase[trgh] + 2*np.pi))
@@ -210,7 +214,9 @@ out = {'f_plus' : f_plus,
         'offset' : args.offset,
         'v_init' : v_init,
         'peak_to_peak' : peak_to_peak, 
-        'asym' : asym}
+        'asym' : asym,
+        'z_plus': z_plus,
+        'z_minus' : z_minus}
 
 datadir = 'asym_data/'
 tracedir = 'asym_traces/'

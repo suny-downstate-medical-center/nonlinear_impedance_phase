@@ -740,7 +740,7 @@ where to record?
 ** scipt for analyzing traces from sheets paper: *analyzeExpData.py*
 *** pulled data from webplotdigitizer
 
-* [2023-1-2 Mon] 
+* [2023-1-2 Mon] - fixing up phase advance 
 ** bill's comments 
 *** 6D doesn't make sense to me -- assuming that we are starting at the same amplitude 
 why no spike on 1st cycle ... ah ic half-cycle now too short at higher freq -- 
@@ -762,7 +762,7 @@ added to caption - "Traces start at fifth stimulus cycle.  The cell did not spik
 ** DONE: address advance/retreat at other frequencies (i.e. different amplitudes)
 *** leaving be for right now.  can mention in text for phase advance. clearly visible for 
 retreat
-** DONE: rerun retreat sims for slope 0.5 
+** TODO: rerun retreat sims for slope 0.5 
 *** running locally 
 ** DONE: reverse order of plots for neuromod figure 
 ** DONE: manipulate gmax for ih 
@@ -814,3 +814,23 @@ or 0.5 (which is not quite monotonic) for phase retreat / ramp chirp
 ** DONE: soma version of phase advance  
 ** DONE: phase retreat/advance versions with slopes for location 
 *** don't like 
+** DONE: add some lines on pena's amplitude 
+** DONE: add paragraph advocating combo of pena and our methods 
+*** papers that address assymmetry of the voltage response 
+Rotstein2014-bt, Tohidi2009-uc, Schreiber2009-xf, Rotstein2015-kb, Fischer2018-fi
+*** papers with asymmetric responses used to compute classical impedance 
+Rich2020-yl, Ulrich2002-dd
+*** draft 
+Recent work has begun to address the limitations of classical impedance analysis
+and explore the filtering properties of neuronal membranes in a physiologically relevant \vmemb\ regime \citep{Rotstein2014-bt, Tohidi2009-uc, Schreiber2009-xf, Rotstein2015-kb, Fischer2018-fi}.
+\citet{Pena2019-qv} developed an analog to impedance amplitude for this nonlinear,
+physiological regime, and here we have developed a complimentary analog to impedance phase. 
+We advocate advocate for a using a combination of the two in future studies addressing the 
+impedance properties of neurons.
+They can serve as a check on the linearity of \vmemb\ measurements used to compute traditional 
+impedance, as nonlinearity introduces error.
+What is more, they can reveal how nonlinearities introduced by voltage-gated ion 
+channels can give rise to differing dynamics for depolarization and hyperpolarization.
+Here we showed how even small nonlinearities can produce substantially different phase 
+relationships for hyperpolarization and depolarization and produce nonstationary 
+spiking patterns that increase information encoding capacity of the neuron.
