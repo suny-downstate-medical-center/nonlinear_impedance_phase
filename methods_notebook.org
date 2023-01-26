@@ -758,11 +758,193 @@ billl
 added to caption - "Traces start at fifth stimulus cycle.  The cell did not spike on earlier cycles."
 ** rerunning ramp data at soma
 
+* [2023-1-24 Tue] - srdjan's comments 
+** "a non-physiological linear, time-invariant/stationary system" - I am not sure 
+about your meaning of "time-invariant". Publications cited in the previous 
+sentence use CHIRP stimulus. Chirp stimulus is changing with time, hence it is NOT 
+time-invariant
+*** It is not the chirp signal which must be time-invariant, but the system (in this
+context, the neuronal membrane).  This is standard lingo in control theory, and means 
+that the response (or more precisely, the transfer function) of the system does not 
+change over time.  For instance, a 4 Hz stimulus should cause the same response at 
+noon and midnight, or alternatively, it should respond the same whether you stimulate 
+for a minute or an hour.
+*** To more explicitly explain these terms, changed first sentence to:
+Impedance analysis assumes a linear, time-invariant system. In a neural context, 
+this implies that positive and negative current stimuli of equivalent amplitude produce equal and opposite 
+changes in \vmemb\ (linearity) and the neuron always has the same response to 
+equivalent inputs (time-invariance). Impedance analysis is therefore ill-suited for 
+studying much of neuronal function, which is decidedly nonlinear and 
+time-varying \citep{Rotstein2014-bt}.
+
+**  "We found nonlinear subthreshold Vmemb responses to chirp stimuli maintained 
+different frequency-dependent phase relationships depolarization and 
+hyperpolarization" - Bad sentence. I am unable to understand the grammar of the sentence.
+*** Meant to be: We found nonlinear subthreshold \vmemb\ responses to chirp stimuli maintained 
+different frequency-dependent phase relationships during depolarization and
+hyperpolarization.
+*** Possible rewrite:
+We found that the depolarizing and hyperpolarizing half-cycles of nonlinear 
+subthreshold \vmemb\ responses and the high-amplitude chirp stimuli that elicited 
+them maintained different frequency-dependent phase relationships.
+
+** "I understand that Fi-Plus is important for temporal coding, specifically phase coding. 
+I cannot justify your idea to calculate phase shifts for the hyperpolarizing deflections. 
+How is Fi-minus related to physiology? Is there any experiment carried out on real 
+neurons showing that Fi-minus is used by the brain?"
+
+** “This will dictate the time-course of large IPSPs in the same way Fi-plus will 
+dictate the time-course of large EPSPs, and Fi (impedance phase for linear system) 
+dictates time-course of small signals”. 
+I am not aware of large IPSPs in L5b pyramidal cells.
+In this cell type, the power of inhibition is in the current shunting – powerful 
+inhibition without any substantial voltage change.
+In few cases when IPSPs do produce small negative potentials, their time course 
+(rising phase) is relatively slow; slower than the rising phase of an AP, for 
+example. The IPSP peak is round – the peak is not as clear as the AP peak. Hence, 
+the phase shift of 1 or 2 ms is likely irrelevant for IPSPs, but it may still be 
+relevant for APs, unless of course you can prove otherwise.
+*** I partly think the physiological relevance of Phi-minus in L5b Pyr neurons is 
+itself irrelevant. I'm using the cell model as much (if not more) to showcase the 
+method than to explore the physiology of this cell type. I'm using this specific 
+cell because the linear impedance profiles were in close agreement with experiment  
+(last paper), so we might as well use it to study the nonlinear case.
+
+**  “What Fi-minus describes is the phase shifts between oscillatory stimuli and 
+hyperpolarized Vmemb responses when the stimuli produce nonlinear/asymmetric Vmemb”. 
+I think that Fi-minus describes the phase shifts between oscillatory stimuli and 
+hyperpolarized Vmemb responses regardless of whether the response is linear or 
+nonlinear. Correct me if I am wrong.
+*** this is correct, Phi-minus will describe the phase shift regardless of whether
+Vmember response was linear or nonlinear.  However, classical/traditional impedance 
+phase will not characterize that phase shift (or that of the depolarized response)
+when vmemb response is nonlinear. 
+
+** The term "compound" is often used in neurophysiology to indicate signals from 
+many cells combined onto one detector/electrode. 
+
+** Sorry, when is voltage high enough to activate voltage-sensitive ion channels? 
+Are all channel species activated at that voltage you have in mind? Specify here 
+(in the results section) the list of channels activated at this higher amplitude 
+regiment. You can potentially use some arbitrary threshols, for example 10% of 
+maximal conductance (g_bar) was opened, therefore we consider the channel to be 
+“activated”. Specify the list of channels that you had in the model cells but were 
+not activated significantly, less than 10% of maximal conductance (g_bar). 
+*** I think some, but not all, of this gets addressed as we move through the results,
+partly as the relevant conductances change depending on the stimulation paradigm 
+
+** "We observed a notable change in phase shift between spikes and stimulus over time 
+(Fig. 2D)." "Time" is not the main variable here. In Fig. 2, perhaps a more important 
+variable is the "instantaneous FREQUENCY" of the chirp stimulus. 
+*** I partly disagree, with a slew rate of 1 Hz/s, instantaneous frequency changes 
+very little over three cycles ~8 Hz.
+
+** I do not see any signs of “phenomenological inductance” in Fig. 3. If you expect 
+the readers to solve a detective story, this is a bad idea. You should write for high 
+school students, and you should write for me (Srdjan Antic). I have no idea what 
+phenomenological inductance is, or what it means to you personally. The writer 
+(Kelley) and the reader (Antic) have to come to some common grounds, before we 
+jump into the essence of the finding. Please show “inductance” in figure or define 
+it here with words. 2-3 sentences is not too much wording for introducing the central 
+point of the paper. 
+*** needs to be defined earlier. 
+
+** I do not see this in the figure. I do not see peak response being 5% higher 
+than through. Is this a detective story?
+I do not see how your results led you to conclude that Fig. 3A is due to Na channels.
+
+** Dendrites - I thought you should open this next paragraph with an announcement: 
+Hey, inputs are received on dendrites”. It is possible that current injection in 
+the cell body (Figs 2 and 3) is not the same thing as current injection into 
+dendrite (Reference). The location of input may affect the neuronal I-O. Now we are
+going to investigate this question by placing the current injection site on denrite 
+while still recoding axonal APs from the cell body.
+
+** What caused changes in RMP? Did the I-h channel block produce a change in RMP, 
+or did you artificially set RMP to more hyperpolarized levels? Why are you not 
+disclosing these details and helping thousands of readers. 
+*** maybe we're not using the right term here.  holding?
+
+**  I have no idea what “classical impedance phase” means to you – please put it 
+in a figure for direct side-by-side cpmarision
+*** it is in figure 2, will make sure to call it that earlier 
+
+** I do not see Ih and Ina effects in Fig. 3D.
+
+** It is not clear why you decided to emphasize green lines? Upon observation of 
+Fig. 3D, I conclude that large amplitude and small amplitude stimuli, both produce 
+qualitatively identical results, same slope of the curve, same intersection, same 
+general shape. What is going on here? 
+
+** Are you saying that your model keeps track of intracellular Ca? If you block all 
+Ca channels, does activation of SK channel decrease to zero?  
+
+**  L5 pyramidal cells can fire APs at 150 Hz. What do you mean, at 9 Hz the cell 
+could not follow?
+
+**  I do not see any evidence that I/O phase relationships were dependent on the 
+phenomenological inductance. Could you please elaborate?
+*** same issue as above, phenom inductance needs explanation 
+
+** (what complicated behavior, could you please elaborate your ideas). I am totally 
+confused. Complicated behavior resulted from spiking, except Na channels were 
+blocked in Fig. 2C? Also, the behavior was complicated, but the I/O phase relationship 
+changed smoothly with frequency?
+*** no spiking, smooth; with spiking, not 
+
+**  This is perfectly logical and predictable from the basic Physiology. Stronger 
+inputs charge neuronal membrane faster than weaker inputs. Faster charging curve 
+activates Na channels more potently bringing a neuron to firing threshold sooner. 
+Hence, the stronger the stimulus, the sooner will neuron fire. Note that activation 
+dynamics of channels did not change. The only thing that changes is stimulus 
+intensity. The idea that stimulus intensity is coded by time (phase shift) is at 
+the core of the phase coding theory (Wolf Singer, Pascal Fries). Within an 
+oscillation cycle, the amplitude of an excitatory input to a CNS neuron is 
+converted into a temporal code. The amplitude of excitation is recoded in the 
+time of occurrence of the recipient neuron’s output spikes, relative to the phase 
+of the oscillation cycle. Here, stronger inputs lead to earlier responses. Thus, 
+amplitude values are converted into phase-shift values that indicate by how much 
+a discharge precedes the peak of a gamma cycle. Perhaps you wish to cite 
+Dr. Wolf Singer and the gang?
+
+** Why is K+ channel SK important and the following two K+ channels are not 
+important: [1] Delayed rectifier K channel [2] M-type K current. Also, why 
+is K+ channel SK important and the low-threshold T-Type Ca channels are not 
+important?
+
+** Which mechanism [for phase advance]? Is it a gradual increase in stimulus 
+intensisity? State explicitly.
+
+** All biological examples (citations) you came up with, to discuss the functional 
+implications, are examples from hippocampus. However, you had chosen to model 
+membrane properties and membrane currents of a neocortical layer 5b (L5b) 
+pyramidal neuron. A solid reviewer would say: “Hey Dr. Kelley, CA1 pyramidal 
+cells are different from L5b pyramidal cells. Take a model of a CA1 pyramidal cell 
+and test your current results on the phase retreat and phase advance; do they hold 
+in CA1 cell, and what are the qualitative and quantitative differences between the 
+phase-retreat dynamics in cortical L5 versus that in hippocampal CA1?
+
+** A reviewer could ask: “Hey Dr. Kelley, which brain area is your L5b cell from? 
+Is it barrel cortex, auditory cortex, visual cortex, entorhinal cortex, motor 
+cortex or prefrontal cortex? Is this cortico-cortical (CC) or cortico-subcortical 
+(CS) subtype?”
+
+** All of your biological examples on functional implications are examples from 
+hippocampus. Here is one possible relief from cortex: Hafting T, Fyhn M, Bonnevie 
+T, Moser MB, Moser EI (June 2008). "Hippocampus-independent phase precession in 
+entorhinal grid cells". Nature. 453 (7199): 1248–52. It may deflect my critique 
+on the list of citations used in the discussion section.
+
+** A reviewer could ask: “Hey, why did you present Fi-Minus data in the Results 
+Section, if you never mentioned it in the Discussion Section?” Which brings us 
+to my earlier point: I am not sure whether phase precessions for hyperpolarizing 
+potentials are biologically relevant.
+
 * TODOS 
 ** DONE: address advance/retreat at other frequencies (i.e. different amplitudes)
 *** leaving be for right now.  can mention in text for phase advance. clearly visible for 
 retreat
-** TODO: rerun retreat sims for slope 0.5 
+** DONE: rerun retreat sims for slope 0.5 
 *** running locally 
 ** DONE: reverse order of plots for neuromod figure 
 ** DONE: manipulate gmax for ih 
