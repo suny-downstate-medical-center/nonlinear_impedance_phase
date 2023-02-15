@@ -8,7 +8,7 @@ We identified two patterns of spiking in response to continuing sinusoidal stimu
 Sinusoidal inputs produced *phase retreat*, where action potentials occurred progressively later in cycles of the input stimulus, resulting from adaptation.
 Sinusoidal inputs with increasing amplitude over cycles produced *phase advance*, where action potentials occurred progressively earlier in cycles of the input stimulus.
 
-# Basic Use
+# Basic Usage
 Make sure you have installed [NEURON](https://www.neuron.yale.edu/neuron/) and [NETPYNE](http://netpyne.org/).
 
 Clone this repository using 'git'
