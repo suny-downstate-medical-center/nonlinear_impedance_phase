@@ -27,17 +27,17 @@ ax.plot([-1,13], [soma_v[0], soma_v[0]], 'b--')
 ax.plot([-1,13], [stim[0], stim[0]], 'k--')
 ax.plot([-1,13], [-121,-121], color='gray')
 for pk in ipks:
-    ax.plot(time[pk], stim[pk], 'k*')
-    ax.plot(time[pk], -121, 'k*')
+    ax.plot(time[pk], stim[pk], 'k*', markersize=12)
+    ax.plot(time[pk], -121, 'k*', markersize=12)
 for trgh in itrghs:
-    ax.plot(time[trgh], stim[trgh], 'ko')
-    ax.plot(time[trgh] , -121, 'ko')
+    ax.plot(time[trgh], stim[trgh], 'ko', markersize=12)
+    ax.plot(time[trgh] , -121, 'ko', markersize=12)
 for pk in pks:
-    ax.plot(time[pk], soma_v[pk], 'b^')
-    ax.plot(time[pk], -121, 'b^')
+    ax.plot(time[pk], soma_v[pk], 'b^', markersize=12)
+    ax.plot(time[pk], -121, 'b^', markersize=12)
 for trgh in trghs:
-    ax.plot(time[trgh], soma_v[trgh], 'bs')
-    ax.plot(time[trgh], -121, 'bs')
+    ax.plot(time[trgh], soma_v[trgh], 'bs', markersize=12)
+    ax.plot(time[trgh], -121, 'bs', markersize=12)
 
 ax.set_yticks([])
 ax.tick_params(axis='x', which='major', labelsize=11)
@@ -52,7 +52,7 @@ ax.set_xlabel('Time (s)', fontsize=16)
 
 # plt.text(9.055, -88.55, r'$\Phi^+$', fontsize=22)
 # plt.text(9.108, -94, r'$\Phi^-$', fontsize=22)
-plt.legend()
+plt.legend(fontsize=16)
 
 plt.ion()
 plt.show()

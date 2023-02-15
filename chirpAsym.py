@@ -35,6 +35,8 @@ elif args.cellModel == 'HayCellMig':
     sec_name = args.section.split('_')[0]
     sec_num = args.section.split('_')[1]
     execstr = 'seg = cell.' + sec_name + '[' + sec_num + '](0.5)'
+    # seg = cell.apic[int(sec_num)](0.5)
+    # soma_seg = seg 
     # seg = soma_seg
     exec(execstr)
     from neuron import h
@@ -107,6 +109,7 @@ if args.blockSKE:
                 seg.SK_E2.gSK_E2bar = 0
             except:
                 pass
+
 dist = fromtodistance(seg, soma_seg)
 amp = args.amp #0.02 
 t0 = args.t0 #20
@@ -120,15 +123,15 @@ seg_v = h.Vector().record(seg._ref_v)
 time = h.Vector().record(h._ref_t)
 I, t = getChirp(f0, f1, t0, amp, Fs, delay, offset=args.offset)
 i = h.Vector().record(h.IClamp[0]._ref_i)
-ih = h.Vector().record(soma_seg.hd._ref_i)
-inat = h.Vector().record(soma_seg.NaTa_t._ref_ina)
-inap = h.Vector().record(soma_seg.Nap_Et2._ref_ina)
-iske2 = h.Vector().record(soma_seg.SK_E2._ref_ik)
-iskv3 = h.Vector().record(soma_seg.SKv3_1._ref_ik)
-icahva = h.Vector().record(soma_seg.Ca_HVA._ref_ica)
-icalva = h.Vector().record(soma_seg.Ca_LVAst._ref_ica)
-ikpst = h.Vector().record(soma_seg.K_Pst._ref_ik)
-iktst = h.Vector().record(soma_seg.K_Tst._ref_ik)
+ih = None # h.Vector().record(soma_seg.hd._ref_i)
+inat = None # h.Vector().record(soma_seg.NaTa_t._ref_ina)
+inap = None # h.Vector().record(soma_seg.Nap_Et2._ref_ina)
+iske2 = None # h.Vector().record(soma_seg.SK_E2._ref_ik)
+iskv3 = None # h.Vector().record(soma_seg.SKv3_1._ref_ik)
+icahva = None # h.Vector().record(soma_seg.Ca_HVA._ref_ica)
+icalva = None # h.Vector().record(soma_seg.Ca_LVAst._ref_ica)
+ikpst = None # h.Vector().record(soma_seg.K_Pst._ref_ik)
+iktst = None # h.Vector().record(soma_seg.K_Tst._ref_ik)
 stim.amp = 0
 stim.dur = (t0+delay*2) * Fs + 1
 I.play(stim._ref_amp, t)
@@ -194,7 +197,8 @@ else:
     phi_plus = [iphase[ipk]-iphase[pk] for pk, ipk in zip(pks, ipks)]
     z_plus = [np.abs(v[pk])/amp for pk in pks]
     z_minus = [np.abs(v[trgh])/amp for trgh in trghs]
-    f_plus = [f[pk] for pk in pks]    
+    f_plus = [f[pk] for pk in pks]
+    phi_minus = [] 
     for trgh, itrgh in zip(trghs, itrghs):
         if iphase[trgh] < 0 and iphase[itrgh] < 0:
             phi_minus.append((iphase[itrgh] + 2*np.pi) - (iphase[trgh] + 2*np.pi))
