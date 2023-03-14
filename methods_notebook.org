@@ -983,15 +983,34 @@ Pyramidal neurons have diverse biophysics and projections, and they form the mai
 Therefore, understanding how pyramidal neurons integrate oscillatory synaptic inputs to generate subthreshold membrane potential oscillations and spiking activity is critical to understanding cortical computations.
 Impedance analysis provides a tool for characterizing how the neuronal membrane responds and filters oscillatory inputs.
 
-* [2023-2-14 Tue] - 
+* [2023-2-14 Tue] - prep for pnas 
 ** current word count: 5473
 *** "preferred length" for PNAS: 6 pgs, 4k words, 4 figures 
+
+* [2023-3-7 Tue] - john's comments 
+** rewrite 
+Impedance analysis assumes that the neuronal membrane is a linear, time-invariant system.
+Linearity implies that positive and negative current stimuli of equivalent amplitude produce equal and opposite changes in \vmemb\.
+If the neuron were a linear system, there would be negative, hyperpolarizing action potentials.
+Nonlinearity in the neuronal membrane arises through voltage-gate ion channels, whose conductances are different during depolarization and hyperpolarization.
+Time-invariance implies the membrane always has the same response to equivalent inputs, but mechanisms like slow channel kinetics, \ca\ accumulation, and neuromodulation produce time-variance.
+Impedance analysis is therefore ill-suited for studying much of neuronal function, which is decidedly nonlinear and time-varying \citep{Miller1985-xl, Rotstein2014-bt}.
+The impedance analysis framework derives from electrical engineering and is based on linear resistor-capacitor-inductor (RLC) circuits. 
+In a neural context, impedance analysis is used to characterize filtering properties of the membrane in a low-amplitude regime where nonlinearities can be approximated as ``phenomenological inductance'' \citep{Cole1941-vd, Mauro1970-km}. 
+Neuronal membrane impedance is estimated by applying current as either a chirp (time-varying signal whose instantaneous frequency increases with time \citep{Puil1986-uv}) or white noise \citep{Moore1985-kg, Wright1996-pl} and recording the resulting changes in \vmemb.
+Impedance is expressed as a complex number from which we can extract amplitude ($|Z|$), characterizing the 
+frequency-dependent output strength, and phase ($\Phi$), characterizing frequency-dependent phase-shifts between input stimulus and \vmemb.
+Because these methods properly pertain to a non-physiological, linear, time-invariant/stationary system, 
+new methods are needed for characterizing the nonlinear filtering properties of the neuronal membrane, whether spiking or subthreshold.
+** title 
+Simulation of neuronal responses to oscillatory inputs demonstrates different phase
+shifts for excitation and inhibition and nonstationary spiking patterns
 
 * TODOS 
 ** DONE: get rid of time axis on fig 1 
 ** DONE: check with bill about dots for synchrony point, highlighting, use of "RMP", and compound vs. composite, more on location dependence, inhibition and bill's paper
 *** no highlighting 
-*** TODO: add dots for synchrony points 
+*** DONE: add dots for synchrony points 
 ** DONE: check is das narayanan 2017 is really right paper to cite where cited (since not focused on dendrites)
 ** DONE: add context/background on rhythmic/oscillatory inputs, dendrites (Kubie)
 *** partly done 
