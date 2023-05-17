@@ -1006,7 +1006,174 @@ new methods are needed for characterizing the nonlinear filtering properties of 
 Simulation of neuronal responses to oscillatory inputs demonstrates different phase
 shifts for excitation and inhibition and nonstationary spiking patterns
 
+* [2023-3-27 Mon] - supp fig 
+** plotting 
+from matplotlib import pyplot as plt 
+import json 
+import numpy as np
+with open('sub_data/HayCellMig_apic_0_amp_0.025_offset_0.0_f0_0_f1_12.json', 'rb') as fileObj:
+    chirp_data = json.load(fileObj)
+with open('asym_data/HayCellMig_apic_0_amp_0.4_offset_0.0_f0_0_f1_13.json', 'rb') as fileObj:
+    asym_data = json.load(fileObj)
+plt.ion()
+plt.figure()
+# plt.plot(chirp_data['Freq'], chirp_data['ZinAmp'], 'k')
+plt.plot(asym_data['f_minus'], asym_data['z_minus'], 'b')
+plt.plot(asym_data['f_plus'], asym_data['z_plus'], 'b--')
+plt.xlim(0,12)
+plt.xlabel('Frequency (Hz)', fontsize=16)
+plt.ylabel('Impedance Amplitude (M$\Omega$)', fontsize=16)
+# plt.plot([chirp_data['Freq'][np.argmax(chirp_data['ZinAmp'])], chirp_data['Freq'][np.argmax(chirp_data['ZinAmp'])]], [0, np.max(chirp_data['ZinAmp'])], 'k:')
+plt.plot([asym_data['f_minus'][np.argmax(asym_data['z_minus'])], asym_data['f_minus'][np.argmax(asym_data['z_minus'])]], [0, np.max(asym_data['z_minus'])], 'b:')
+plt.plot([asym_data['f_plus'][np.argmax(asym_data['z_plus'])], asym_data['f_plus'][np.argmax(asym_data['z_plus'])]], [0, np.max(asym_data['z_plus'])], 'b:')
+
+* [2023-5-15 Mon] - reviewer comments 
+** Reviewer #1 (Comments to the Author (Required)):
+*** This is a modeling paper that explores the complex dynamical response of a 
+physiological model of cortical neurons. The paper identifies some interesting 
+responses that might have real relevance to in vivo testing, and could lead to 
+interesting new experiments. Specifically, standard methods of recording impedance 
+or chirp responses would be unable to recognize changes in firing phase over 
+successive periods, which might have relevance to several physiological phenomena. 
+However, the format of the paper is a little unclear about the goals of this work 
+and how they relate to prior methods. This should be clarified to make it more 
+obvious what the goals of this paper are.
+
+*** The model description only mentions Ih channels specifically I assume there were 
+other channels as well. Please describe them. (Iahp is casually introduced all 
+the way in Fig. 4, and "voltage sensitive sodium channels" are also mentioned 
+without explanation. SK is introduced at the end of page 9). Even if this is 
+referencing a past paper, a few more details of that model should be provided 
+(i.e. all channels present and how distributed, at the very least)
+
+*** Ih and Iahp are the main channels investigated. Is there a clinical relevance 
+to these specific channels and the effects explored?
+
+*** As the authors state, "traditionally, impedance measures...relied on low-
+amplitude signals below the thresholds for activation of most voltage-sensitive 
+ion channels." The obvious reason for this is that doing so is testing the 
+impedance of the membrane (which is essentially a complicated RC circuit) without 
+the ion channels. Certainly, the true neuronal responses are much more complicated 
+once ion channels are invoked, so the rationale for testing these types of inputs 
+is strong. But the title/abstract/paper are not clear as to what they are 
+promoting. Is the goal of the paper to show that impedance and chirp are both 
+insufficient to characterize these findings? Are they advocating for using this 
+type of sinusoidal response of ranges of pertinent frequencies? My impression 
+(which is not well stated in the paper) is that the main prediction here is that 
+they have devised a novel perturbation method, which uncovered some potentially 
+interesting relationships for firing phase that might be relevant to in vivo 
+testing. This should be made more clear.
+
+*** In a similar vein, the discussion should be more direct about why this type 
+of analysis might have practical implications?
+
+*** Once spiking begins, any specific results are likely the result of the 
+parameters of the spiking, not the input. For instance, bursting frequency and 
+phase on which the spike occurs are going to be almost completely dependent on 
+the refractory parameters of the spiking, not the sinusoidal stimulus. The 
+specific results are almost certainly tied to the parameters of this specific 
+model. Those results are not going to be generalizable. The paper should make it 
+clear that they are not promoting these specific results (frequency, amplitude) 
+in these cells, but rather that this type of effect can be uncovered with this 
+novel perturbation method.
+
+*** The explanation of the "phenomenological inductance" producing an effective 
+LCR circuit that self-synchronizes to 4.5 Hz sounds like a good explanation of 
+how these cells have a "resonant" frequency. Is that the mechanism in the prior 
+papers, or is this a novel contribution of the current one? Please clarify. 
+This should be mentioned, even if it was already described in past work. It was 
+news to me, and an interesting phenomenon. It also motivates not using chirp 
+stimuli, where this effect could not be investigated (which should be mentioned).
+
+*** Fig 4C why was phase retreat location dependent? Did that match up with the 
+location dependence of the channels?
+
+*** Fig 4 D,E. The text mentions that dropped spikes with 9 Hz causes the 
+discontinuities in D, but what about the discont in E (1 nA?) ?
+
+*** Fig. 6. I am not sure how compelling it is that increasing the amplitude 
+causes phase advance-can't this simply be explained due to amplitude threshold? 
+The data in E, might be able to disprove this. Can you show that AP is not just 
+firing at the same stimulus amplitude each time (i.e. that A1sin(t1) is not 
+equal to A2sin(t2), where t2-t1 is the "advance")? If not, then the idea of phase 
+advance is more of a gimmick of the method, rather than a physiological effect. 
+(although in the discussion about phase precession, the authors imply this 
+"gimmick" may actually be a physiological effect of "increased sensory input").
+
+*** I do not see how these results show that "when stimuli are large, causing 
+Vmemb to approach spike threshold, the representation...becomes undemocratic". 
+Proving that would have required simulating a multitude of IPSP and EPSP, which 
+was not done here. Instead, this is a large stimulus applied to the whole cell, 
+which in this metaphor seems more of a dictatorship than a democracy.
+
+** Reviewer #2 (Comments to the Author (Required)):
+
+*** The presence of various voltage-gated ion channels results in an asymmetric 
+Vm impedance profile to the same amplitude depolarizing and hyperpolarizing 
+inputs. Although this phenomenon has been documented previously, the analytical 
+frameworks to capture such Vm non-linearities have only emerged recently.
+
+In this manuscript titled: "Membrane potential phase shifts differ for excitation 
+vs. inhibition in resonant pyramidal neurons: a computer modeling study", 
+Kelley et al. develop an impedance phase analysis method to capture non-linear 
+and nonstationary membrane potential responses to depolarizing and hyperpolarizing 
+currents. Based on these analyses, they also explore the physiological implications 
+of their findings.
+
+However, the methodological innovation of this study is offset by the poor 
+physiological implementation of the model that lacks several key ionic currents 
+whose interactions shape membrane potential trajectories and result in the 
+observed nonlinearity in the system.
+
+*** The Methods section is not self-sufficient. The model construction/implementation 
+is not described to the appropriate level of detail to understand the rest of the 
+manuscript. The reader is left to go through the cited paper to get crucial 
+details about the model. For example, the method lacks a description of all the 
+ion channels incorporated in the model. IAHP is mentioned abruptly in the Results 
+describing Figure 4. No rationale is provided for incorporating only IAHP, other 
+than Ih, in the model.
+
+*** Further, spatio-kinetic interactions among several ion channels regulate 
+neuronal physiology, including the I/O phase profile that the authors investigate. 
+Impedance phase lead caused by the phenomenological inductance generated by Ih is 
+subject to modulation by other sub-threshold currents such as I-KA and I-CaT (e.g., 
+Rathour & Narayanan, J Physiol., 2012; Rathour & Narayanan, PNAS, 2014). Thus, to 
+be able to extrapolate their findings on the I/O phase profile to physiologically 
+relevant conditions, it is important that authors analyze the impact of such ion 
+channel interactions in their study.
+
+*** Suprathreshold-membrane I/O phase response should also depend on the M-type 
+K+ currents. The authors propose that the suprathreshold-membrane I/O phase 
+response can explain phase precession and phase roll observed in the hippocampal 
+and cortical pyramidal neurons. These neurons do express the M-type K+ currents. 
+Thus, to get a better physiological insight, the interactions between Ih and IKM 
+should be probed for a comprehensive understanding of the I/O phase shift.
+**** for subthreshold, Im modulates phenom inductance in dendrites, not at soma 
+
+*** The I/O phase lead caused by the phenomenological inductance of Ih critically 
+depends on the activation/deactivation time constants of Ih (Narayanan & Johnston, 
+JNS 2008), which varies with HCN channel subtypes (HCN1-4). It is, therefore, 
+surprising that for a study that analyzes the differences in Vm phase-shift in 
+response to depolarizing vs. hyperpolarizing inputs, a sensitivity analysis of 
+the activation time constant for Ih is lacking.
+
+*** To make their claims more generalizable, it would be nice to assess the 
+extent of phase precession and phase retreat in models of different morphologies 
+as well as in the models of CA1 pyramidal neurons.
+
+*** A figure for the morphology of the model neuron will also be helpful to the 
+reader.
+
+*** Discussion "Phase shift relative to the local field potential (LFP) suggests 
+phase coding as an adjunct to rate coding in the central nervous system (CNS)." 
+It is unclear how phase coding is an adjunct to rate coding. Adjunct is a very 
+strong word used in this context.
+
 * TODOS 
+** DONE: New & Noteworthy (75 words)
+** DONE: edit cover letter 
+** TODO: graphical abstract 
+** DONE: put supp fig on figshare
 ** DONE: get rid of time axis on fig 1 
 ** DONE: check with bill about dots for synchrony point, highlighting, use of "RMP", and compound vs. composite, more on location dependence, inhibition and bill's paper
 *** no highlighting 

@@ -17,6 +17,7 @@ parser.add_argument('--ih_gbar_factor', nargs='?', type=float, default=None)
 parser.add_argument('--TTX', nargs='?', type=str, default=None)
 parser.add_argument('--blockSKv3', nargs='?', type=str, default=None)
 parser.add_argument('--blockSKE', nargs='?', type=str, default=None)
+parser.add_argument('--blockIm', nargs='?', type=str, default=None)
 args = parser.parse_args()
 
 if args.cellModel == 'M1Cell':
@@ -60,6 +61,13 @@ if args.blockIh:
         for seg in sec.allseg():
             try:
                 seg.gbar_hd = 0
+            except:
+                pass
+if args.blockIm:
+    for sec in h.allsec():
+        for seg in sec.allseg():
+            try:
+                seg.gImbar_Im = 0
             except:
                 pass
 if args.vhalfl:
@@ -272,6 +280,8 @@ elif args.blockSKE:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockSKE.json'
 elif args.blockSKv3:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockSKv3.json'
+elif args.blockIm:
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockIm.json'
 elif args.TTX:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_TTX.json'
 else:
@@ -288,6 +298,8 @@ if args.saveTraces:
         tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockIhSKE.npy'
     elif args.blockIh:
         tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockIh.npy'
+    elif args.blockIm:
+        tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockIm.npy'
     elif args.vhalfl:
         tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_vhalf_' + str(round(args.vhalfl)) + '.npy'
     elif args.ih_gbar_factor:

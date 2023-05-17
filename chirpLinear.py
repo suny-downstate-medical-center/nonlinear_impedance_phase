@@ -14,6 +14,7 @@ parser.add_argument('--offset', nargs='?', type=float, default=0.0)
 parser.add_argument('--blockIh', nargs='?', type=str, default=None)
 parser.add_argument('--blockSKE', nargs='?', type=str, default=None)
 parser.add_argument('--blockSKv3', nargs='?', type=str, default=None)
+parser.add_argument('--blockIm', nargs='?', typr=str, default=None)
 parser.add_argument('--saveTraces', nargs='?', type=str, default=None)
 parser.add_argument('--vhalfl', nargs='?', type=float, default=None)
 parser.add_argument('--ih_gbar_factor', nargs='?', type=float, default=None)
@@ -49,6 +50,7 @@ import numpy as np
 from scipy.signal import find_peaks, hilbert
 import json 
 import os
+from pylab import convolve
 
 try:
     os.makedirs('supra_data/')
@@ -61,6 +63,13 @@ if args.blockIh:
         for seg in sec.allseg():
             try:
                 seg.gbar_hd = 0
+            except:
+                pass
+if args.blockIm:
+    for sec in h.allsec():
+        for seg in sec.allseg():
+            try:
+                seg.gImbar_Im = 0
             except:
                 pass
 if args.vhalfl:
@@ -145,11 +154,11 @@ zResFreq   = Freq[np.argmax(zamp)]
 Qfactor    = zResAmp / zamp[0]
 fVar       = np.std(zamp) / np.mean(zamp)
 peak_to_peak = np.max(v) - np.min(v)
-## smoothing
-# bwinsz = 10
-# fblur = np.array([1.0/bwinsz for i in range(bwinsz)])
-# zamp = convolve(zamp,fblur,'same')
-# phase = convolve(phase, fblur, 'same')
+# smoothing
+bwinsz = 10
+fblur = np.array([1.0/bwinsz for i in range(bwinsz)])
+zamp = convolve(zamp,fblur,'same')
+phase = convolve(phase, fblur, 'same')
 Freq, zamp, phase, zRes, zReact, z = Freq[mask], zamp[mask], phase[mask], zRes[mask], zReact[mask], z[mask]
 freqsIn = np.argwhere(phase > 0)
 if len(freqsIn) > 0:

@@ -12,6 +12,7 @@ parser.add_argument('--delay', nargs='?', type=int, default=3)
 parser.add_argument('--t0', nargs='?', type=int, default=20)
 parser.add_argument('--offset', nargs='?', type=float, default=0.0)
 parser.add_argument('--blockIh', nargs='?', type=str, default=None)
+parser.add_argument('--blockIm', nargs='?', type=str, default=None)
 parser.add_argument('--saveTraces', nargs='?', type=str, default=None)
 parser.add_argument('--vhalfl', nargs='?', type=float, default=None)
 parser.add_argument('--vhalft', nargs='?', type=float, default=None)
@@ -100,6 +101,13 @@ if args.blockSKv3:
         for seg in sec.allseg():
             try:
                 seg.SKv3_1.gSKv3_1bar = 0
+            except:
+                pass
+if args.blockIm:
+    for sec in h.allsec():
+        for seg in sec.allseg():
+            try:
+                seg.gImbar_Im = 0
             except:
                 pass
 if args.blockSKE:
@@ -236,6 +244,8 @@ elif args.TTX:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_TTX.json'
 elif args.blockSKv3:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockSKv3.json'
+elif args.blockIm:
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockIm.json'
 elif args.blockSKE:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockSKE.json'
 else:
@@ -269,6 +279,8 @@ if args.saveTraces:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_TTX.npy'
     elif args.blockSKv3:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockSKv3.npy'
+    elif args.blockIm:
+        tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockIm.npy'
     elif args.blockSKE:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockSKE.npy'
     else:
@@ -276,46 +288,46 @@ if args.saveTraces:
     with open(tracefile, 'wb') as fileObj:
         np.save(fileObj, traces)
 
-from matplotlib import pyplot as plt
-fig2, axs2 = plt.subplots(3,3,sharex=True)
-axs2[0][0].plot(ih)
-axs2[0][0].set_title('ih')
-axs2[0][1].plot(inat)
-axs2[0][1].set_title('inat')
-axs2[0][2].plot(inap)
-axs2[0][2].set_title('inap')
-axs2[1][0].plot(iske2)
-axs2[1][0].set_title('iske2')
-axs2[1][1].plot(iskv3)
-axs2[1][1].set_title('iskv3')
-axs2[1][2].plot(icahva)
-axs2[1][2].set_title('icahva')
-axs2[2][0].plot(icalva)
-axs2[2][0].set_title('icalva')
-axs2[2][1].plot(ikpst)
-axs2[2][1].set_title('ikpst')
-axs2[2][2].plot(iktst)
-axs2[2][2].set_title('iktst')
+# from matplotlib import pyplot as plt
+# fig2, axs2 = plt.subplots(3,3,sharex=True)
+# axs2[0][0].plot(ih)
+# axs2[0][0].set_title('ih')
+# axs2[0][1].plot(inat)
+# axs2[0][1].set_title('inat')
+# axs2[0][2].plot(inap)
+# axs2[0][2].set_title('inap')
+# axs2[1][0].plot(iske2)
+# axs2[1][0].set_title('iske2')
+# axs2[1][1].plot(iskv3)
+# axs2[1][1].set_title('iskv3')
+# axs2[1][2].plot(icahva)
+# axs2[1][2].set_title('icahva')
+# axs2[2][0].plot(icalva)
+# axs2[2][0].set_title('icalva')
+# axs2[2][1].plot(ikpst)
+# axs2[2][1].set_title('ikpst')
+# axs2[2][2].plot(iktst)
+# axs2[2][2].set_title('iktst')
 
-fig, axs = plt.subplots(3,1, sharex=True)
-axs[0].plot(current)
-axs[1].plot(v)
-axs[2].plot(iphase)
-for pk in ipks:
-    axs[0].plot(pk, current[pk], 'k*')
-    axs[2].plot(pk, iphase[pk], 'k*')
-for trgh in itrghs:
-    axs[0].plot(trgh, current[trgh], 'g*')
-    axs[2].plot(trgh, iphase[trgh], 'g*')
-for pk in pks:
-    axs[1].plot(pk, v[pk], 'r*')
-    axs[2].plot(pk, iphase[pk], 'r*')
-for trgh in trghs:
-    axs[1].plot(trgh, v[trgh], 'y*')
-    if iphase[trgh] < 0:
-        axs[2].plot(trgh, iphase[trgh]+2*np.pi, 'y*')
-    else:
-        axs[2].plot(trgh, iphase[trgh], 'y*')
+# fig, axs = plt.subplots(3,1, sharex=True)
+# axs[0].plot(current)
+# axs[1].plot(v)
+# axs[2].plot(iphase)
+# for pk in ipks:
+#     axs[0].plot(pk, current[pk], 'k*')
+#     axs[2].plot(pk, iphase[pk], 'k*')
+# for trgh in itrghs:
+#     axs[0].plot(trgh, current[trgh], 'g*')
+#     axs[2].plot(trgh, iphase[trgh], 'g*')
+# for pk in pks:
+#     axs[1].plot(pk, v[pk], 'r*')
+#     axs[2].plot(pk, iphase[pk], 'r*')
+# for trgh in trghs:
+#     axs[1].plot(trgh, v[trgh], 'y*')
+#     if iphase[trgh] < 0:
+#         axs[2].plot(trgh, iphase[trgh]+2*np.pi, 'y*')
+#     else:
+#         axs[2].plot(trgh, iphase[trgh], 'y*')
 
 # fig2, ax = plt.subplots(1,1)
 # if len(allspks):
