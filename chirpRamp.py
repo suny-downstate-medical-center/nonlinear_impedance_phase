@@ -17,7 +17,11 @@ parser.add_argument('--ih_gbar_factor', nargs='?', type=float, default=None)
 parser.add_argument('--TTX', nargs='?', type=str, default=None)
 parser.add_argument('--blockSKv3', nargs='?', type=str, default=None)
 parser.add_argument('--blockSKE', nargs='?', type=str, default=None)
+parser.add_argument('--blockLVACa', nargs='?', type=str, default=None)
 parser.add_argument('--blockIm', nargs='?', type=str, default=None)
+parser.add_argument('--blockTASK', nargs='?', type=str, default=None)
+parser.add_argument('--tauFactor', nargs='?', type=float, default=None)
+parser.add_argument('--morph_file', nargs='?', type=str, default=None)
 args = parser.parse_args()
 
 if args.cellModel == 'M1Cell':
@@ -28,7 +32,10 @@ if args.cellModel == 'M1Cell':
     from neuron import h
 elif args.cellModel == 'HayCellMig':
     from getCells import HayCellMig
-    cell, _ = HayCellMig()
+    if args.morph_file:
+        cell, _ = HayCellMig(morphology_file=args.morph_file)
+    else:
+        cell, _ = HayCellMig()
     soma_seg = cell.soma[0](0.5)
     sec_name = args.section.split('_')[0]
     sec_num = args.section.split('_')[1]
@@ -77,12 +84,32 @@ if args.vhalfl:
                 seg.hd.vhalfl = args.vhalfl
             except:
                 pass 
-
+if args.blockLVACa:
+    for sec in h.allsec():
+        for seg in sec.allseg():
+            try:
+                seg.Ca_LVAst.gCa_LVAstbar = 0
+            except:
+                pass
 if args.ih_gbar_factor:
     for sec in h.allsec():
         for sec in sec.allseg():
             try:
                 seg.gbar_hd = seg.gbar_hd * args.ih_gbar_factor
+            except:
+                pass
+if args.tauFactor:
+    for sec in h.allsec():
+        for seg in sec.allseg():
+            try:
+                seg.hd.tauFactor = args.tauFactor
+            except:
+                pass
+if args.blockTASK:
+    for sec in h.allsec():
+        for seg in sec.allseg():
+            try:
+                seg.hd.lkFactor = 0
             except:
                 pass
 if args.TTX:
@@ -280,10 +307,18 @@ elif args.blockSKE:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockSKE.json'
 elif args.blockSKv3:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockSKv3.json'
+elif args.blockLVACa:
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockLVACa.json'
 elif args.blockIm:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockIm.json'
+elif args.blockTASK:
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockTASK.json'
+elif args.tauFactor:
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_tauFactor_' + str(round(args.tauFactor,3)) + '.json'
 elif args.TTX:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_TTX.json'
+elif args.morph_file:
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + 'morphv1.json'
 else:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '.json'
 
@@ -300,16 +335,24 @@ if args.saveTraces:
         tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockIh.npy'
     elif args.blockIm:
         tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockIm.npy'
+    elif args.blockTASK:
+        tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockTASK.npy'
+    elif args.tauFactor:
+        tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_tauFactor_' + str(round(args.tauFactor,3)) + '.json'
     elif args.vhalfl:
         tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_vhalf_' + str(round(args.vhalfl)) + '.npy'
     elif args.ih_gbar_factor:
         tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_gbarfactor_' + str(round(args.ih_gbar_factor,2)) + '.npy'
     elif args.blockSKE:
         tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockSKE.npy'
+    elif args.blockLVACa:
+        tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockLVACa.npy'
     elif args.TTX:
         tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockTTX.npy'
     elif args.blockSKv3:
         tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockSKv3.npy'
+    elif args.morph_file:
+        tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + 'morphv1.npy'
     else:
         tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '.npy'
     with open(tracefile, 'wb') as fileObj:

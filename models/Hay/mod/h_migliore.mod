@@ -22,6 +22,8 @@ PARAMETER {
 	q10=4.5
 	qtl=1
 	clk=0
+        tauFactor = 1.0
+        lkFactor = 1.0
 	elk = -70 (mV)
 }
 
@@ -30,7 +32,7 @@ NEURON {
 	THREADSAFE SUFFIX hd
 	NONSPECIFIC_CURRENT i
 	NONSPECIFIC_CURRENT lk
-        RANGE gbar, vhalfl, elk, clk, glk, ehd, linf,taul
+        RANGE gbar, vhalfl, elk, clk, glk, ehd, linf,taul, a0t, tauFactor, lkFactor
         :GLOBAL linf,taul
 }
 
@@ -58,7 +60,7 @@ BREAKPOINT {
 	SOLVE states METHOD cnexp
 	ghd = gbar*l
 	i = ghd*(v-ehd)
-	lk = clk*gbar*(v-elk)
+	lk = clk*gbar*(v-elk)*lkFactor
 }
 
 
@@ -84,7 +86,7 @@ PROCEDURE rate(v (mV)) { :callable from hoc
         qt=q10^((celsius-33)/10)
         a = alpt(v)
         linf = 1/(1+ alpl(v))
-        taul = bett(v)/(qtl*qt*a0t*(1+a))
+        taul = tauFactor*bett(v)/(qtl*qt*a0t*(1+a))
 }
 
 
