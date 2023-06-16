@@ -1,0 +1,46 @@
+<html><pre>
+NEURON files from the paper:
+
+Migliore M, Migliore R (2012) Know Your Current Ih: Interaction with a
+Shunting Current Explains the Puzzling Effects of Its Pharmacological
+or Pathological Modulations. PLoS ONE 7(5): e36867.
+doi:10.1371/journal.pone.0036867
+
+
+The non-specific, hyperpolarization activated, Ih current is
+particularly involved in epilepsy and it exhibits an excitatory or
+inhibitory action on synaptic integration in an apparently
+inconsistent way. With a series of simulations, using a realistic
+model, we show how and why a shunting current, such as that carried by
+TASK-like channels, dependent on the Ih peak conductance, is able to
+explain virtually all experimental findings on Ih up- or
+down-regulation by modulators or pathological conditions.
+
+The hoc file " fig-5a" is a typical simulation file, for illustration
+purposes only, that reproduces the results reported in Fig. 5a:
+
+<img src="./screenshot.png" alt="screenshot">
+
+It tests the peak somatic membrane potential as a function of synaptic
+stimulation strength using I_lk with lk = 0.7 (i.e. 70% of the peak Ih
+conductance) under control conditions (red) and no Ih (blue).  Ih
+increases the peak depolarization for weak inputs and reduces it for
+stronger inputs.
+
+Under unix systems:
+to compile the mod files use the command
+nrnivmodl
+and run the simulation hoc file with the command
+nrniv fig-5a.hoc
+
+
+Under Windows systems:
+to compile the mod files use the "mknrndll" command.
+A double click on the simulation file
+fig-5a.hoc
+will open the simulation window.
+
+
+Questions on how to use this model should be directed to
+michele.migliore@cnr.it
+</pre></html>

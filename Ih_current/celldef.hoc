@@ -1,0 +1,363 @@
+load_file("stdrun.hoc")
+cvode_active(1)
+
+dist=1
+rel=0.1
+
+numaxon=1
+numsoma=1
+numbasal=74
+numapical=42
+numtrunk=37
+
+xopen("ri06.hoc")             // geometry file
+xopen("fixnseg.hoc")           
+
+Rm = 20000
+RmDend = Rm/1
+RmSoma = Rm
+RmAx = Rm
+
+Cm    = 1.9
+CmSoma= Cm
+CmAx  = Cm
+CmDend = Cm*1
+
+RaAll= 80
+RaSoma=80  
+RaAx = 50
+
+Vrest = -70 
+dt = 0.1
+gna =  .02
+AXONM = 5
+gkdr = 0.01
+celsius = 35.0  
+KMULT =  0.015 //to match exp.Fig.2b
+gcan=0.0//005
+gcal=0.0//005
+gcat=0.0//005
+ghd=0.6e-4// km=0.015
+slope=14
+half=265 
+nash=0
+pos=0.
+qt=1
+coeffRa=.7
+gkm=0.01
+pos=10
+
+
+objref g, b,c, f,time, y, y2, y3,y4,y5,y6,time2, stim[3], distrx, distry, outfile, cdistry, syn[300]
+objref distri, p, s, rsyn, nc[300], sref, blist[numtrunk], str1, str2, aplist, apc,  apc2, st[300]
+strdef filename, dends, trunk
+
+outfile = new File()
+time = new Vector()
+y = new Vector()
+y2 = new Vector()
+y3 = new Vector()
+time2 = new Vector()
+y4 = new Vector()
+y5 = new Vector()
+y6 = new Vector()
+
+for i=0, numtrunk-1 {
+blist[i] = new Vector()
+}
+
+aplist = new Vector(numapical)
+
+forsec "axon" {insert pas e_pas=Vrest g_pas = 1/RmAx Ra=RaAx cm=CmAx}
+forsec "soma" {insert pas e_pas=Vrest g_pas = 1/RmSoma Ra=RaSoma cm=CmSoma}
+forsec "dend"{insert pas e_pas=Vrest g_pas = 1/RmDend Ra=RaAll cm=CmDend}
+forsec "dend_5" {insert pas e_pas=Vrest g_pas = 1/RmDend Ra=RaAll cm=CmDend}
+forsec "apic" {insert pas e_pas=Vrest g_pas = 1/RmDend Ra=RaAll cm=CmDend}
+
+access soma
+
+apc = new APCount(.5)
+apc.thresh=-63
+
+dend_5[10] {
+apc2 = new APCount(.5)
+apc2.thresh=-20
+}
+
+freq=100
+geom_nseg()
+tot=0
+forall {tot=tot+nseg}
+distance()
+
+maxdist=0
+forsec "dend_5" for(x) {if (distance(x)>maxdist) {maxdist=distance(x)}}
+print "total # of segments (50Hz): ",tot, "  max path distance: ", maxdist
+
+//*********mapping bifurcations******************
+
+
+for i=0, numapical-1 apic[i] {
+	while (!issection("dend_5.*")) {
+//	print "before  ", i, secname()
+	sref = new SectionRef()
+	access sref.parent
+	sprint(dends, secname())
+	}
+	print "apical ",i," ",dends
+	for k=0, numtrunk-1 dend_5[k] {
+	sprint(trunk,secname())
+	x=strcmp(dends, trunk)
+	if (x==0) {blist[k].append(i)  aplist.x[i]=k}
+	}
+}
+//************************************************
+ 
+
+// tstim=1
+// strength = 1 /*namps*/
+// tstop=500
+
+// b = new VBox()
+// b.intercept(1)
+// g = new Graph()
+// g.size(0,tstop,-80,-40)
+// g.addvar("soma.v(0.5)",1,1,2*tstop,0,2)
+// g.xaxis(1)
+// c = new Graph()
+// c.size(0,20,-80,-60)
+// c.label(0.3,0.9,"peak somatic membrane potential")
+// c.xaxis(0)
+// c.color(1)
+// xpanel("") 
+// xbutton("run [ control ]", "loop()") 
+// xbutton("run [ ZD ] ", "zd()")
+// xpanel()
+// b.intercept(0) 
+// b.map() 
+ 
+
+// s = new NetStim(.5) 
+// s.start=300
+// s.interval=20
+// s.number=1
+
+// highindex=54321 // 12345
+// objref rc, rd
+// use_mcell_ran4()
+// rc = new Random()
+// rc.MCellRan4(highindex*2000)
+// rc.uniform(0,41)
+// rd = new Random()
+// rd.MCellRan4(highindex+4000)
+// rd.uniform(0,1)
+// low=100
+// high=500
+// weight=0
+
+// for i=0, 49 {
+
+// 		flag=0
+// 		while (flag==0) {
+// 		comp=int(rc.repick()+0.5)
+// 		tmp=rd.repick()
+// 		apic[comp] {if (distance(tmp)<low || distance(tmp)>high) {flag=0} else{flag=1}}
+// 		}
+// 		apic[comp] {
+// 		printf (" %d %g %d %g \n",i, distance(tmp),comp,tmp)
+// 		syn[i] = new Exp2Syn(tmp)
+// 		syn[i].e=0
+// 		syn[i].tau1 = 0.5
+// 		syn[i].tau2 = 20
+// 		nc[i] = new NetCon(s,syn[i],0,0,weight*1.e-3)
+// 		}
+// }
+
+forall insert ds
+forsec "axon" {   
+                insert nax gbar_nax=gna*AXONM 
+                insert kdr gkdrbar_kdr=gkdr*AXONM
+                insert kap gkabar_kap = KMULT*AXONM
+		insert km gbar_km=gkm
+}
+
+forsec "soma" {   
+		insert hd ghdbar_hd=ghd	vhalfl_hd=-82
+                insert na3 gbar_na3=gna
+                insert kdr gkdrbar_kdr=gkdr
+                insert kap gkabar_kap = KMULT
+		insert km gbar_km=gkm
+}
+
+for i=0, numbasal-1 dend[i] {
+		insert hd ghdbar_hd=ghd vhalfl_hd=-82 
+                insert na3 gbar_na3=gna 
+                insert kdr gkdrbar_kdr=gkdr
+		insert kap gkabar_kap=0
+		insert kad gkabar_kad=0
+
+		for (x,0) { xdist = distance(x)
+                	if (xdist>500) {xdist=500}
+                		if (xdist > 100){
+					vhalfl_hd=-90
+                        		gkabar_kad(x) = KMULT*(1+xdist/100)
+                			} else {
+					vhalfl_hd=-82
+                        		gkabar_kap(x) = KMULT*(1+xdist/100)
+               				}
+		}
+}
+                
+forsec "dend_5" {
+	insert ds
+		insert hd ghdbar_hd=ghd
+                insert na3 gbar_na3=gna 
+                insert kdr gkdrbar_kdr=gkdr
+		insert kap gkabar_kap=0
+		insert kad gkabar_kad=0
+
+		for (x,0) { xdist = distance(x)
+                	ghdbar_hd(x) = ghd*(1+100/(1+exp((half-xdist)/slope)))
+                	if (xdist>500) {xdist=500}
+                		if (xdist > 100){
+					vhalfl_hd=-90
+                        		gkabar_kad(x) = KMULT*(1+xdist/100)
+                			} else {
+					vhalfl_hd=-82
+                        		gkabar_kap(x) = KMULT*(1+xdist/100)
+               				}
+		}
+}
+
+for i=0, numapical-1 apic[i] {
+	insert ds
+	insert hd 
+        insert na3 gbar_na3=gna 
+        insert kdr gkdrbar_kdr=gkdr
+	insert kap
+	insert kad
+	gkabar_kap=0
+	gkabar_kad=0
+
+		for (x,0) { xdist = distance(x)
+                	ghdbar_hd(x) = ghd*(1+100/(1+exp((half-xdist)/slope)))
+                		if (xdist > 100){
+					vhalfl_hd=-90
+                        		gkabar_kad(x) = KMULT*(1+xdist/100)
+                			} else {
+					vhalfl_hd=-82
+                        		gkabar_kap(x) = KMULT*(1+xdist/100)
+               				}
+		}
+
+	vhalfl_hd = dend_5[aplist.x[i]].vhalfl_hd
+}
+
+
+// proc init() {
+// 	t=0
+// 	def()
+// 	part=0
+//         forall {
+//         v=Vrest
+// 	e_pas=Vrest
+//         if (ismembrane("nax") || ismembrane("na3")) {ena=55}
+//         if (ismembrane("kdr") || ismembrane("kap") || ismembrane("kad")) {ek=-90}
+//         if (ismembrane("hd") ) {ehd_hd=-30 elk_hd=-75 clk_hd=coeffRa}
+// 	}
+// 	finitialize(Vrest)
+//         fcurrent()
+
+//     //     forall {
+// 	// for (x) {
+// 	// 	}
+// 	// }
+// 	// cvode.re_init()
+// 	// cvode.event(20)
+// 	// cvode.event(290, "reset_peak()")
+// 	// cvode.event(5)
+// 	// cvode.event(tstop)
+// 	// access soma
+// 	// g.begin()
+
+// }
+
+// proc reset_peak() {
+// 	forall for(x,0) {vmax_ds(x)=v}
+// }
+
+
+// proc advance() {
+// 	fadvance()
+// 	g.plot(t)
+// 	g.flush()
+// 	doNotify() 
+// }
+
+// proc loop() {
+// 	for z=0, 49 {nc[z].weight=0e-3}
+// 	ghd=6e-05
+// 	apc.n=0
+// 	flag=0
+// 	while (flag<8) {
+// 	run()	
+// 	flag=flag+1
+// 	if (apc.n<1 || apc.time<100) {
+// 	vs =soma.vmax_ds(.5)
+// 	print nc[0].weight*1e3*50, vs
+// 	}
+// 	for z=0, 49 {nc[z].weight=nc[z].weight+.05e-3}
+// 	}
+// }
+
+// proc zd() {
+// 	for z=0, 49 {nc[z].weight=0e-3}
+// 	ghd=0
+// 	apc.n=0
+// 	flag=0
+// 	while (flag<8) {
+// 	run()	
+// 	flag=flag+1
+// 	if (apc.n<1 || apc.time<100) {
+// 	print nc[0].weight*1e3*50, vs
+// 	}
+// 	for z=0, 49 {nc[z].weight=nc[z].weight+.05e-3}
+// 	}
+// 	}
+
+
+proc def() {
+forsec "soma" {ghdbar_hd=ghd*(1+100/(1+exp(half/slope)))  gbar_km=gkm}
+forsec "axon" {gbar_km=gkm}
+
+for i=0, numbasal-1 dend[i] {ghdbar_hd=ghd*(1+100/(1+exp(half/slope)))}
+                
+forsec "dend_5" {
+		for (x,0) { xdist = distance(x)
+                	ghdbar_hd(x) = ghd*(1+100/(1+exp((half-xdist)/slope)))
+		}
+}
+
+for i=0, numapical-1 apic[i] {
+	for (x,0) { xdist = distance(x)
+                	ghdbar_hd(x) = ghd*(1+100/(1+exp((half-xdist)/slope)))
+	}
+}
+} 
+
+
+// proc runp(){
+// stdinit()
+// continuerun(tstop)
+// distrx=new Vector()
+// distry=new Vector()
+// distrx.append(nc[0].weight*1e3*50)
+// distry.append(soma.vmax_ds(0.5))
+// if (ghd>0) {distry.mark(c,distrx,"O",7,2,2)} else {distry.mark(c,distrx,"O",7,3,2)}
+// c.flush()
+// doNotify()
+// }
+
+// proc run(){
+// runp(1)
+// }

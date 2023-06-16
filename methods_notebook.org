@@ -1065,6 +1065,62 @@ type of sinusoidal response of ranges of pertinent frequencies? My impression
 they have devised a novel perturbation method, which uncovered some potentially 
 interesting relationships for firing phase that might be relevant to in vivo 
 testing. This should be made more clear.
+**** abstract 
+Rhythmic activity is ubiquitous in neural systems, and impedance analysis has been widely used to examine frequency-dependent responses of neuronal membranes to rhythmic inputs. 
+Impedance analysis assumes the neuronal membrane is a linear system, requiring the use of small signals to stay in a near-linear regime.
+However, postsynaptic potentials are often large and trigger nonlinear mechanisms.
+We therefore augmented impedance analysis to evaluate membrane responses in this nonlinear domain, analyzing responses to injected current 
+for subthreshold membrane voltage (\vmemb), suprathreshold spike-blocked \vmemb, and spiking in a validated neocortical pyramidal neuron computer model.
+Responses in these output regimes were asymmetrical, with different phase shifts during hyperpolarizing and depolarizing half-cycles.
+Suprathreshold chirp stimulation gave equivocal results due to nonstationarity of response, requiring us to use fixed-frequency sinusoids.
+Sinusoidal inputs produced {\em phase retreat}: action potentials occurred progressively later in cycles of the input stimulus, resulting from adaptation.
+Conversely, sinusoidal current with increasing amplitude over cycles produced a pattern of {\em phase advance}: action potentials occurred progressively
+earlier. 
+Phase retreat was dependent on \ih\ and \iahp\ currents; phase advance was modulated by these currents.
+Our results suggest differential responses of cortical neurons depending on the frequency of oscillatory input in the delta -- beta range, which will play
+a role in neuronal responses to shifts in network state.
+We hypothesize that intrinsic cellular properties complement network properties and contribute to \emph{in vivo} phase-shift
+phenomena such as phase
+precession, seen in place and grid cells, and phase roll, observed in hippocampal CA1 neurons.
+**** new version 
+Rhythmic activity is ubiquitous in neural systems, and impedance analysis has been widely used to examine frequency-dependent responses of neuronal membranes to rhythmic inputs. 
+Impedance analysis assumes the neuronal membrane is a linear system, requiring the use of small signals to stay in a near-linear regime.
+However, postsynaptic potentials are often large and trigger nonlinear responses which traditional impedance cannot capture.
+Here we developed a novel impedance-like analysis method to evaluate membrane responses in this nonlinear domain, 
+including subthreshold membrane voltage (\vmemb), suprathreshold spike-blocked \vmemb, and spiking in a validated neocortical pyramidal neuron computer model.
+Responses in these output regimes were asymmetrical, with different phase shifts during hyperpolarizing and depolarizing half-cycles, and different time courses in excitatory and inhibitory signaling.
+Suprathreshold rhythmic stimuli produced nonstationary responses which traditional impedance could not capture, 
+requiring us to use fixed-frequency sinusoidal stimuli and our novel analysis method.
+Sinusoidal inputs produced {\em phase retreat}: action potentials occurred progressively later in cycles of the input stimulus, resulting from adaptation.
+Conversely, sinusoidal current with increasing amplitude over cycles produced a pattern of {\em phase advance}: action potentials occurred progressively
+earlier. 
+Our results suggest differential responses of cortical neurons depending on the frequency of oscillatory input in the delta -- beta range, which will play
+a role in neuronal responses to shifts in network state.
+We hypothesize that these intrinsic cellular responses complement network properties and contribute to \emph{in vivo} phase-shift
+phenomena such as phase precession, seen in place and grid cells, and phase roll, observed in hippocampal CA1 neurons.
+**** paragraph from intro 
+In this paper, we develop and apply a method analogous to impedance phase analysis for nonlinear \vmemb\ responses, both sub- and suprathreshold.
+We used an experimentally-validated neocortical L5b pyramidal neuron model \citep{Hay2011-if} whose location-dependent subthreshold impedance profile has 
+also been validated \citep{Kelley2021-hr}.
+We found nonlinear subthreshold \vmemb\ responses to chirp stimuli maintained different frequency-dependent phase relationships during depolarization and
+hyperpolarization. However, chirp methods only presented an incomplete picture of these relationships due to nonstationarity of the \vmemb\ response.
+By instead using continuous sinusoidal currents, we found that action potentials occurred progressively later in the cycles of the input stimulus, which we termed {\em phase retreat}. 
+Conversely, increasing stimulus amplitude on each cycle produced progressively earlier action potentials, which we termed {\em phase advance}.
+We suggest that these processes are involved in relationships between local field potential oscillations and spike timing observed in a number of brain structures \emph{in vivo} and often ascribed to network phenomena \citep{Geisler2007-vu, Jensen1996-ql, Bose2001-zp, Wallenstein1997-ae, Tsodyks1996-dn}.
+Phase advance may contribute to phase precession, seen in place cells \citep{OKeefe1993-xh}, grid cells \citep{Hafting2008-vd}, medial prefrontal cortex neurons \citep{Jones2005-hz}, and neurons in ventral striatum \citep{Van_der_Meer2011-mu}, and phase retreat may contribute to phase roll hippocampal CA1 neurons \citep{Sloin2022-pe}.
+**** new version 
+In this paper, we develop and apply a novel analysis method to compute separate phase shifts for depolarization and hyperpolarization during nonlinear \vmemb\ responses, both sub- and suprathreshold.
+We used an experimentally-validated neocortical L5b pyramidal neuron model \citep{Hay2011-if}, whose location-dependent subthreshold impedance profile has 
+also been validated \citep{Kelley2021-hr}, to explore the physiological implications of separate phase shifts for depolarization and hyperpolarization using our analysis method.
+We found nonlinear subthreshold \vmemb\ responses to chirp stimuli maintained different frequency-dependent phase relationships during depolarization and
+hyperpolarization.
+Traditional impedance analysis cannot capture such differences between excitatory and inhibitory signaling.
+Chirp stimulation only presented an incomplete picture of these relationships due to nonstationarity of suprathreshold \vmemb\ responses.
+By instead using our method to analyze responses to continuous sinusoidal currents, we found that action potentials occurred progressively later in the cycles of the input stimulus, which we termed {\em phase retreat}. 
+Conversely, increasing stimulus amplitude on each cycle produced progressively earlier action potentials, which we termed {\em phase advance}.
+We suggest that these processes are involved in relationships between local field potential oscillations and spike timing observed in a number of brain structures \emph{in vivo} and often ascribed to network phenomena \citep{Geisler2007-vu, Jensen1996-ql, Bose2001-zp, Wallenstein1997-ae, Tsodyks1996-dn}.
+Phase advance may contribute to phase precession, seen in place cells \citep{OKeefe1993-xh}, grid cells \citep{Hafting2008-vd}, medial prefrontal cortex neurons \citep{Jones2005-hz}, and neurons in ventral striatum \citep{Van_der_Meer2011-mu}, 
+and phase retreat may contribute to phase roll hippocampal CA1 neurons \citep{Sloin2022-pe}.
 
 *** In a similar vein, the discussion should be more direct about why this type 
 of analysis might have practical implications?
@@ -1346,18 +1402,21 @@ still produces large phase shifts / differences in total inductive phase
 
 * [2023-6-12 Mon] - trouble getting migliore's model running 
 ** had code for it, but can't get running 
-*** currently getting enourmous h.t and negative h.dt after f.advance 
+*** currently getting enourmous h.t and negative h.dt after f.advance
+
+* [2023-6-15 Thu] - added in supp figs 
+** unsure whether to include morphology figs 
 
 * TODOS 
 ** TODO: clinical relevance of Iahp
 ** TODO: graphical abstract
 ** TODO: fix references  
-** TODO: new traces - baseline should be blue for consistency with existing figs 
-*** done for subthrehsold, need TODO for others 
+*** TODO done for subthrehsold, need TODO for others 
 ** TODO: three points for subthreshold stim 
-*** maybe 
+*** maybe not
 ** TODO: check asymmetry of apical responses 
-** TODO: finalize suprathreshold fig 
+** DONE: new traces - baseline should be blue for consistency with existing figs 
+** DONE: finalize suprathreshold fig 
 ** DONE: add labels/letters to subthreshold fig
 ** DONE: copy references over from Hay
 ** DONE: add morph / schem to fig 1
