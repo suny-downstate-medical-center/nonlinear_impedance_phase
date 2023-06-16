@@ -276,19 +276,23 @@ if len(allspks):
     soma_np = soma_v.as_numpy()
     seg_np = seg_v.as_numpy()
     iphase = np.angle(hilbert(i.as_numpy()), deg=True)
+    i_np = i.as_numpy()
     time_np = time.as_numpy()
     lags = []
     freq = []
     angles = []
+    iamp = []
     for peakt, finish, nextt in zip(stim_pks[:-1], stim_troughs[:-1], stim_pks[1:]):
         start = peakt - (finish-peakt) 
         spks, _ = find_peaks(soma_np[start:finish], 0)
         if len(spks):
             lags.append(time_np[start+spks[0]]-time_np[peakt])
             angles.append(iphase[start+spks[0]])
+            iamp.append(i_np[start+spks[0]])
         else:
             lags.append(np.nan)
             angles.append(np.nan)
+            iamp.append(np.nan)
         freq.append(1 / ((time_np[finish]-time_np[start])/1000))
     out['lags'] = lags
     out['freq'] = freq
@@ -358,23 +362,23 @@ if args.saveTraces:
     with open(tracefile, 'wb') as fileObj:
         np.save(fileObj, traces)
 
-from matplotlib import pyplot as plt
-fig2, axs2 = plt.subplots(3,3,sharex=True)
-axs2[0][0].plot(ih)
-axs2[0][0].set_title('ih')
-axs2[0][1].plot(inat)
-axs2[0][1].set_title('inat')
-axs2[0][2].plot(inap)
-axs2[0][2].set_title('inap')
-axs2[1][0].plot(iske2)
-axs2[1][0].set_title('iske2')
-axs2[1][1].plot(iskv3)
-axs2[1][1].set_title('iskv3')
-axs2[1][2].plot(icahva)
-axs2[1][2].set_title('icahva')
-axs2[2][0].plot(icalva)
-axs2[2][0].set_title('icalva')
-axs2[2][1].plot(ikpst)
-axs2[2][1].set_title('ikpst')
-axs2[2][2].plot(iktst)
-axs2[2][2].set_title('iktst')
+# from matplotlib import pyplot as plt
+# fig2, axs2 = plt.subplots(3,3,sharex=True)
+# axs2[0][0].plot(ih)
+# axs2[0][0].set_title('ih')
+# axs2[0][1].plot(inat)
+# axs2[0][1].set_title('inat')
+# axs2[0][2].plot(inap)
+# axs2[0][2].set_title('inap')
+# axs2[1][0].plot(iske2)
+# axs2[1][0].set_title('iske2')
+# axs2[1][1].plot(iskv3)
+# axs2[1][1].set_title('iskv3')
+# axs2[1][2].plot(icahva)
+# axs2[1][2].set_title('icahva')
+# axs2[2][0].plot(icalva)
+# axs2[2][0].set_title('icalva')
+# axs2[2][1].plot(ikpst)
+# axs2[2][1].set_title('ikpst')
+# axs2[2][2].plot(iktst)
+# axs2[2][2].set_title('iktst')

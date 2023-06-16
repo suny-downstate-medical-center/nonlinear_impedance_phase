@@ -1124,6 +1124,32 @@ and phase retreat may contribute to phase roll hippocampal CA1 neurons \citep{Sl
 
 *** In a similar vein, the discussion should be more direct about why this type 
 of analysis might have practical implications?
+**** first paragraph of discussion 
+Classical impedance analysis in neurophysiology requires low-amplitude signals in order to remain close to a linear ideal: the resistor-inductor-capacitor (RLC) circuit
+(\fref{sub_thru_spk}A) \citep{Kelley2021-hr,Cole1941-vd,Mauro1961-ys}.
+These small signals only slightly activate voltage-sensitive ion channels, giving rise to a phenomenological inductance which can then be further analyzed
+using traditional electrical engineering techniques.
+However, small-signal inputs do not help us understand the strongly nonlinear responses from the far higher amplitude signals characteristic of neural inputs.
+In this paper, we identified cellular I/O phase relationships under depolarization and hyperpolarization to sinusoidal and chirp inputs
+of different stimulus amplitudes and frequencies; under different membrane conditions (blockade of specific membrane conductances); in subthreshold,
+spike-blocked suprathreshold, and spiking regimes.
+These results are important for understanding the response of neurons to the incoming oscillatory inputs that create the field potential oscillations identified as delta -- beta waves,
+suggesting different phases for responses to inhibitory vs. excitatory postsynaptic potentials.
+**** new version
+Classical impedance analysis in neurophysiology requires low-amplitude signals in order to remain close to a linear ideal: the resistor-inductor-capacitor (RLC) circuit
+(\fref{sub_thru_spk}A) \citep{Kelley2021-hr,Cole1941-vd,Mauro1961-ys}.
+These small signals only slightly activate voltage-sensitive ion channels, giving rise to a phenomenological inductance which can then be further analyzed
+using traditional electrical engineering techniques.
+However, small-signal inputs do not help us understand the strongly nonlinear responses from the far higher amplitude signals characteristic of neural inputs.
+In this paper, we developed a novel analysis method to compute I/O phase shifts between stimuli and nonlinear or nonstationary \vmemb\ responses precluded from traditional impedance analysis.
+We identified different frequency-dependent phase shifts for subthreshold depolarzation and hyperpolarization.
+These results are important for understanding the response of neurons to the incoming oscillatory inputs that create the field potential oscillations identified as delta -- beta waves,
+suggesting different phases for responses to inhibitory vs. excitatory postsynaptic potentials.
+Future experiments could utilize higher amplitude chirp stimuli that produce nonlinear subthreshold \vmemb responses with a combination of our nonlinear anolog to impedance phase and the nonlinear analog to impedance aplitude \citep{Pena2019-} 
+to gain a more comprehensive understanding I/O properties of the neuronal membrane than classical impedance could provide.
+Data from such experiments could in turn be used in the development of neuronal models with more realistic I/O properties.
+We also used our analysis method to characterize nonstationary spiking responses precluded from impedance analysis.
+We hypothesize that these nonstationary cellular I/O phase relationships contribute to \emph{in vivo} phase relationships between spiking and LFP oscillations related to navigation and cognition.  
 
 *** Once spiking begins, any specific results are likely the result of the 
 parameters of the spiking, not the input. For instance, bursting frequency and 
@@ -1134,6 +1160,12 @@ model. Those results are not going to be generalizable. The paper should make it
 clear that they are not promoting these specific results (frequency, amplitude) 
 in these cells, but rather that this type of effect can be uncovered with this 
 novel perturbation method.
+**** to include somewhere . . .
+The quantitative results presented here are particular to the neuronal models we used. 
+While we predict that the phenomena explored here (e.g. different phase shifts for depolarization 
+and hyperpolarization, nonstationary phase relationships between spiking and stimulus) occur 
+in L5b pyramidal neurons and neurons with similar biophysical properties, we expect the quantitative 
+metrics associated with our simulations to fall within a biological distribution.
 
 *** The explanation of the "phenomenological inductance" producing an effective 
 LCR circuit that self-synchronizes to 4.5 Hz sounds like a good explanation of 
@@ -1142,9 +1174,36 @@ papers, or is this a novel contribution of the current one? Please clarify.
 This should be mentioned, even if it was already described in past work. It was 
 news to me, and an interesting phenomenon. It also motivates not using chirp 
 stimuli, where this effect could not be investigated (which should be mentioned).
+**** in introduction 
+Neuronal membrane impedance is usually estimated by applying current as either a chirp (time-varying signal whose instantaneous frequency increases with
+time) \citep{Puil1986-uv} or white noise \citep{Moore1985-kg, Wright1996-pl} and recording the resulting changes in \vmemb.
+Impedance is expressed as a complex number from which we can extract amplitude ($|Z|$ -- the 
+frequency-dependent output strength) and 
+phase ($\Phi$ -- the frequency-dependent temporal shifts between corresponding points such as the peak or the trough in the current stimulus vs. that of the \vmemb\ waveform).
+Because these methods properly pertain to a non-physiological, linear, time-invariant/stationary system, 
+we developed new methods for characterizing the nonlinear filtering properties of the neuronal membrane, whether spiking or subthreshold.
+**** new version 
+Neuronal membrane impedance is usually estimated by applying current as either a chirp (time-varying signal whose instantaneous frequency increases with
+time) \citep{Puil1986-uv} or white noise \citep{Moore1985-kg, Wright1996-pl} and recording the resulting changes in \vmemb.
+Impedance is expressed as a complex number from which we can extract amplitude ($|Z|$ -- the 
+frequency-dependent output strength) and 
+phase ($\Phi$ -- the frequency-dependent temporal shifts between corresponding points such as the peak or the trough in the current stimulus vs. that of the \vmemb\ waveform).
+Two important features of L5b pyramidal neuron impedance profiels are resonance (when \vmemb\ responds most strongly to a particular input frequency) and synchrony (when \vmemb\ and the stimulus oscillate in synchrony at a particular input frequency).
+Resonance and synchrony are properties of inductive circuits, as opposed to RC circuits like a passive membrane, and are mediated by the phenomenological inductance generated by \ih \citep{HUtcheon}.
+Because these methods properly pertain to a non-physiological, linear, time-invariant/stationary system, 
+we developed new methods for characterizing the nonlinear filtering properties  of the neuronal membrane, whether spiking or subthreshold.
 
 *** Fig 4C why was phase retreat location dependent? Did that match up with the 
 location dependence of the channels?
+**** original
+The phase curve shifted downward (more delayed) with dendritic localization of stimulation due to the conductance delay from apical dendrite to soma; more subtle changes 
+in phase shift across cycles could be seen which was due to channel density differences between dendrite and soma (\fref{phase_retreat}C).
+**** new version 
+Phase retreat occurred when stimulating the apical dendrite, rather then the soma.
+The phase curve shifted downward (more delayed) with dendritic localization of stimulation due to the conductance delay from apical dendrite to soma.
+Differences in phase shift across cycles was due to channel density differences between dendrite and soma (\fref{phase_retreat}C).
+The increased delay occurred in spite of the increased density of HCN channels in the apical dendrite.
+
 
 *** Fig 4 D,E. The text mentions that dropped spikes with 9 Hz causes the 
 discontinuities in D, but what about the discont in E (1 nA?) ?
@@ -1159,6 +1218,8 @@ equal to A2sin(t2), where t2-t1 is the "advance")? If not, then the idea of phas
 advance is more of a gimmick of the method, rather than a physiological effect. 
 (although in the discussion about phase precession, the authors imply this 
 "gimmick" may actually be a physiological effect of "increased sensory input").
+**** Phase advance did not simply result from \vmemb\ reaching spike threshold progressively earlier;
+in fact, the stimulus amplitude at spike initiation increased linearly over stimulus cycles.
 
 *** I do not see how these results show that "when stimuli are large, causing 
 Vmemb to approach spike threshold, the representation...becomes undemocratic". 
@@ -1268,15 +1329,6 @@ Like \textbf{model 1}, \textbf{model 2} includes a combination of \ih\ and a Twi
 as described in Migliore \& Migliore (2012) and exhibited realistic location-dependent subthreshold impedance properties \citep{Kelley2021-hr}.
 Further details about the model, its ion channels, and their distributions may be found in Neymotin et al (2017), Dura-Bernal et al (2022), and Kelley et al. (2021).
 
-# \ih, which generates the phenomenological inductance producing resonance and synchrony, is defined as:
-# \begin{equation} I_h(x) = g_h(x)l(v-v_{revh}) \label{eq:00}\end{equation}
-# where g_h(x) is the local peak conductance at $x \mum$ from the soma (following the distribution mentioned above), 
-# $l$ is the activation variable, and $v_{refh}=-30$ mV.
-# The time constant for the activation variable, $\tau_h$, which has been shown to influence the phenomenological inductance generated by \ih\ \citep{Narayanan2008-zw},
-# was a function of \vmemb\ and temperature (all simulations were run at 34\deg\ C).
-
-**** some of these are only in the soma
-
 *** Further, spatio-kinetic interactions among several ion channels regulate 
 neuronal physiology, including the I/O phase profile that the authors investigate. 
 Impedance phase lead caused by the phenomenological inductance generated by Ih is 
@@ -1316,6 +1368,7 @@ and cortical pyramidal neurons. These neurons do express the M-type K+ currents.
 Thus, to get a better physiological insight, the interactions between Ih and IKM 
 should be probed for a comprehensive understanding of the I/O phase shift.
 **** for subthreshold, Im modulates phenom inductance in dendrites, not at soma 
+**** new supp figure on modulating channel influences for suprathreshold 
 
 *** The I/O phase lead caused by the phenomenological inductance of Ih critically 
 depends on the activation/deactivation time constants of Ih (Narayanan & Johnston, 
@@ -1323,12 +1376,13 @@ JNS 2008), which varies with HCN channel subtypes (HCN1-4). It is, therefore,
 surprising that for a study that analyzes the differences in Vm phase-shift in 
 response to depolarizing vs. hyperpolarizing inputs, a sensitivity analysis of 
 the activation time constant for Ih is lacking.
-**** new figure for Tau sensitivity of phase shifts 
+**** new supp figure for Tau sensitivity of phase shifts 
 
 *** To make their claims more generalizable, it would be nice to assess the 
 extent of phase precession and phase retreat in models of different morphologies 
 as well as in the models of CA1 pyramidal neurons.
 **** tried morphology - decent transfer for subthreshold, poor transfer for spiking
+**** added new supp figs using M1 pyramidal model
 
 *** A figure for the morphology of the model neuron will also be helpful to the 
 reader.
@@ -1408,10 +1462,12 @@ still produces large phase shifts / differences in total inductive phase
 ** unsure whether to include morphology figs 
 
 * TODOS 
+** TODO - add bit on amplitude vs time 
+** TODO - decide whether to include ... in description of motivation to use the model:
+and a shift from an excitatory to inhibitory effect of \ih\ in response to synaptic inputs of increasing strength (migliore, salva, george abbot siegelbaum)
 ** TODO: clinical relevance of Iahp
 ** TODO: graphical abstract
 ** TODO: fix references  
-*** TODO done for subthrehsold, need TODO for others 
 ** TODO: three points for subthreshold stim 
 *** maybe not
 ** TODO: check asymmetry of apical responses 
