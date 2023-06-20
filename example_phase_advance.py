@@ -4,7 +4,7 @@
 import neuron
 neuron.load_mechanisms("Ih_current") # directory with mm mod files
 h.xopen("Ih_current/fig-5a.hoc")
-seg = soma_seg = soma[0](0.5)
+seg = soma_seg = h.soma[0](0.5)
 
 # needed packages 
 from neuron import h 
