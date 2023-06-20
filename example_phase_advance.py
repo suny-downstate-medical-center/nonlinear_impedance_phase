@@ -1,8 +1,10 @@
 # load cell 
-from getCells import HayCellMig
-cell, _ = HayCellMig()
-soma_seg = cell.soma[0](0.5)
-seg = soma_seg 
+# from getCells import HayCellMig
+# cell, _ = HayCellMig()
+import neuron
+neuron.load_mechanisms("Ih_current") # directory with mm mod files
+h.xopen("Ih_current/fig-5a.hoc")
+seg = soma_seg = soma[0](0.5)
 
 # needed packages 
 from neuron import h 

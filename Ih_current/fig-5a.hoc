@@ -10,8 +10,8 @@ numbasal=74
 numapical=42
 numtrunk=37
 
-xopen("ri06.hoc")             // geometry file
-xopen("fixnseg.hoc")           
+xopen("Ih_current/ri06.hoc")             // geometry file -- allow opening either from here or from ..; ln -sf ../Ih_current
+xopen("Ih_current/fixnseg.hoc")           
 
 Rm = 20000
 RmDend = Rm/1
