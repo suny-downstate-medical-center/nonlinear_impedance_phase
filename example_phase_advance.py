@@ -3,6 +3,7 @@
 # cell, _ = HayCellMig()
 import neuron
 from neuron import h 
+h.loadfile('stdrun.hoc')
 neuron.load_mechanisms("Ih_current") # directory with mm mod files
 h.xopen("Ih_current/fig-5a.hoc")
 seg = soma_seg = h.soma[0](0.5)
