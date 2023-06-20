@@ -1,4 +1,4 @@
-load_file("nrngui.hoc")
+// load_file("nrngui.hoc")
 cvode_active(1)
 
 dist=1
@@ -97,7 +97,7 @@ print "total # of segments (50Hz): ",tot, "  max path distance: ", maxdist
 //*********mapping bifurcations******************
 
 
-for i=0, numapical-1 apic[i] {
+for i=0, -1 { // numapical-1 apic[i] 
 	while (!issection("dend_5.*")) {
 //	print "before  ", i, secname()
 	sref = new SectionRef()
@@ -118,25 +118,26 @@ tstim=1
 strength = 1 /*namps*/
 tstop=500
 
-b = new VBox()
-b.intercept(1)
-g = new Graph()
-g.size(0,tstop,-80,-40)
-g.addvar("soma.v(0.5)",1,1,2*tstop,0,2)
-g.xaxis(1)
-c = new Graph()
-c.size(0,20,-80,-60)
-c.label(0.3,0.9,"peak somatic membrane potential")
-c.xaxis(0)
-c.color(1)
-xpanel("") 
-xbutton("run [ control ]", "loop()") 
-xbutton("run [ ZD ] ", "zd()")
-xpanel()
-b.intercept(0) 
-b.map() 
- 
 
+// b = new VBox()
+// b.intercept(1)
+// g = new Graph()
+// g.size(0,tstop,-80,-40)
+// g.addvar("soma.v(0.5)",1,1,2*tstop,0,2)
+// g.xaxis(1)
+// c = new Graph()
+// c.size(0,20,-80,-60)
+// c.label(0.3,0.9,"peak somatic membrane potential")
+// c.xaxis(0)
+// c.color(1)
+// xpanel("") 
+// xbutton("run [ control ]", "loop()") 
+// xbutton("run [ ZD ] ", "zd()")
+// xpanel()
+// b.intercept(0) 
+// b.map() 
+// 
+// 
 s = new NetStim(.5) 
 s.start=300
 s.interval=20
@@ -346,18 +347,16 @@ for i=0, numapical-1 apic[i] {
 } 
 
 
-proc runp(){
-stdinit()
-continuerun(tstop)
-distrx=new Vector()
-distry=new Vector()
-distrx.append(nc[0].weight*1e3*50)
-distry.append(soma.vmax_ds(0.5))
-if (ghd>0) {distry.mark(c,distrx,"O",7,2,2)} else {distry.mark(c,distrx,"O",7,3,2)}
-c.flush()
-doNotify()
+proc runp() {
+  stdinit()
+  continuerun(tstop)
+  distrx=new Vector()
+  distry=new Vector()
+  distrx.append(nc[0].weight*1e3*50)
+  distry.append(soma.vmax_ds(0.5))
+  if (ghd>0) {distry.mark(c,distrx,"O",7,2,2)} else {distry.mark(c,distrx,"O",7,3,2)}
+  c.flush()
+  doNotify()
 }
 
-proc run(){
-runp(1)
-}
+proc run() { runp(1) }
