@@ -1,5 +1,5 @@
 // load_file("nrngui.hoc")
-cvode_active(1)
+// cvode_active(1)
 
 dist=1
 rel=0.1

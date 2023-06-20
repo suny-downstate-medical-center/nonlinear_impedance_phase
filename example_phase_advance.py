@@ -42,6 +42,7 @@ I.play(stim._ref_amp, t)
 h.celsius = 34
 h.tstop = (t0+delay*2) * Fs + 1
 print('running chirp ramp: f0-' + str(f0) + ' f1-' + str(f1))
+# import IPython; IPython.embed()
 h.run()
 
 # analysis
