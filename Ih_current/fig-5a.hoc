@@ -269,6 +269,7 @@ proc init() {
 	finitialize(Vrest)
         fcurrent()
 
+        /* 
         forall {
 	for (x) {
 		}
@@ -280,6 +281,7 @@ proc init() {
 	cvode.event(tstop)
 	access soma
 	g.begin()
+        */
 
 }
 
@@ -290,9 +292,9 @@ proc reset_peak() {
 
 proc advance() {
 	fadvance()
-	g.plot(t)
-	g.flush()
-	doNotify() 
+	// g.plot(t)
+	// g.flush()
+	// doNotify() 
 }
 
 proc loop() {
@@ -359,4 +361,4 @@ proc runp() {
   doNotify()
 }
 
-proc run() { runp(1) }
+// proc run() { runp(1) }
