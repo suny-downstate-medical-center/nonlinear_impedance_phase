@@ -1,12 +1,8 @@
 # load cell 
-# from getCells import HayCellMig
-# cell, _ = HayCellMig()
-import neuron
-from neuron import h 
-h.load_file('stdrun.hoc')
-neuron.load_mechanisms("Ih_current") # directory with mm mod files
-h.xopen("Ih_current/fig-5a.hoc")
-seg = soma_seg = h.soma[0](0.5)
+from getCells import HayCellMig
+cell, _ = HayCellMig()
+soma_seg = cell.soma[0](0.5)
+seg = soma_seg 
 
 # needed packages 
 from chirpUtils import getRampChirp, fromtodistance
