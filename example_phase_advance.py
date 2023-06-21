@@ -1,11 +1,14 @@
 # load cell 
-from getCells import HayCellMig
-cell, _ = HayCellMig()
-soma_seg = cell.soma[0](0.5)
-seg = soma_seg 
+# from getCells import HayCellMig
+# cell, _ = HayCellMig()
+import neuron
+from neuron import h 
+h.load_file('stdrun.hoc')
+neuron.load_mechanisms("Ih_current") # directory with mm mod files
+h.xopen("Ih_current/fig-5a.hoc")
+seg = soma_seg = h.soma[0](0.5)
 
 # needed packages 
-from neuron import h 
 from chirpUtils import getRampChirp, fromtodistance
 import numpy as np 
 from scipy.signal import find_peaks, hilbert
@@ -39,6 +42,7 @@ I.play(stim._ref_amp, t)
 h.celsius = 34
 h.tstop = (t0+delay*2) * Fs + 1
 print('running chirp ramp: f0-' + str(f0) + ' f1-' + str(f1))
+# import IPython; IPython.embed()
 h.run()
 
 # analysis
