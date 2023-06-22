@@ -1473,6 +1473,13 @@ for sec in h.allsec():
                 dist.append(fromtodistance(seg, soma_seg))
         except:
             pass
+** code to plot dots on traces 
+plt.plot(time, soma_v, 'b')
+plt.plot([time[pk] for pk in pks], [soma_v[pk] for pk in pks], 'b*')
+plt.plot([time[pk] for pk in trghs], [soma_v[pk] for pk in trghs], 'bo')
+plt.plot(time, (i.as_numpy()*13-70), 'k')
+plt.plot([time[pk] for pk in itrghs], [i[pk]*13-70 for pk in itrghs], 'ko')
+plt.plot([time[pk] for pk in ipks], [i[pk]*13-70 for pk in ipks], 'k*')
 *** similar to M1 cell 
 ** can't tell what *ehd* is . . . 
 * TODOS 

@@ -61,9 +61,9 @@ elif args.cellModel == 'Migliore':
     h.load_file('stdrun.hoc')
     neuron.load_mechanisms("Ih_current") # directory with mm mod files
     h.xopen("Ih_current/fig-5a.hoc")
-    # seg = soma_seg = h.soma[0](0.5)
-    soma_seg = h.soma[0](0.5)
-    seg = h.dend_5[0](0.5)
+    seg = soma_seg = h.soma[0](0.5)
+    # soma_seg = h.soma[0](0.5)
+    # seg = h.dend_5[0](0.5)
 
 from chirpUtils import getChirp, fromtodistance
 stim = h.IClamp(seg)
@@ -89,12 +89,12 @@ except:
 #             seg.kdr.gkabar = 0
 #         except:
 #             pass
-for sec in h.allsec():
-    for seg in sec.allseg():
-        try:
-            seg.na3.gbar = 0
-        except:
-            pass 
+# for sec in h.allsec():
+#     for seg in sec.allseg():
+#         try:
+#             seg.kdr.gkdrbar = 0
+#         except:
+#             pass 
 
 if args.blockIh:
     for sec in h.allsec():
