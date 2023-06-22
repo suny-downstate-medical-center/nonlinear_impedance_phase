@@ -14,7 +14,7 @@ Make sure you have installed [NEURON](https://www.neuron.yale.edu/neuron/) and [
 
 Clone this repository using 'git'
 ```
-git clone https://github.com/suny-downstate-medical-center/impedance_methods.git
+git clone https://github.com/suny-downstate-medical-center/nonlinear_impedance_phase.git
 ```
 
 Compile the mod files for the Hay et al. 2011 model:
