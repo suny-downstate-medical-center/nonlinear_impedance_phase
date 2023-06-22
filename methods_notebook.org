@@ -1464,7 +1464,7 @@ still produces large phase shifts / differences in total inductive phase
 * [2023-6-21 Wed] - phase shifts higher for depol than hyperpol in ca1 cell 
 ** bill got migliore's model to load 
 ** phase shifts higher for depol than hyperpol in ca1 cell 
-** code for plotting hd gbar 
+** code for plotting hd gbar    
 for sec in h.allsec():
     for seg in sec.allseg():
         try:
@@ -1481,6 +1481,9 @@ plt.plot([time[pk] for pk in trghs], [soma_v[pk] for pk in trghs], 'bo')
 plt.plot(time, (i.as_numpy()*13-70), 'k')
 plt.plot([time[pk] for pk in itrghs], [i[pk]*13-70 for pk in itrghs], 'ko')
 plt.plot([time[pk] for pk in ipks], [i[pk]*13-70 for pk in ipks], 'k*')
+
+* [2023-6-22 Thu] - mm cell 
+
 
 ** can't tell what *ehd* is . . . 
 * TODOS 
