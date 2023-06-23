@@ -6,7 +6,7 @@ TITLE nax
 NEURON {
 	THREADSAFE SUFFIX nax
 	USEION na READ ena WRITE ina
-	RANGE  gbar, sh
+	RANGE  gbar, sh, ina
 	GLOBAL minf, hinf, mtau, htau,thinf, qinf
 }
 

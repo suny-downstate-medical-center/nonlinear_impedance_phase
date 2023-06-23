@@ -26,6 +26,11 @@ parser.add_argument('--morph_file', nargs='?', type=str, default=None)
 parser.add_argument('--a0t', nargs='?', type=float, default=None)
 parser.add_argument('--blockKtst', nargs='?', type=str, default=None)
 parser.add_argument('--tauFactor', nargs='?', type=float, default=None)
+parser.add_argument('--blockKa', nargs='?', type=str, default=None)
+parser.add_argument('--blockKdr', nargs='?', type=str, default=None)
+parser.add_argument('--blockKm', nargs='?', type=str, default=None)
+parser.add_argument('--blockNa3', nargs='?', type=str, default=None)
+parser.add_argument('--blockNax', nargs='?', type=str, default=None)
 args = parser.parse_args()
 
 
@@ -79,28 +84,51 @@ try:
 except:
     pass
 
-# for sec in h.allsec():
-#     for seg in sec.allseg():
-#         try:
-#             seg.kap.gkabar = 0
-#         except:
-#             pass
-#         try:
-#             seg.kdr.gkabar = 0
-#         except:
-#             pass
-# for sec in h.allsec():
-#     for seg in sec.allseg():
-#         try:
-#             seg.kdr.gkdrbar = 0
-#         except:
-#             pass 
-
+if args.blockKa:
+    for sec in h.allsec():
+        for seg in sec.allseg():
+            try:
+                seg.kap.gkabar = 0
+            except:
+                pass
+            try:
+                seg.kdr.gkabar = 0
+            except:
+                pass
+if args.blockKdr:
+    for sec in h.allsec():
+        for seg in sec.allseg():
+            try:
+                seg.kdr.gkdrbar = 0
+            except:
+                pass 
+if args.blockKm:
+    for sec in h.allsec():
+        for seg in sec.allseg():
+            try:
+                seg.km.gbar = 0
+            except:
+                pass 
+if args.blockNa3:
+    for sec in h.allsec():
+        for seg in sec.allseg():
+            try:
+                seg.na3.gbar = 0
+            except:
+                pass 
+if args.blockNax:
+    for sec in h.allsec():
+        for seg in sec.allseg():
+            try:
+                seg.nax.gbar = 0
+            except:
+                pass 
 if args.blockIh:
     for sec in h.allsec():
         for seg in sec.allseg():
             try:
-                seg.gbar_hd = 0
+                # seg.gbar_hd = 0
+                seg.hd.ghdbar = 0
             except:
                 pass
 if args.a0t:
@@ -187,7 +215,7 @@ if args.blockSKE:
                 seg.SK_E2.gSK_E2bar = 0
             except:
                 pass
-
+import IPython; IPython.embed()
 dist = fromtodistance(seg, soma_seg)
 amp = args.amp #0.02 
 t0 = args.t0 #20
@@ -201,15 +229,22 @@ seg_v = h.Vector().record(seg._ref_v)
 time = h.Vector().record(h._ref_t)
 I, t = getChirp(f0, f1, t0, amp, Fs, delay, offset=args.offset)
 i = h.Vector().record(h.IClamp[0]._ref_i)
-ih = None # h.Vector().record(soma_seg.hd._ref_i)
-inat = None # h.Vector().record(soma_seg.NaTa_t._ref_ina)
-inap = None # h.Vector().record(soma_seg.Nap_Et2._ref_ina)
-iske2 = None # h.Vector().record(soma_seg.SK_E2._ref_ik)
-iskv3 = None # h.Vector().record(soma_seg.SKv3_1._ref_ik)
-icahva = None # h.Vector().record(soma_seg.Ca_HVA._ref_ica)
-icalva = None # h.Vector().record(soma_seg.Ca_LVAst._ref_ica)
-ikpst = None # h.Vector().record(soma_seg.K_Pst._ref_ik)
-iktst = None # h.Vector().record(soma_seg.K_Tst._ref_ik)
+ih = h.Vector().record(soma_seg.hd._ref_i)
+inat = h.Vector().record(soma_seg.NaTa_t._ref_ina)
+inap = h.Vector().record(soma_seg.Nap_Et2._ref_ina)
+iske2 =  h.Vector().record(soma_seg.SK_E2._ref_ik)
+iskv3 =  h.Vector().record(soma_seg.SKv3_1._ref_ik)
+icahva = h.Vector().record(soma_seg.Ca_HVA._ref_ica)
+icalva = h.Vector().record(soma_seg.Ca_LVAst._ref_ica)
+ikpst =  h.Vector().record(soma_seg.K_Pst._ref_ik)
+iktst =  h.Vector().record(soma_seg.K_Tst._ref_ik)
+# ih = h.Vector().record(soma_seg.hd._ref_i)
+# itsk = h.Vector().record(soma_seg.hd._ref_lk)
+# ina3 = h.Vector().record(soma_seg.na3._ref_ina)
+# # ikdst = h.Vector().record(soma_seg.kadist._ref_ik)
+# ikprx = h.Vector().record(soma_seg.kap._ref_ik)
+# ikm = h.Vector().record(soma_seg.km._ref_ik)
+# ikdr = h.Vector().record(soma_seg.kdr._ref_ik)
 stim.amp = 0
 stim.dur = (t0+delay*2) * Fs + 1
 I.play(stim._ref_amp, t)
@@ -217,6 +252,7 @@ I.play(stim._ref_amp, t)
 h.celsius = 34
 h.tstop = (t0+delay*2) * Fs + 1
 print('running ' + args.cellModel + ' ' + args.section + ' f0-' + str(round(args.f0)) + ' f1-' + str(round(args.f1)))
+# import IPython; IPython.embed()
 h.run()
 v_trim = [v for v, T in zip(soma_v, time) if int((delay)*1000) < T < int((delay+t0)*1000)] 
 i_trim = [x for x, T in zip(i,time) if int((delay)*1000) < T < int((delay+t0)*1000)] 
@@ -300,6 +336,8 @@ out = {'f_plus' : f_plus,
         'z_plus': z_plus,
         'z_minus' : z_minus}
 
+# import IPython; IPython.embed()
+
 datadir = 'asym_data/'
 tracedir = 'asym_traces/'
 if args.blockIh:
@@ -314,6 +352,16 @@ elif args.TTX:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_TTX.json'
 elif args.blockSKv3:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockSKv3.json'
+elif args.blockKm:
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockKm.json'
+elif args.blockKa:
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockKa.json'
+elif args.blockKdr:
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockKdr.json'
+elif args.blockNa3:
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockNa3.json'
+elif args.blockNax:
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockNax.json'
 elif args.blockIm:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockIm.json'
 elif args.blockSKE:
@@ -338,18 +386,23 @@ with open(filename, 'w') as fileObj:
     json.dump(out, fileObj)
 
 if args.saveTraces:
-    traces = {'soma_v' : soma_v.as_numpy(),
+    if args.cellModel == 'Migliore':
+        traces = {'soma_v' : soma_v.as_numpy(),
             'i' : i.as_numpy(),
-            'time' : time.as_numpy(),
-            'ih' : ih,
-            'inat' : inat,
-            'inap' : inap,
-            'iske2' : iske2,
-            'iskv3' : iskv3,
-            'icahva' : icahva,
-            'icalva' : icalva,
-            'ikpst' : ikpst,
-            'iktst' : iktst}
+            'time' : time.as_numpy()}
+    else:
+        traces = {'soma_v' : soma_v.as_numpy(),
+                'i' : i.as_numpy(),
+                'time' : time.as_numpy(),
+                'ih' : ih,
+                'inat' : inat,
+                'inap' : inap,
+                'iske2' : iske2,
+                'iskv3' : iskv3,
+                'icahva' : icahva,
+                'icalva' : icalva,
+                'ikpst' : ikpst,
+                'iktst' : iktst}
     if args.blockIh:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockIh.npy'
     elif args.vhalfl:
@@ -362,6 +415,16 @@ if args.saveTraces:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_TTX.npy'
     elif args.blockSKv3:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockSKv3.npy'
+    elif args.blockKa:
+        tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockKa.npy'
+    elif args.blockKdr:
+        tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockKdr.npy'
+    elif args.blockKm:
+        tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockKm.npy'
+    elif args.blockNa3:
+        tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockNa3.npy'
+    elif args.blockNax:
+        tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockNax.npy'
     elif args.blockTASK:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockTASK.npy'
     elif args.blockLVACa:

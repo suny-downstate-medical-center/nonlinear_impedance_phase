@@ -1483,8 +1483,28 @@ plt.plot([time[pk] for pk in itrghs], [i[pk]*13-70 for pk in itrghs], 'ko')
 plt.plot([time[pk] for pk in ipks], [i[pk]*13-70 for pk in ipks], 'k*')
 
 * [2023-6-22 Thu] - mm cell 
-
-
+** depol higher phi than hyperpol (opposite other models)
+** running block of all the other channels 
+** plotting channels 
+current_names = ['Ih', 'TASK', 'Na3', 'Ka', 'Kdr']
+config = {
+        "output": {
+            "savefig": True,
+            "dir": ".",
+            "fname": "quickstart_plot",
+            "extension": "png",
+            "dpi": 300,
+            "transparent": False
+        },
+        "current": {"names": current_names},
+        "voltage": {"ylim": [-90, 50]},
+        "legendtextsize": 5,
+        "adjust": {
+            "left": 0.15,
+            "right": 0.8,
+            "top": 1.0,
+            "bottom": 0.0
+        }}
 ** can't tell what *ehd* is . . . 
 * TODOS 
 ** TODO - add bit on amplitude vs time 
