@@ -1506,9 +1506,31 @@ config = {
             "bottom": 0.0
         }}
 ** can't tell what *ehd* is . . . 
+
+* [2023-6-23 Fri] - more ca1 cell
+** figured out Ih issues and cause of flipped Phi+/- (separate Im resonance)
+** no phase retreat (believe no ahp current)
+** strong phase advance 
+
+* [2023-6-24 Sat] - plan for new figs/models 
+** outline for figures 
+*** 1, 2, unchanged 
+*** TODO - new 3 - compare three models with morphs and phase shifts at baseline
+*** 3->4  
+*** current 4 might get consolidated 
+*** TODO - new 5 - ca1 model and multiple resonances 
+*** 5->7, TODO - replace amplitude with other models 
+*** 6->8, maybe TODO - include comparison for ca1 cell 
+*** 7->9, TODO - replace amplitude with other models 
+
+* [2023-6-28 Wed] - figs 
+** most changes coded but not put into proper figs and into manuscript 
+
 * TODOS 
-** TODO - add bit on amplitude vs time 
-** TODO - decide whether to include ... in description of motivation to use the model:
+** TODO: consider suprathreshold chirp for ca1 cell
+** TODO: how to incorporate CA1 results 
+** TODO: add bit on amplitude vs time 
+** TODO: decide whether to include ... in description of motivation to use the model:
 and a shift from an excitatory to inhibitory effect of \ih\ in response to synaptic inputs of increasing strength (migliore, salva, george abbot siegelbaum)
 ** TODO: clinical relevance of Iahp
 ** TODO: graphical abstract

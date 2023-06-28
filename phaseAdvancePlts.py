@@ -12,7 +12,7 @@ parser.add_argument('--location_version', nargs='?', type=str, default='derivati
 parser.add_argument('--arrangement', nargs='?', type=str, default='original')
 args = parser.parse_args()
 ver = args.stim_location #'soma' #'soma'
-loc_ver = args.location_version
+loc_ver = 'normalize' #args.location_version
 
 secs = ['apic_0', 'apic_12', 'apic_36']
 dists = [23.1, 261.4, 504.2]
@@ -171,28 +171,50 @@ for amp in amps:
         ad['blockIh'].append('False')
 adf = pd.DataFrame(data=ad)
 
-## plotting 
-if args.arrangement == 'original':
-    f = freq 
-    tempdf = adf[adf['section'] == sec]
-    normF = [(float(s) - float(amps[0])) / (float(amps[-1])-float(amps[0])) for s in amps]
-    cols = plt.cm.plasma(normF)
-    for s, c in zip(amps, cols):
-        x = tempdf[tempdf['amp'] == float(s)][tempdf['f1'] == float(f)]['stim_cycle'].values[0][:15]
-        y = tempdf[tempdf['amp'] == float(s)][tempdf['f1'] == float(f)]['angles'].values[0][:15]
-        y = [radians(val)*-1 for val in y]
-        sl = str(round(float(s) / 6.0,2))
-        if s == '3.9':
-            axs[1][1].plot(x, y, '^-', color='black', label=sl+' nA/s')
-        elif s == '1.9':
-            axs[1][1].plot(x, y, '^-', color='black', label=sl+' nA/s')
-        else:
-            axs[1][1].plot(x, y, '^-', color=c, label=sl+' nA/s')
-    axs[1][1].plot([-1,25],[0,0], 'k:')
-    # axs[1][1].set_title('Amplitude Dependence', fontsize=18)
-    leg = axs[1][1].legend(title='Stimulus Slope', loc='lower right')
-    axs[1][1].set_xlim(0, 15)
-    axs[1][1].set_ylabel(r'$\Phi_n^+$ (rad)', fontsize=18)
+amp_fig, amp_axs = plt.subplots(1,1)
+
+# plotting 
+# if args.arrangement == 'original':
+f = freq 
+tempdf = adf[adf['section'] == sec]
+normF = [(float(s) - float(amps[0])) / (float(amps[-1])-float(amps[0])) for s in amps]
+cols = plt.cm.plasma(normF)
+for s, c in zip(amps, cols):
+    x = tempdf[tempdf['amp'] == float(s)][tempdf['f1'] == float(f)]['stim_cycle'].values[0][:15]
+    y = tempdf[tempdf['amp'] == float(s)][tempdf['f1'] == float(f)]['angles'].values[0][:15]
+    y = [radians(val)*-1 for val in y]
+    sl = str(round(float(s) / 6.0,2))
+    if s == '3.9':
+        amp_axs.plot(x, y, '^-', color='black', label=sl+' nA/s')
+    elif s == '1.9':
+        amp_axs.plot(x, y, '^-', color='black', label=sl+' nA/s')
+    else:
+        amp_axs.plot(x, y, '^-', color=c, label=sl+' nA/s')
+amp_axs.plot([-1,25],[0,0], 'k:')
+# amp_axs.set_title('Amplitude Dependence', fontsize=18)
+leg = amp_axs.legend(title='Stimulus Slope', loc='lower right')
+amp_axs.set_xlim(0, 15)
+amp_axs.set_ylabel(r'$\Phi_n^+$ (rad)', fontsize=18)
+
+
+#################################################################
+# different models 
+filename = 'HayCellMig_apic_0_amp_1.9_offset_0.0_f0_8_f1_8_s_1.0_t_6.json'
+with open('Data/ramp_data/' + filename) as fileObj:
+    hay = json.load(fileObj)
+filename = 'dura_bernal_apic_0_amp_1.9_offset_0.0_f0_8_f1_8_s_1.0_t_4.json'
+with open('ramp_data/' + filename) as fileObj:
+    dura = json.load(fileObj)
+filename = 'Migliore_apic_0_amp_1.9_offset_0.0_f0_8_f1_8_s_1.0_t_4.json'
+with open('ramp_data/' + filename) as fileObj:
+    mm = json.load(fileObj)
+axs[1][1].plot([0,15], [0,0], 'k:')
+axs[1][1].plot([i for i in range(len(hay['lags']))], [radians(val)*-1 for val in hay['angles']], 'o-', color='black', label='Model 1 (L5b)')
+axs[1][1].plot([i for i in range(len(dura['lags']))], [radians(val)*-1 for val in dura['angles']], 'o-', color='blue', label='Model 2 (L5b)')
+axs[1][1].plot([i for i in range(len(mm['lags']))], [radians(val)*-1 for val in mm['angles']], 'o-', color='red', label='Model 3 (CA1)')
+axs[1][1].set_xlim(-0.2, 14.2)
+leg = axs[1][1].legend()
+axs[1][1].set_ylabel(r'$\Phi_n^+$ (rad)', fontsize=18)
 
 #################################################################
 # location dependence 

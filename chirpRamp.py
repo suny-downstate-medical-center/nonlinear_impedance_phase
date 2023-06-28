@@ -48,6 +48,15 @@ elif args.cellModel == 'RichHuman':
     h, trunk = RichHuman()
     soma_seg = h.filament_100000042[0](0.5)
     seg = h.filament_100000042[trunk[int(len(trunk)/2)]](0.5)
+elif args.cellModel == 'Migliore':
+    import neuron
+    from neuron import h 
+    h.load_file('stdrun.hoc')
+    neuron.load_mechanisms("Ih_current") # directory with mm mod files
+    h.xopen("Ih_current/fig-5a.hoc")
+    seg = soma_seg = h.soma[0](0.5)
+    # soma_seg = h.soma[0](0.5)
+    # seg = h.dend_5[0](0.5)
 
 from chirpUtils import getRampChirp, fromtodistance
 stim = h.IClamp(seg)
@@ -151,15 +160,15 @@ else:
     slope = args.slopeFactor #1 / (t0 * args.slopeFactor)
     I, t = getRampChirp(f0, f1, t0, amp, Fs, delay, offset=args.offset, slope=slope)
 i = h.Vector().record(h.IClamp[0]._ref_i)
-ih = h.Vector().record(soma_seg.hd._ref_i)
-inat = h.Vector().record(soma_seg.NaTa_t._ref_ina)
-inap = h.Vector().record(soma_seg.Nap_Et2._ref_ina)
-iske2 = h.Vector().record(soma_seg.SK_E2._ref_ik)
-iskv3 = h.Vector().record(soma_seg.SKv3_1._ref_ik)
-icahva = h.Vector().record(soma_seg.Ca_HVA._ref_ica)
-icalva = h.Vector().record(soma_seg.Ca_LVAst._ref_ica)
-ikpst = h.Vector().record(soma_seg.K_Pst._ref_ik)
-iktst = h.Vector().record(soma_seg.K_Tst._ref_ik)
+# ih = h.Vector().record(soma_seg.hd._ref_i)
+# inat = h.Vector().record(soma_seg.NaTa_t._ref_ina)
+# inap = h.Vector().record(soma_seg.Nap_Et2._ref_ina)
+# iske2 = h.Vector().record(soma_seg.SK_E2._ref_ik)
+# iskv3 = h.Vector().record(soma_seg.SKv3_1._ref_ik)
+# icahva = h.Vector().record(soma_seg.Ca_HVA._ref_ica)
+# icalva = h.Vector().record(soma_seg.Ca_LVAst._ref_ica)
+# ikpst = h.Vector().record(soma_seg.K_Pst._ref_ik)
+# iktst = h.Vector().record(soma_seg.K_Tst._ref_ik)
 stim.amp = 0
 stim.dur = (t0+delay*2) * Fs + 1
 I.play(stim._ref_amp, t)

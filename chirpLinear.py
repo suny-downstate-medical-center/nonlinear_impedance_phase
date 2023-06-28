@@ -50,6 +50,13 @@ elif args.cellModel == 'RichHuman':
     h, trunk = RichHuman()
     soma_seg = h.filament_100000042[0](0.5)
     seg = h.filament_100000042[trunk[int(len(trunk)/2)]](0.5)
+elif args.cellModel == 'Migliore':
+    import neuron
+    from neuron import h 
+    h.load_file('stdrun.hoc')
+    neuron.load_mechanisms("Ih_current") # directory with mm mod files
+    h.xopen("Ih_current/fig-5a.hoc")
+    seg = soma_seg = h.soma[0](0.5)
 
 from chirpUtils import getChirp, fromtodistance
 stim = h.IClamp(seg)

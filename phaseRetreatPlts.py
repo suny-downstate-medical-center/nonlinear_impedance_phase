@@ -122,6 +122,7 @@ for amp in amps:
 adf = pd.DataFrame(data=ad)
 
 ## plotting 
+amp_fig, amps_axs = plt.subplots(1,1)
 f = freq 
 tempdf = adf[adf['section'] == sec]
 normF = [(float(a) - float(amps[0])) / (float(amps[-1])-float(amps[0])) for a in amps]
@@ -131,14 +132,33 @@ for amp, c in zip(amps, cols):
     y = tempdf[tempdf['amp'] == float(amp)][tempdf['f1'] == float(f)]['angles'].values[0][:14]
     y = [radians(val)*-1 for val in y]
     if amp == '1.0':
-        axs[1][1].plot(x, y, 'o-', color='black', label=amp+' nA')
+        amps_axs.plot(x, y, 'o-', color='black', label=amp+' nA')
     else:
-        axs[1][1].plot(x, y, 'o-', color=c, label=amp+' nA')
-axs[1][1].plot([0,15],[0,0], 'k:')
-axs[1][1].set_ylabel(r'$\Phi_n^+$ (rad)', fontsize=18) #set_title('Amplitude Dependence', fontsize=18)
-leg = axs[1][1].legend(title='Stimulus Amplitude', loc='lower right')
+        amps_axs.plot(x, y, 'o-', color=c, label=amp+' nA')
+amps_axs.plot([0,15],[0,0], 'k:')
+amps_axs.set_ylabel(r'$\Phi_n^+$ (rad)', fontsize=18) #set_title('Amplitude Dependence', fontsize=18)
+leg = amps_axs.legend(title='Stimulus Amplitude', loc='lower right')
 # axs[1][1].set_xlim(0.8, 14.2)
+amps_axs.set_xlim(-0.2, 14.2)
+
+#################################################################
+# different models 
+filename = 'HayCellMig_apic_0_amp_1.0_offset_0.0_f0_8_f1_8.json'
+with open('Data/supra_data/' + filename) as fileObj:
+    hay = json.load(fileObj)
+filename = 'dura_bernal_apic_0_amp_0.5_offset_0.0_f0_8_f1_8.json'
+with open('supra_data/' + filename) as fileObj:
+    dura = json.load(fileObj)
+filename = 'Migliore_apic_0_amp_1.3_offset_0.0_f0_8_f1_8.json'
+with open('supra_data/' + filename) as fileObj:
+    mm = json.load(fileObj)
+axs[1][1].plot([0,15], [0,0], 'k:')
+axs[1][1].plot([i for i in range(len(hay['lags']))], [radians(val)*-1 for val in hay['angles']], 'o-', color='black', label='Model 1 (L5b)')
+axs[1][1].plot([i for i in range(len(dura['lags']))], [radians(val)*-1 for val in dura['angles']], 'o-', color='blue', label='Model 2 (L5b)')
+axs[1][1].plot([i for i in range(len(mm['lags']))], [radians(val)*-1 for val in mm['angles']], 'o-', color='red', label='Model 3 (CA1)')
 axs[1][1].set_xlim(-0.2, 14.2)
+leg = axs[1][1].legend()
+axs[1][1].set_ylabel(r'$\Phi_n^+$ (rad)', fontsize=18)
 
 #################################################################
 # location dependence 

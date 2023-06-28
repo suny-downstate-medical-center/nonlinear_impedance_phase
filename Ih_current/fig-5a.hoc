@@ -255,6 +255,24 @@ for i=0, numapical-1 apic[i] {
 }
 
 
+forsec "soma" {ghdbar_hd=ghd*(1+100/(1+exp(half/slope)))  gbar_km=gkm}
+forsec "axon" {gbar_km=gkm}
+
+for i=0, numbasal-1 dend[i] {ghdbar_hd=ghd*(1+100/(1+exp(half/slope)))}
+                
+forsec "dend_5" {
+		for (x,0) { xdist = distance(x)
+                	ghdbar_hd(x) = ghd*(1+100/(1+exp((half-xdist)/slope)))
+		}
+}
+
+for i=0, numapical-1 apic[i] {
+	for (x,0) { xdist = distance(x)
+                	ghdbar_hd(x) = ghd*(1+100/(1+exp((half-xdist)/slope)))
+	}
+}
+
+
 proc init() {
 	t=0
 	def()
@@ -329,24 +347,7 @@ proc zd() {
 	}
 
 
-proc def() {
-forsec "soma" {ghdbar_hd=ghd*(1+100/(1+exp(half/slope)))  gbar_km=gkm}
-forsec "axon" {gbar_km=gkm}
-
-for i=0, numbasal-1 dend[i] {ghdbar_hd=ghd*(1+100/(1+exp(half/slope)))}
-                
-forsec "dend_5" {
-		for (x,0) { xdist = distance(x)
-                	ghdbar_hd(x) = ghd*(1+100/(1+exp((half-xdist)/slope)))
-		}
-}
-
-for i=0, numapical-1 apic[i] {
-	for (x,0) { xdist = distance(x)
-                	ghdbar_hd(x) = ghd*(1+100/(1+exp((half-xdist)/slope)))
-	}
-}
-} 
+proc def() {} 
 
 
 proc runp() {

@@ -215,7 +215,7 @@ if args.blockSKE:
                 seg.SK_E2.gSK_E2bar = 0
             except:
                 pass
-import IPython; IPython.embed()
+# import IPython; IPython.embed()
 dist = fromtodistance(seg, soma_seg)
 amp = args.amp #0.02 
 t0 = args.t0 #20
@@ -229,22 +229,25 @@ seg_v = h.Vector().record(seg._ref_v)
 time = h.Vector().record(h._ref_t)
 I, t = getChirp(f0, f1, t0, amp, Fs, delay, offset=args.offset)
 i = h.Vector().record(h.IClamp[0]._ref_i)
-ih = h.Vector().record(soma_seg.hd._ref_i)
-inat = h.Vector().record(soma_seg.NaTa_t._ref_ina)
-inap = h.Vector().record(soma_seg.Nap_Et2._ref_ina)
-iske2 =  h.Vector().record(soma_seg.SK_E2._ref_ik)
-iskv3 =  h.Vector().record(soma_seg.SKv3_1._ref_ik)
-icahva = h.Vector().record(soma_seg.Ca_HVA._ref_ica)
-icalva = h.Vector().record(soma_seg.Ca_LVAst._ref_ica)
-ikpst =  h.Vector().record(soma_seg.K_Pst._ref_ik)
-iktst =  h.Vector().record(soma_seg.K_Tst._ref_ik)
+## hay 
 # ih = h.Vector().record(soma_seg.hd._ref_i)
-# itsk = h.Vector().record(soma_seg.hd._ref_lk)
-# ina3 = h.Vector().record(soma_seg.na3._ref_ina)
-# # ikdst = h.Vector().record(soma_seg.kadist._ref_ik)
-# ikprx = h.Vector().record(soma_seg.kap._ref_ik)
-# ikm = h.Vector().record(soma_seg.km._ref_ik)
-# ikdr = h.Vector().record(soma_seg.kdr._ref_ik)
+# inat = h.Vector().record(soma_seg.NaTa_t._ref_ina)
+# inap = h.Vector().record(soma_seg.Nap_Et2._ref_ina)
+# iske2 =  h.Vector().record(soma_seg.SK_E2._ref_ik)
+# iskv3 =  h.Vector().record(soma_seg.SKv3_1._ref_ik)
+# icahva = h.Vector().record(soma_seg.Ca_HVA._ref_ica)
+# icalva = h.Vector().record(soma_seg.Ca_LVAst._ref_ica)
+# ikpst =  h.Vector().record(soma_seg.K_Pst._ref_ik)
+# iktst =  h.Vector().record(soma_seg.K_Tst._ref_ik)
+## migliore 
+ih = h.Vector().record(soma_seg.hd._ref_i)
+itsk = h.Vector().record(soma_seg.hd._ref_lk)
+ina3 = h.Vector().record(soma_seg.na3._ref_ina)
+ikprx = h.Vector().record(soma_seg.kap._ref_ik)
+ikm = h.Vector().record(soma_seg.km._ref_ik)
+ikdr = h.Vector().record(soma_seg.kdr._ref_ik)
+# ikdst = h.Vector().record(soma_seg.kadist._ref_ik)
+## stimulation 
 stim.amp = 0
 stim.dur = (t0+delay*2) * Fs + 1
 I.play(stim._ref_amp, t)
@@ -336,7 +339,7 @@ out = {'f_plus' : f_plus,
         'z_plus': z_plus,
         'z_minus' : z_minus}
 
-# import IPython; IPython.embed()
+import IPython; IPython.embed()
 
 datadir = 'asym_data/'
 tracedir = 'asym_traces/'
@@ -389,7 +392,13 @@ if args.saveTraces:
     if args.cellModel == 'Migliore':
         traces = {'soma_v' : soma_v.as_numpy(),
             'i' : i.as_numpy(),
-            'time' : time.as_numpy()}
+            'time' : time.as_numpy(), 
+            'ih' : ih.as_numpy,
+            'itsk' : itsk.as_numpy,
+            'ina3' : ina3.as_numpy,
+            'ikprx' : ikprx.as_numpy,
+            'ikm' : ikm.as_numpy,
+            'ikdr' : ikdr.as_numpy}
     else:
         traces = {'soma_v' : soma_v.as_numpy(),
                 'i' : i.as_numpy(),
