@@ -23,6 +23,7 @@ parser.add_argument('--TTX', nargs='?', type=str, default=None)
 parser.add_argument('--blockTASK', nargs='?', type=str, default=None)
 parser.add_argument('--tauFactor', nargs='?', type=float, default=None)
 parser.add_argument('--morph_file', nargs='?', type=str, default=None)
+parser.add_argument('--blockKm', nargs='?', type=str, default=None)
 
 args = parser.parse_args()
 
@@ -73,6 +74,13 @@ try:
 except:
     pass
 
+if args.blockKm:
+    for sec in h.allsec():
+        for seg in sec.allseg():
+            try:
+                seg.km.gbar = 0
+            except:
+                pass 
 if args.blockIh:
     for sec in h.allsec():
         for seg in sec.allseg():

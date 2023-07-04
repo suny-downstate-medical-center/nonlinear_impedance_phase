@@ -22,6 +22,8 @@ parser.add_argument('--blockIm', nargs='?', type=str, default=None)
 parser.add_argument('--blockTASK', nargs='?', type=str, default=None)
 parser.add_argument('--tauFactor', nargs='?', type=float, default=None)
 parser.add_argument('--morph_file', nargs='?', type=str, default=None)
+parser.add_argument('--blockKm', nargs='?', type=str, default=None)
+
 args = parser.parse_args()
 
 if args.cellModel == 'M1Cell':
@@ -72,6 +74,13 @@ try:
 except:
     pass
 
+if args.blockKm:
+    for sec in h.allsec():
+        for seg in sec.allseg():
+            try:
+                seg.km.gbar = 0
+            except:
+                pass 
 if args.blockIh:
     for sec in h.allsec():
         for seg in sec.allseg():
@@ -324,6 +333,8 @@ elif args.blockLVACa:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockLVACa.json'
 elif args.blockIm:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockIm.json'
+elif args.blockKm:
+    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockKm.json'
 elif args.blockTASK:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockTASK.json'
 elif args.tauFactor:
@@ -348,6 +359,8 @@ if args.saveTraces:
         tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockIh.npy'
     elif args.blockIm:
         tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockIm.npy'
+    elif args.blockKm:
+        tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockKm.npy'
     elif args.blockTASK:
         tracefile = tracedir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_s_' + str(args.slopeFactor) + '_t_' + str(args.t0) + '_blockTASK.npy'
     elif args.tauFactor:
