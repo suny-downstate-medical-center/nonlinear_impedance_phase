@@ -1108,7 +1108,7 @@ By instead using continuous sinusoidal currents, we found that action potentials
 Conversely, increasing stimulus amplitude on each cycle produced progressively earlier action potentials, which we termed {\em phase advance}.
 We suggest that these processes are involved in relationships between local field potential oscillations and spike timing observed in a number of brain structures \emph{in vivo} and often ascribed to network phenomena \citep{Geisler2007-vu, Jensen1996-ql, Bose2001-zp, Wallenstein1997-ae, Tsodyks1996-dn}.
 Phase advance may contribute to phase precession, seen in place cells \citep{OKeefe1993-xh}, grid cells \citep{Hafting2008-vd}, medial prefrontal cortex neurons \citep{Jones2005-hz}, and neurons in ventral striatum \citep{Van_der_Meer2011-mu}, and phase retreat may contribute to phase roll hippocampal CA1 neurons \citep{Sloin2022-pe}.
-**** new version 
+**** new version  - *in manuscript*
 In this paper, we develop and apply a novel analysis method to compute separate phase shifts for depolarization and hyperpolarization during nonlinear \vmemb\ responses, both sub- and suprathreshold.
 We used an experimentally-validated neocortical L5b pyramidal neuron model \citep{Hay2011-if}, whose location-dependent subthreshold impedance profile has 
 also been validated \citep{Kelley2021-hr}, to explore the physiological implications of separate phase shifts for depolarization and hyperpolarization using our analysis method.
@@ -1135,7 +1135,7 @@ of different stimulus amplitudes and frequencies; under different membrane condi
 spike-blocked suprathreshold, and spiking regimes.
 These results are important for understanding the response of neurons to the incoming oscillatory inputs that create the field potential oscillations identified as delta -- beta waves,
 suggesting different phases for responses to inhibitory vs. excitatory postsynaptic potentials.
-**** new version
+**** new version - *in manuscript*
 Classical impedance analysis in neurophysiology requires low-amplitude signals in order to remain close to a linear ideal: the resistor-inductor-capacitor (RLC) circuit
 (\fref{sub_thru_spk}A) \citep{Kelley2021-hr,Cole1941-vd,Mauro1961-ys}.
 These small signals only slightly activate voltage-sensitive ion channels, giving rise to a phenomenological inductance which can then be further analyzed
@@ -1160,7 +1160,7 @@ model. Those results are not going to be generalizable. The paper should make it
 clear that they are not promoting these specific results (frequency, amplitude) 
 in these cells, but rather that this type of effect can be uncovered with this 
 novel perturbation method.
-**** to include somewhere . . .
+**** to include somewhere [discussion]. . . *in manuscript*
 The quantitative results presented here are particular to the neuronal models we used. 
 While we predict that the phenomena explored here (e.g. different phase shifts for depolarization 
 and hyperpolarization, nonstationary phase relationships between spiking and stimulus) occur 
@@ -1182,7 +1182,7 @@ frequency-dependent output strength) and
 phase ($\Phi$ -- the frequency-dependent temporal shifts between corresponding points such as the peak or the trough in the current stimulus vs. that of the \vmemb\ waveform).
 Because these methods properly pertain to a non-physiological, linear, time-invariant/stationary system, 
 we developed new methods for characterizing the nonlinear filtering properties of the neuronal membrane, whether spiking or subthreshold.
-**** new version 
+**** new version - *in mansucript*
 Neuronal membrane impedance is usually estimated by applying current as either a chirp (time-varying signal whose instantaneous frequency increases with
 time) \citep{Puil1986-uv} or white noise \citep{Moore1985-kg, Wright1996-pl} and recording the resulting changes in \vmemb.
 Impedance is expressed as a complex number from which we can extract amplitude ($|Z|$ -- the 
@@ -1198,7 +1198,7 @@ location dependence of the channels?
 **** original
 The phase curve shifted downward (more delayed) with dendritic localization of stimulation due to the conductance delay from apical dendrite to soma; more subtle changes 
 in phase shift across cycles could be seen which was due to channel density differences between dendrite and soma (\fref{phase_retreat}C).
-**** new version 
+**** new version - *in manuscript*
 Phase retreat occurred when stimulating the apical dendrite, rather then the soma.
 The phase curve shifted downward (more delayed) with dendritic localization of stimulation due to the conductance delay from apical dendrite to soma.
 Differences in phase shift across cycles was due to channel density differences between dendrite and soma (\fref{phase_retreat}C).
@@ -1340,7 +1340,7 @@ channel interactions in their study.
 **** I-KA / SKv3.1 modulates phase shift for depolarization, not hyperpolarization 
 **** I-CaT / LVA Ca2+ channel strongly modulates phase shifts near hot zone,
 no effect at soma 
-**** new paragraph 
+**** new paragraph  - *in manuscript*
 Previous work demonstrated that the phenomenological inductance generated by \ih\ 
 was modulated by other subthreshold currents such as \ia, t-type \ca\ current, and 
 TASK-like shunting current \cite{Rathour2012-bu, Rathour2014-pl, Kelley2021-hr}.
@@ -1376,12 +1376,12 @@ JNS 2008), which varies with HCN channel subtypes (HCN1-4). It is, therefore,
 surprising that for a study that analyzes the differences in Vm phase-shift in 
 response to depolarizing vs. hyperpolarizing inputs, a sensitivity analysis of 
 the activation time constant for Ih is lacking.
-**** new supp figure for Tau sensitivity of phase shifts 
+**** new supp figure for Tau sensitivity of phase shifts - *in manuscript*
 
 *** To make their claims more generalizable, it would be nice to assess the 
 extent of phase precession and phase retreat in models of different morphologies 
 as well as in the models of CA1 pyramidal neurons.
-**** new paragraph looking at high-subthreshold phase shifts in 3 different cell models and 3 morphologies with the same biophysics.
+**** new paragraph looking at high-subthreshold phase shifts in 3 different cell models and 3 morphologies with the same biophysics. - *in manuscript*
 High amplitude subthreshold chirp stimuli produce different frequency-dependent 
 phase shifts for depolarization and hyperpolarization in three different models
 of cortical pyramidal neurons \fref{compareModelsSubthresh}A. \textbf{Model 1} and
@@ -1405,7 +1405,7 @@ the three models mentioned above.
     B. Morphologies (left) of three L5b pyramidal neuron models with the same channel distributions (from \textbf{model 1}) and their frequency dependent
     phase shifts for depolarization (dashed lines) and hyperpolarization (solid) in response to high amplitude subthreshold chirp stimuli (right).
     Morphology 1 is the same morphology used in \textbf{model 1}.}
-**** new paragraph on CA1 channels / inductance 
+**** new paragraph on CA1 channels / inductance - *in manuscript*
 The situation was even more complex in the model of CA1 pyramidal neuron (\textbf{model 3}), 
 In this cell, phenomenological inductance was generated by both \ih\ and \im\ (\fref{mmCa1}).
 Unlike the two L5b pyramidal neuron models, \textbf{model 3} showed higher $\Phi^+$ than $\Phi^-$.
@@ -1443,7 +1443,7 @@ strong word used in this context.
 Phase shift relative to the local field potential (LFP)
 suggests phase coding as an adjunct to rate coding in the central nervous system (CNS) 
 \parencite{Magee2001-ud, Mehta2002-uu, Harris2002-fb, Fries2007-zs, Leung2011-xe}.
-**** new
+**** new - *in manuscript*
 Phase shift relative to the local field potential (LFP) 
 provides a mechanism for temporal/phase coding to coexist with and compliment 
 rate coding in the central nervous system (CNS) 
@@ -1565,19 +1565,21 @@ config = {
 ** most changes coded but not put into proper figs and into manuscript 
 
 * TODOS 
-** TODO: update methods on other two models
+** TODO: add bit on amplitude vs time 
 ** TODO: ca1 suprathreshold block Im
 ** TODO: consider suprathreshold chirp for ca1 cell
-** TODO: how to incorporate CA1 results 
-** TODO: add bit on amplitude vs time 
 ** TODO: decide whether to include ... in description of motivation to use the model:
 and a shift from an excitatory to inhibitory effect of \ih\ in response to synaptic inputs of increasing strength (migliore, salva, george abbot siegelbaum)
+*** maybe not
 ** TODO: clinical relevance of Iahp
 ** TODO: graphical abstract
 ** TODO: fix references  
 ** TODO: three points for subthreshold stim 
 *** maybe not
-** TODO: check asymmetry of apical responses 
+** DONE: how to incorporate CA1 results 
+** DONE: check asymmetry of apical responses
+** DONE: intro para 1 focus on l5b
+** DONE: update methods on other two models 
 ** DONE: new traces - baseline should be blue for consistency with existing figs 
 ** DONE: finalize suprathreshold fig 
 ** DONE: add labels/letters to subthreshold fig
