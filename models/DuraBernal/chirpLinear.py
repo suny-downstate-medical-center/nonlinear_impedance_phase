@@ -23,41 +23,14 @@ parser.add_argument('--TTX', nargs='?', type=str, default=None)
 parser.add_argument('--blockTASK', nargs='?', type=str, default=None)
 parser.add_argument('--tauFactor', nargs='?', type=float, default=None)
 parser.add_argument('--morph_file', nargs='?', type=str, default=None)
-parser.add_argument('--blockKm', nargs='?', type=str, default=None)
 
 args = parser.parse_args()
 
-if args.cellModel == 'M1Cell':
-    from getCells import M1Cell   
-    s = M1Cell()  
-    soma_seg = s.net.cells[0].secs['soma']['hObj'](0.5)  
-    seg = s.net.cells[0].secs[sys.argv[-1]]['hObj'](0.5)
-    from neuron import h
-elif args.cellModel == 'HayCellMig':
-    from getCells import HayCellMig
-    if args.morph_file:
-        cell, _ = HayCellMig(morphology_file=args.morph_file)
-    else:
-        cell, _ = HayCellMig()
-    soma_seg = cell.soma[0](0.5)
-    sec_name = args.section.split('_')[0]
-    sec_num = args.section.split('_')[1]
-    execstr = 'seg = cell.' + sec_name + '[' + sec_num + '](0.5)'
-    # seg = soma_seg
-    exec(execstr)
-    from neuron import h
-elif args.cellModel == 'RichHuman':
-    from getCells import RichHuman
-    h, trunk = RichHuman()
-    soma_seg = h.filament_100000042[0](0.5)
-    seg = h.filament_100000042[trunk[int(len(trunk)/2)]](0.5)
-elif args.cellModel == 'Migliore':
-    import neuron
-    from neuron import h 
-    h.load_file('stdrun.hoc')
-    neuron.load_mechanisms("Ih_current") # directory with mm mod files
-    h.xopen("Ih_current/fig-5a.hoc")
-    seg = soma_seg = h.soma[0](0.5)
+from getCells import M1Cell   
+s = M1Cell()  
+soma_seg = s.net.cells[0].secs['soma']['hObj'](0.5)  
+seg = s.net.cells[0].secs['apic_0']['hObj'](0.5)
+from neuron import h
 
 from chirpUtils import getChirp, fromtodistance
 stim = h.IClamp(seg)
@@ -74,13 +47,6 @@ try:
 except:
     pass
 
-if args.blockKm:
-    for sec in h.allsec():
-        for seg in sec.allseg():
-            try:
-                seg.km.gbar = 0
-            except:
-                pass 
 if args.blockIh:
     for sec in h.allsec():
         for seg in sec.allseg():
@@ -314,8 +280,6 @@ elif args.blockSKE:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockSKE.json'
 elif args.blockIm:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockIm.json'
-elif args.blockKm:
-    filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockKm.json'
 elif args.blockTASK:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockTASK.json'
 elif args.tauFactor:
@@ -330,8 +294,8 @@ elif args.blockSKv3:
 else:
     filename = datadir + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '.json'
 
-with open(filename, 'w') as fileObj:
-    json.dump(out, fileObj)
+# with open(filename, 'w') as fileObj:
+#     json.dump(out, fileObj)
 
 if args.saveTraces:
     traces = {'soma_v' : soma_v.as_numpy(),
@@ -349,8 +313,6 @@ if args.saveTraces:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockSKE.npy'
     elif args.blockIm:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockIm.npy'
-    elif args.blockKm:
-        tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockKm.npy'
     elif args.blockTASK:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_blockTASK.npy'
     elif args.tauFactor:
@@ -363,7 +325,7 @@ if args.saveTraces:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '_TTX.npy'
     else:
         tracefile = tracedir  + args.cellModel + '_' + args.section + '_amp_' + str(amp) + '_offset_' + str(args.offset) + '_f0_' + str(round(args.f0)) + '_f1_' + str(round(f1)) + '.npy'
-    with open(tracefile, 'wb') as fileObj:
-        np.save(fileObj, traces)
+    # with open(tracefile, 'wb') as fileObj:
+    #     np.save(fileObj, traces)
 
 print("--- %s seconds ---" % (systime.time() - start_time))

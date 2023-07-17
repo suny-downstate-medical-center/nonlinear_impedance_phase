@@ -1564,18 +1564,22 @@ config = {
 * [2023-6-28 Wed] - figs 
 ** most changes coded but not put into proper figs and into manuscript 
 
+* [2023-7-17 Mon] - alternative titles 
+** base: Membrane potential phase shifts differ for excitation vs. inhibition in theta-resonant pyramidal neurons: a computer modeling study
+*** Exploring nonlinear membrane dynamics in computer models of theta-resonant pyramidal neurons: different phase shifts for excitation vs. inhibition and nonstationary spiking patterns 
+*** Membrane potential phase shifts differ for excitation vs. inhibition in computer models of theta-resonant pyramidal neurons
+
 * TODOS 
-** TODO: add bit on amplitude vs time 
-** TODO: ca1 suprathreshold block Im
-** TODO: consider suprathreshold chirp for ca1 cell
-** TODO: decide whether to include ... in description of motivation to use the model:
+** DONE: graphical abstract
+** DONE: fix references  
+** DONE: decide whether to include ... in description of motivation to use the model:
 and a shift from an excitatory to inhibitory effect of \ih\ in response to synaptic inputs of increasing strength (migliore, salva, george abbot siegelbaum)
 *** maybe not
-** TODO: clinical relevance of Iahp
-** TODO: graphical abstract
-** TODO: fix references  
-** TODO: three points for subthreshold stim 
-*** maybe not
+** DONE: consider suprathreshold chirp for ca1 cell
+*** decided no 
+** DONE: clinical relevance of Iahp
+** DONE: ca1 suprathreshold block Im
+** DONE: add bit on amplitude vs time 
 ** DONE: how to incorporate CA1 results 
 ** DONE: check asymmetry of apical responses
 ** DONE: intro para 1 focus on l5b
